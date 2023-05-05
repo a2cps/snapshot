@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# helper script to make small testing directory
+
+ROOT=/corral-secure/projects/A2CPS/products/mris
+TARGET=/corral-secure/projects/A2CPS/shared/psadil/jobs/release/products/mris
+SITES=(NS_northshore SH_spectrum_health UC_uchicago UI_uic UM_umichigan WS_wayne_state)
+APPS=(bids cat12 fmriprep mriqc qsiprep)
+N_SUB=2
+
+set -xu
+
+for site in "${SITES[@]}"; do
+  for app in "${APPS[@]}"; do
+    mapfile -t subs < <(find "${ROOT}/${site}/${app}" -mindepth 1 -maxdepth 1 -name "*QC*" -prune -o -type d -exec basename {} \;)
+    target_app_dir="${TARGET}/${site}/${app}"
+    if [[ ! -d $target_app_dir ]]; then
+        mkdir -p "${target_app_dir}"
+    fi
+    for ((s=0; s < N_SUB; s++)); do
+        sub="${subs[s]}"
+        case "${app}" in
+            fmriprep)
+                for subjob in anat rest cuff; do
+                    subjobdir="${target_app_dir}/${sub}/${subjob}"
+                    mkdir -p "${subjobdir}"
+                    ln -s "${ROOT}/${site}/${app}/${sub}/${subjob}/${app}" "${subjobdir}"
+                done
+                ln -s "${ROOT}/${site}/${app}/${sub}/anat/freesurfer" "${target_app_dir}/${sub}/anat/freesurfer"
+            ;;
+            mriqc)
+                subdir="${target_app_dir}/${sub}"
+                mkdir -p "${subdir}"
+                for subjob in anat rest cuff; do
+                    ln -s "${ROOT}/${site}/${app}/${sub}/${subjob}" "${subdir}/${subjob}"
+                done
+            ;;
+            *)
+                ln -s "${ROOT}/${site}/${app}/${sub}" "${target_app_dir}/${sub}"
+        esac        
+    done    
+  done
+done
