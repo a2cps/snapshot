@@ -1,11 +1,9 @@
 import json
 import shutil
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 from snapshot.tasks import utils
-
-ALIAS = "qsiprep"
 
 SITE_LONG = {
     "NS": "NS_northshore",
@@ -72,7 +70,7 @@ def _store_dwiqcs(dwiqcs: list[Path], outdir: Path) -> None:
     (outdir / "dwiqc.json").write_text(json.dumps(_merge_dwiqc(dwiqcs), indent=2))
 
 
-def main(outdir: Path, inroot: Path, ria: str | None = None, n_jobs: int = 1) -> None:
+def main(outdir: Path, inroot: Path, action: Literal["init", "update"], n_jobs: int = 1) -> None:
     if not outdir.exists():
         outdir.mkdir(parents=True)
 
@@ -84,10 +82,14 @@ def main(outdir: Path, inroot: Path, ria: str | None = None, n_jobs: int = 1) ->
             dwiqcs.append(src.with_name("dwiqc.json"))
             if src.is_file():
                 # assumes that the src is a file like sub-#####.html
-                shutil.copy2(src, outdir / f"sub-{sub}_ses-{ses}.html")
+                utils._copy_if_needed(src, outdir / f"sub-{sub}_ses-{ses}.html")
             else:
-                shutil.copytree(src, outdir / src.name, dirs_exist_ok=True)
+                shutil.copytree(src, outdir / src.name, dirs_exist_ok=True, copy_function=utils._copy_if_needed)
 
     _store_dwiqcs(dwiqcs, outdir=outdir)
 
-    utils.create_save_and_ria(dataset=outdir, ria=ria, alias=ALIAS, n_jobs=n_jobs)
+    match action:
+        case "init":
+            utils.init_and_save(dataset=outdir, n_jobs=n_jobs)
+        case "update":
+            utils.update(dataset=outdir, n_jobs=n_jobs)

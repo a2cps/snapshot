@@ -3,4 +3,4 @@
 # SPDX-License-Identifier: MIT
 from importlib.metadata import version
 
-__version__ = version("release")
+__version__ = version("snapshot")
