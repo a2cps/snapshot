@@ -23,6 +23,7 @@ classifiers = [
 ]
 dependencies = [
   "click",
+  "datalad"
 ]
 
 [project.urls]
@@ -31,7 +32,7 @@ Issues = "https://github.com/unknown/snapshot/issues"
 Source = "https://github.com/unknown/snapshot"
 
 [project.scripts]
-snapshot = "snapshot.cli.build:build"
+snapshot = "snapshot.cli.build:snapshot"
 
 [tool.hatch.version]
 source = "vcs"

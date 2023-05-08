@@ -1,9 +1,8 @@
 import shutil
 from pathlib import Path
+from typing import Literal
 
 from snapshot.tasks import utils
-
-ALIAS = "freesurfer"
 
 SITE_LONG = {
     "NS": "NS_northshore",
@@ -15,13 +14,21 @@ SITE_LONG = {
 }
 
 
-def main(outdir: Path, inroot: Path, ria: str | None = None, n_jobs: int = 1) -> None:
+def main(outdir: Path, inroot: Path, action: Literal["init", "update"], n_jobs: int = 1) -> None:
     if not outdir.exists():
         outdir.mkdir(parents=True)
 
     for site, site_long in SITE_LONG.items():
         for src in inroot.glob(f"{site_long}/fmriprep/{site}*/anat/freesurfer/sub*"):
             # folders renamed so that sessions do not collide
-            shutil.copytree(src, outdir / f"sub-{utils._get_sub(src)}_ses-{utils._get_ses(src)}")
+            shutil.copytree(
+                src,
+                outdir / f"sub-{utils._get_sub(src)}_ses-{utils._get_ses(src)}",
+                copy_function=utils._copy_if_needed,
+            )
 
-    utils.create_save_and_ria(dataset=outdir, ria=ria, alias=ALIAS, n_jobs=n_jobs)
+    match action:
+        case "init":
+            utils.init_and_save(dataset=outdir, n_jobs=n_jobs)
+        case "update":
+            utils.update(dataset=outdir, n_jobs=n_jobs)
