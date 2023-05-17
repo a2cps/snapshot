@@ -1,16 +1,29 @@
+import tempfile
 from pathlib import Path
 from typing import Literal
 
 import click
 
-from snapshot import __version__
 from snapshot.flows import main
 
 
 @click.group(context_settings={"help_option_names": ["-h", "--help"]})
-@click.version_option(version=__version__, prog_name="snapshot")
 def snapshot() -> None:
     pass
+
+
+@snapshot.command()
+@click.argument("inroot", type=click.Path(exists=True, file_okay=False, resolve_path=True, path_type=Path))
+@click.argument("outroot", type=click.Path(exists=False, file_okay=False, resolve_path=True, path_type=Path))
+@click.option("--deface-root", type=click.Path(exists=False, file_okay=False, resolve_path=True, path_type=Path))
+@click.option("--n-workers", type=click.IntRange(min=1, min_open=False), default=1)
+def stage(
+    inroot: Path,
+    outroot: Path,
+    deface_root: Path = Path(tempfile.mkdtemp()),
+    n_workers: int = 1,
+) -> None:
+    main.stage(inroot=inroot, outroot=outroot, deface_root=deface_root, n_workers=n_workers)
 
 
 @snapshot.command()
