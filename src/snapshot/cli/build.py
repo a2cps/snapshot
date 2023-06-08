@@ -1,4 +1,3 @@
-import tempfile
 from pathlib import Path
 from typing import Literal
 
@@ -13,82 +12,49 @@ def snapshot() -> None:
 
 
 @snapshot.command()
-@click.argument("inroot", type=click.Path(exists=True, file_okay=False, resolve_path=True, path_type=Path))
-@click.argument("outroot", type=click.Path(exists=False, file_okay=False, resolve_path=True, path_type=Path))
-@click.option("--deface-root", type=click.Path(exists=False, file_okay=False, resolve_path=True, path_type=Path))
-@click.option("--n-workers", type=click.IntRange(min=1, min_open=False), default=1)
+@click.argument(
+    "inroot",
+    type=click.Path(
+        exists=True, file_okay=False, resolve_path=True, path_type=Path
+    ),
+)
+@click.argument(
+    "outroot",
+    type=click.Path(
+        exists=False, file_okay=False, resolve_path=True, path_type=Path
+    ),
+)
+@click.option("--max-subs", type=int, default=float("inf"))
 def stage(
-    inroot: Path,
-    outroot: Path,
-    deface_root: Path = Path(tempfile.mkdtemp()),
-    n_workers: int = 1,
+    inroot: Path, outroot: Path, max_subs: float | int = float("inf")
 ) -> None:
-    main.stage(inroot=inroot, outroot=outroot, deface_root=deface_root, n_workers=n_workers)
+    main.stage(inroot=inroot, outroot=outroot, max_subs=max_subs)
 
 
 @snapshot.command()
-@click.argument("inroot", type=click.Path(exists=True, file_okay=False, resolve_path=True, path_type=Path))
-@click.argument("outdir", type=click.Path(exists=False, file_okay=False, resolve_path=True, path_type=Path))
 @click.argument(
-    "store",
-    nargs=-1,
-    type=click.Choice(
-        ("rawdata", "cat12", "fmriprep-anat", "fmriprep-cuff", "fmriprep-rest", "qsiprep", "mriqc", "freesurfer")
+    "releasedir",
+    type=click.Path(
+        exists=False, file_okay=False, resolve_path=True, path_type=Path
     ),
 )
-@click.option("--n-jobs", type=click.IntRange(min=1, min_open=False), default=1)
-def init(
-    inroot: Path,
-    outdir: Path,
-    store: tuple[
-        Literal[
-            "rawdata", "cat12", "qsiprep", "mriqc", "fmriprep-anat", "fmriprep-cuff", "fmriprep-rest", "freesurfer"
-        ],
-        ...,
-    ],
-    n_jobs: int = 1,
-) -> None:
-    """
-    build \
-        --n-jobs 10 \
-        ./products/mris ./release rawdata
-    """
-    main.init(inroot=inroot, outdir=outdir, store=store, n_jobs=n_jobs)
-
-
-@snapshot.command()
-@click.argument("inroot", type=click.Path(exists=True, file_okay=False, resolve_path=True, path_type=Path))
-@click.argument("outdir", type=click.Path(exists=False, file_okay=False, resolve_path=True, path_type=Path))
 @click.argument(
-    "store",
-    nargs=-1,
-    type=click.Choice(
-        ("rawdata", "cat12", "fmriprep-anat", "fmriprep-cuff", "fmriprep-rest", "qsiprep", "mriqc", "freesurfer")
-    ),
+    "ria", type=click.Path(exists=False, file_okay=False, path_type=str)
 )
-@click.option("--n-jobs", type=click.IntRange(min=1, min_open=False), default=1)
-def update(
-    inroot: Path,
-    outdir: Path,
-    store: tuple[
-        Literal[
-            "rawdata", "cat12", "qsiprep", "mriqc", "fmriprep-anat", "fmriprep-cuff", "fmriprep-rest", "freesurfer"
-        ],
-        ...,
-    ],
-    n_jobs: int = 1,
-) -> None:
-    main.update(inroot=inroot, outdir=outdir, store=store, n_jobs=n_jobs)
-
-
-@snapshot.command()
-@click.argument("releasedir", type=click.Path(exists=False, file_okay=False, resolve_path=True, path_type=Path))
-@click.argument("ria", type=click.Path(exists=False, file_okay=False, path_type=str))
 @click.argument(
     "store",
     nargs=-1,
     type=click.Choice(
-        ("rawdata", "cat12", "fmriprep-anat", "fmriprep-cuff", "fmriprep-rest", "qsiprep", "mriqc", "freesurfer")
+        (
+            "rawdata",
+            "cat12",
+            "fmriprep-anat",
+            "fmriprep-cuff",
+            "fmriprep-rest",
+            "qsiprep",
+            "mriqc",
+            "freesurfer",
+        )
     ),
 )
 def add_ria(
@@ -96,7 +62,14 @@ def add_ria(
     ria: str,
     store: tuple[
         Literal[
-            "rawdata", "cat12", "qsiprep", "mriqc", "fmriprep-anat", "fmriprep-cuff", "fmriprep-rest", "freesurfer"
+            "rawdata",
+            "cat12",
+            "qsiprep",
+            "mriqc",
+            "fmriprep-anat",
+            "fmriprep-cuff",
+            "fmriprep-rest",
+            "freesurfer",
         ],
         ...,
     ],
@@ -114,13 +87,29 @@ def add_ria(
 
 
 @snapshot.command()
-@click.argument("releasedir", type=click.Path(exists=False, file_okay=False, resolve_path=True, path_type=Path))
-@click.argument("ria", type=click.Path(exists=True, file_okay=False, path_type=Path))
+@click.argument(
+    "releasedir",
+    type=click.Path(
+        exists=False, file_okay=False, resolve_path=True, path_type=Path
+    ),
+)
+@click.argument(
+    "ria", type=click.Path(exists=True, file_okay=False, path_type=Path)
+)
 @click.argument(
     "store",
     nargs=-1,
     type=click.Choice(
-        ("rawdata", "cat12", "fmriprep-anat", "fmriprep-cuff", "fmriprep-rest", "qsiprep", "mriqc", "freesurfer")
+        (
+            "rawdata",
+            "cat12",
+            "fmriprep-anat",
+            "fmriprep-cuff",
+            "fmriprep-rest",
+            "qsiprep",
+            "mriqc",
+            "freesurfer",
+        )
     ),
 )
 @click.option("--n-jobs", type=click.IntRange(min=1, min_open=True), default=1)
@@ -129,7 +118,14 @@ def archive(
     ria: Path,
     store: tuple[
         Literal[
-            "rawdata", "cat12", "qsiprep", "mriqc", "fmriprep-anat", "fmriprep-cuff", "fmriprep-rest", "freesurfer"
+            "rawdata",
+            "cat12",
+            "qsiprep",
+            "mriqc",
+            "fmriprep-anat",
+            "fmriprep-cuff",
+            "fmriprep-rest",
+            "freesurfer",
         ],
         ...,
     ],

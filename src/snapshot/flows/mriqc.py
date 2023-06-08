@@ -1,34 +1,37 @@
 import shutil
 from pathlib import Path
-from typing import Literal
+
+from mriqc.reports.group import gen_html
+from mriqc.utils.misc import generate_tsv
 
 from snapshot.tasks import utils
 
-SITE_LONG = {
-    "NS": "NS_northshore",
-    "UI": "UI_uic",
-    "UC": "UC_uchicago",
-    "UM": "UM_umichigan",
-    "SH": "SH_spectrum_health",
-    "WS": "WS_wayne_state",
-}
+# TODO: add mriqc-group command?
 
 
-def main(outdir: Path, inroot: Path, action: Literal["init", "update"], n_jobs: int = 1) -> None:
+def main(outdir: Path, inroot: Path) -> None:
     if not outdir.exists():
         outdir.mkdir(parents=True)
 
     for job in ["anat", "cuff", "rest"]:
-        for site, site_long in SITE_LONG.items():
-            # this grabs both sub-##### directories and sub*html files
-            for src in inroot.glob(f"{site_long}/mriqc/{site}*/{job}/sub*"):
-                if src.is_file():
-                    utils._copy_if_needed(src, outdir)
-                else:
-                    shutil.copytree(src, outdir / src.name, dirs_exist_ok=True, copy_function=utils._copy_if_needed)
+        # this grabs both sub-##### directories and sub*html files
+        for src in inroot.glob(f"mriqc/*/{job}/sub*"):
+            if src.is_file():
+                utils._copy_if_needed(src, outdir / src.name)
+            else:
+                shutil.copytree(
+                    src,
+                    outdir / src.name,
+                    dirs_exist_ok=True,
+                    copy_function=utils._copy_if_needed,
+                )
 
-    match action:
-        case "init":
-            utils.init_and_save(dataset=outdir, n_jobs=n_jobs)
-        case "update":
-            utils.update(dataset=outdir, n_jobs=n_jobs)
+    # https://github.com/nipreps/mriqc/blob/a2c320cce2ffff5a0e32d71213db7df834b5026a/mriqc/cli/run.py#L196-L236
+    for modality in ["T1w", "bold"]:
+        _, out_tsv = generate_tsv(outdir, modality)
+        gen_html(
+            out_tsv,
+            modality,
+            csv_failed=outdir / f"group_variant-failed_{modality}.tsv",
+            out_file=outdir / f"group_{modality}.html",
+        )

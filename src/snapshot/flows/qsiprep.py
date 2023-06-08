@@ -1,18 +1,9 @@
 import json
 import shutil
 from pathlib import Path
-from typing import Any, Literal
+from typing import Any
 
 from snapshot.tasks import utils
-
-SITE_LONG = {
-    "NS": "NS_northshore",
-    "UI": "UI_uic",
-    "UC": "UC_uchicago",
-    "UM": "UM_umichigan",
-    "SH": "SH_spectrum_health",
-    "WS": "WS_wayne_state",
-}
 
 # copied from example participant
 DWIQC = {
@@ -67,29 +58,32 @@ def _merge_dwiqc(dwiqcs: list[Path]) -> dict[str, Any]:
 
 
 def _store_dwiqcs(dwiqcs: list[Path], outdir: Path) -> None:
-    (outdir / "dwiqc.json").write_text(json.dumps(_merge_dwiqc(dwiqcs), indent=2))
+    (outdir / "dwiqc.json").write_text(
+        json.dumps(_merge_dwiqc(dwiqcs), indent=2)
+    )
 
 
-def main(outdir: Path, inroot: Path, action: Literal["init", "update"], n_jobs: int = 1) -> None:
+def main(outdir: Path, inroot: Path) -> None:
     if not outdir.exists():
         outdir.mkdir(parents=True)
 
     dwiqcs = []
-    for site, site_long in SITE_LONG.items():
-        for src in inroot.glob(f"{site_long}/qsiprep/{site}*/qsiprep/sub*"):
+    for src in inroot.glob("qsiprep/*/qsiprep/sub*"):
+        dwiqcs.append(src.with_name("dwiqc.json"))
+        if src.is_file():
             sub = utils._get_sub(src)
             ses = utils._get_ses(src)
-            dwiqcs.append(src.with_name("dwiqc.json"))
-            if src.is_file():
-                # assumes that the src is a file like sub-#####.html
-                utils._copy_if_needed(src, outdir / f"sub-{sub}_ses-{ses}.html")
-            else:
-                shutil.copytree(src, outdir / src.name, dirs_exist_ok=True, copy_function=utils._copy_if_needed)
+            # assumes that the src is a file like sub-#####.html
+            utils._copy_if_needed(
+                src,
+                outdir / f"sub-{sub}_ses-{ses}.html",
+            )
+        else:
+            shutil.copytree(
+                src,
+                outdir / src.name,
+                dirs_exist_ok=True,
+                copy_function=utils._copy_if_needed,
+            )
 
     _store_dwiqcs(dwiqcs, outdir=outdir)
-
-    match action:
-        case "init":
-            utils.init_and_save(dataset=outdir, n_jobs=n_jobs)
-        case "update":
-            utils.update(dataset=outdir, n_jobs=n_jobs)
