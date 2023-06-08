@@ -23,7 +23,9 @@ classifiers = [
 ]
 dependencies = [
   "click",
-  "datalad"
+  "datalad",
+  "nilearn",
+  "nibabel"
 ]
 
 [project.urls]
@@ -83,7 +85,7 @@ all = [
 
 [tool.black]
 target-version = ["py37"]
-line-length = 120
+line-length = 80
 skip-string-normalization = true
 
 [tool.ruff]

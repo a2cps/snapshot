@@ -1,0 +1,5 @@
+tests
+tools
+dist
+.pytest_cache
+.vscode
