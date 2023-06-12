@@ -8,6 +8,7 @@ COPY --chown=$MAMBA_USER:$MAMBA_USER pyproject.toml README.md src /tmp/release/
 ENV TZ=Europe/London
 RUN micromamba install -q --name base --yes --file /tmp/env.yml \
     && micromamba run -n base pip install --no-deps /tmp/release/ \
+    && micromamba run -n base pip cache purge \
     && rm -rf /tmp/release /tmp/env.yml \
     && micromamba clean --yes --all
 

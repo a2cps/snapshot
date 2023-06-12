@@ -6,8 +6,6 @@ from mriqc.utils.misc import generate_tsv
 
 from snapshot.tasks import utils
 
-# TODO: add mriqc-group command?
-
 
 def main(outdir: Path, inroot: Path) -> None:
     if not outdir.exists():

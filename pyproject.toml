@@ -22,10 +22,14 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
 dependencies = [
+  "ancpbids",
   "click",
   "datalad",
+  "mriqc",
   "nilearn",
-  "nibabel"
+  "nibabel",
+  "numpy",
+  "pandas"
 ]
 
 [project.urls]
