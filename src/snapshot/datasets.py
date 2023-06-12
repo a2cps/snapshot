@@ -1,6 +1,8 @@
 from importlib import resources
 from pathlib import Path
 
+import pandas as pd
+
 
 def get_aseg() -> Path:
     with resources.path("snapshot.data", "desc-aseg_dseg.tsv") as f:
@@ -12,3 +14,9 @@ def get_aparcaseg() -> Path:
     with resources.path("snapshot.data", "desc-aparcaseg_dseg.tsv") as f:
         data_file_path = f
     return data_file_path
+
+
+def get_v1_recordids() -> list[int]:
+    with resources.path("snapshot.data", "DataFreeze_1_022823.csv") as f:
+        record_ids = pd.read_csv(f).record_id.to_list()
+    return record_ids
