@@ -25,6 +25,9 @@ dependencies = [
   "ancpbids",
   "click",
   "datalad",
+  "ibis-framework[duckdb]",
+  "ibis-framework[pandas]",
+  "ibis-framework[polars]",
   "mriqc",
   "nilearn",
   "nibabel",
@@ -38,7 +41,7 @@ Issues = "https://github.com/unknown/snapshot/issues"
 Source = "https://github.com/unknown/snapshot"
 
 [project.scripts]
-snapshot = "snapshot.cli.build:snapshot"
+snapshot = "snapshot.cli.snapshot:main"
 
 [tool.hatch.version]
 source = "vcs"
