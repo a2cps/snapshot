@@ -3,15 +3,15 @@ from typing import Literal
 
 import click
 
-from snapshot.flows import main
+from snapshot import flows
 
 
 @click.group(context_settings={"help_option_names": ["-h", "--help"]})
-def snapshot() -> None:
+def main() -> None:
     pass
 
 
-@snapshot.command()
+@main.command()
 @click.argument(
     "inroot",
     type=click.Path(
@@ -28,10 +28,71 @@ def snapshot() -> None:
 def stage(
     inroot: Path, outroot: Path, max_subs: float | int = float("inf")
 ) -> None:
-    main.stage(inroot=inroot, outroot=outroot, max_subs=max_subs)
+    flows.stage.main(inroot=inroot, outroot=outroot, max_subs=max_subs)
 
 
-@snapshot.command()
+@main.command()
+@click.argument(
+    "inroot",
+    type=click.Path(
+        exists=True, file_okay=False, resolve_path=True, path_type=Path
+    ),
+)
+@click.argument(
+    "outroot",
+    type=click.Path(
+        exists=False, file_okay=False, resolve_path=True, path_type=Path
+    ),
+)
+def copy_v1_to_dst(inroot: Path, outroot: Path) -> None:
+    flows.copy_v1_to_dst.main(inroot=inroot, outroot=outroot)
+
+
+@main.command()
+@click.option("--n-jobs", type=int, default=1)
+@click.argument(
+    "releasedir",
+    type=click.Path(
+        exists=False, file_okay=False, resolve_path=True, path_type=Path
+    ),
+)
+@click.argument(
+    "store",
+    nargs=-1,
+    type=click.Choice(
+        (
+            "rawdata",
+            "cat12",
+            "fmriprep-anat",
+            "fmriprep-cuff",
+            "fmriprep-rest",
+            "qsiprep",
+            "mriqc",
+            "freesurfer",
+        )
+    ),
+)
+def init_datalad(
+    releasedir: Path,
+    store: tuple[
+        Literal[
+            "rawdata",
+            "cat12",
+            "qsiprep",
+            "mriqc",
+            "fmriprep-anat",
+            "fmriprep-cuff",
+            "fmriprep-rest",
+            "freesurfer",
+        ],
+        ...,
+    ],
+    n_jobs: int = 1,
+) -> None:
+    flows.init_datalad.main(releasedir=releasedir, store=store, n_jobs=n_jobs)
+
+
+@main.command()
 @click.argument(
     "releasedir",
     type=click.Path(
@@ -83,10 +144,10 @@ def add_ria(
     if ria and not ria.startswith("ria+"):
         msg = f"ria must begin with ria+, found {ria}"
         raise ValueError(msg)
-    main.add_ria(releasedir=releasedir, ria=ria, store=store)
+    flows.add_ria.main(releasedir=releasedir, ria=ria, store=store)
 
 
-@snapshot.command()
+@main.command()
 @click.argument(
     "releasedir",
     type=click.Path(
@@ -131,4 +192,6 @@ def archive(
     ],
     n_jobs: int = 1,
 ) -> None:
-    main.archive(releasedir=releasedir, ria=ria, store=store, n_jobs=n_jobs)
+    flows.archive.main(
+        releasedir=releasedir, ria=ria, store=store, n_jobs=n_jobs
+    )
