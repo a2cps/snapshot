@@ -4,7 +4,7 @@ from typing import Literal
 from snapshot.tasks import utils
 
 
-def add_ria(
+def main(
     releasedir: Path,
     store: tuple[
         Literal[

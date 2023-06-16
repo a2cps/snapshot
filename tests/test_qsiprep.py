@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from snapshot.flows import qsiprep
+from snapshot.flows import qsiprep_wf
 
 
 def test_merge_dwiqc(tmp_path: Path):
@@ -21,5 +21,5 @@ def test_merge_dwiqc(tmp_path: Path):
     }
     dwiqc = tmp_path / "dwiqc.json"
     dwiqc.write_text(json.dumps(s0))
-    merged = qsiprep._merge_dwiqc([dwiqc, dwiqc])
+    merged = qsiprep_wf._merge_dwiqc([dwiqc, dwiqc])
     assert merged

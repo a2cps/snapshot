@@ -3,7 +3,13 @@ from typing import Literal
 
 import click
 
-from snapshot import flows
+from snapshot.flows import (
+    add_ria_wf,
+    archive_wf,
+    copy_v1_to_dst_wf,
+    init_datalad_wf,
+    stage_wf,
+)
 
 
 @click.group(context_settings={"help_option_names": ["-h", "--help"]})
@@ -28,7 +34,7 @@ def main() -> None:
 def stage(
     inroot: Path, outroot: Path, max_subs: float | int = float("inf")
 ) -> None:
-    flows.stage.main(inroot=inroot, outroot=outroot, max_subs=max_subs)
+    stage_wf.main(inroot=inroot, outroot=outroot, max_subs=max_subs)
 
 
 @main.command()
@@ -45,7 +51,7 @@ def stage(
     ),
 )
 def copy_v1_to_dst(inroot: Path, outroot: Path) -> None:
-    flows.copy_v1_to_dst.main(inroot=inroot, outroot=outroot)
+    copy_v1_to_dst_wf.main(inroot=inroot, outroot=outroot)
 
 
 @main.command()
@@ -89,7 +95,7 @@ def init_datalad(
     ],
     n_jobs: int = 1,
 ) -> None:
-    flows.init_datalad.main(releasedir=releasedir, store=store, n_jobs=n_jobs)
+    init_datalad_wf.main(inroot=releasedir, store=store, n_jobs=n_jobs)
 
 
 @main.command()
@@ -144,7 +150,7 @@ def add_ria(
     if ria and not ria.startswith("ria+"):
         msg = f"ria must begin with ria+, found {ria}"
         raise ValueError(msg)
-    flows.add_ria.main(releasedir=releasedir, ria=ria, store=store)
+    add_ria_wf.main(releasedir=releasedir, ria=ria, store=store)
 
 
 @main.command()
@@ -192,6 +198,4 @@ def archive(
     ],
     n_jobs: int = 1,
 ) -> None:
-    flows.archive.main(
-        releasedir=releasedir, ria=ria, store=store, n_jobs=n_jobs
-    )
+    archive_wf.main(releasedir=releasedir, ria=ria, store=store, n_jobs=n_jobs)
