@@ -16,7 +16,7 @@ SITE_LONG = {
 JOBS = ["bids", "fmriprep", "cat12", "mriqc", "qsiprep"]
 
 
-def archive(
+def main(
     releasedir: Path,
     store: tuple[
         Literal[

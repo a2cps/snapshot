@@ -2,7 +2,14 @@ import shutil
 import tempfile
 from pathlib import Path
 
-from snapshot.flows import bids, cat12, fmriprep, freesurfer, mriqc, qsiprep
+from snapshot.flows import (
+    bids_wf,
+    cat12_wf,
+    fmriprep_wf,
+    freesurfer_wf,
+    mriqc_wf,
+    qsiprep_wf,
+)
 from snapshot.tasks import utils
 
 SITE_LONG = {
@@ -106,11 +113,11 @@ def main(inroot: Path, outroot: Path, max_subs: float | int = float("inf")):
                 utils._deface_all(subsesdir=subsesdir, tmp_site=tmp_site)
 
             # now aggregate all new participants
-            bids.main(inroot=tmp_site, outdir=outroot / "bids")
-            cat12.main(inroot=tmp_site, outdir=outroot / "cat12")
-            qsiprep.main(inroot=tmp_site, outdir=outroot / "qsiprep")
-            mriqc.main(inroot=tmp_site, outdir=outroot / "mriqc")
-            fmriprep.main(inroot=tmp_site, outdir=outroot / "fmriprep-anat")
-            fmriprep.main(inroot=tmp_site, outdir=outroot / "fmriprep-cuff")
-            fmriprep.main(inroot=tmp_site, outdir=outroot / "fmriprep-rest")
-            freesurfer.main(inroot=tmp_site, outdir=outroot / "freesurfer")
+            bids_wf.main(inroot=tmp_site, outdir=outroot / "bids")
+            cat12_wf.main(inroot=tmp_site, outdir=outroot / "cat12")
+            qsiprep_wf.main(inroot=tmp_site, outdir=outroot / "qsiprep")
+            mriqc_wf.main(inroot=tmp_site, outdir=outroot / "mriqc")
+            fmriprep_wf.main(inroot=tmp_site, outdir=outroot / "fmriprep-anat")
+            fmriprep_wf.main(inroot=tmp_site, outdir=outroot / "fmriprep-cuff")
+            fmriprep_wf.main(inroot=tmp_site, outdir=outroot / "fmriprep-rest")
+            freesurfer_wf.main(inroot=tmp_site, outdir=outroot / "freesurfer")
