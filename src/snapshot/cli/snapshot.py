@@ -30,7 +30,7 @@ def main() -> None:
         exists=False, file_okay=False, resolve_path=True, path_type=Path
     ),
 )
-@click.option("--max-subs", type=int, default=float("inf"))
+@click.option("--max-subs", type=float, default=float("inf"))
 def stage(
     inroot: Path, outroot: Path, max_subs: float | int = float("inf")
 ) -> None:
