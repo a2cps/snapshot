@@ -1,36 +1,13 @@
 import shutil
 from pathlib import Path
-from typing import Literal
 
+from snapshot import models
 from snapshot.tasks import utils
-
-SITE_LONG = {
-    "NS": "NS_northshore",
-    "UI": "UI_uic",
-    "UC": "UC_uchicago",
-    "UM": "UM_umichigan",
-    "SH": "SH_spectrum_health",
-    "WS": "WS_wayne_state",
-}
-
-JOBS = ["bids", "fmriprep", "cat12", "mriqc", "qsiprep"]
 
 
 def main(
     releasedir: Path,
-    store: tuple[
-        Literal[
-            "rawdata",
-            "cat12",
-            "qsiprep",
-            "mriqc",
-            "fmriprep-anat",
-            "fmriprep-cuff",
-            "fmriprep-rest",
-            "freesurfer",
-        ],
-        ...,
-    ],
+    store: tuple[models.store, ...],
     ria: Path,
     n_jobs: int = 1,
 ):

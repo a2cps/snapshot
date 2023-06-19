@@ -1,24 +1,12 @@
 from pathlib import Path
-from typing import Literal
 
+from snapshot import models
 from snapshot.tasks import utils
 
 
 def main(
     inroot: Path,
-    store: tuple[
-        Literal[
-            "rawdata",
-            "cat12",
-            "qsiprep",
-            "mriqc",
-            "fmriprep-anat",
-            "fmriprep-cuff",
-            "fmriprep-rest",
-            "freesurfer",
-        ],
-        ...,
-    ],
+    store: tuple[models.store, ...],
     n_jobs: int = 1,
 ) -> None:
     for s in store:
