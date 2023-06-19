@@ -113,11 +113,22 @@ def main(inroot: Path, outroot: Path, max_subs: float | int = float("inf")):
                 utils._deface_all(subsesdir=subsesdir, tmp_site=tmp_site)
 
             # now aggregate all new participants
-            bids_wf.main(inroot=tmp_site, outdir=outroot / "bids")
-            cat12_wf.main(inroot=tmp_site, outdir=outroot / "cat12")
-            qsiprep_wf.main(inroot=tmp_site, outdir=outroot / "qsiprep")
-            mriqc_wf.main(inroot=tmp_site, outdir=outroot / "mriqc")
-            fmriprep_wf.main(inroot=tmp_site, outdir=outroot / "fmriprep-anat")
-            fmriprep_wf.main(inroot=tmp_site, outdir=outroot / "fmriprep-cuff")
-            fmriprep_wf.main(inroot=tmp_site, outdir=outroot / "fmriprep-rest")
-            freesurfer_wf.main(inroot=tmp_site, outdir=outroot / "freesurfer")
+            # testing for len(subses_tocopy) to handle cases where no participants
+            # were copied into the ouptut directory (e.g., during testing)
+            if len(subses_tocopy):
+                bids_wf.main(inroot=tmp_site, outdir=outroot / "bids")
+                cat12_wf.main(inroot=tmp_site, outdir=outroot / "cat12")
+                qsiprep_wf.main(inroot=tmp_site, outdir=outroot / "qsiprep")
+                mriqc_wf.main(inroot=tmp_site, outdir=outroot / "mriqc")
+                fmriprep_wf.main(
+                    inroot=tmp_site, outdir=outroot / "fmriprep-anat"
+                )
+                fmriprep_wf.main(
+                    inroot=tmp_site, outdir=outroot / "fmriprep-cuff"
+                )
+                fmriprep_wf.main(
+                    inroot=tmp_site, outdir=outroot / "fmriprep-rest"
+                )
+                freesurfer_wf.main(
+                    inroot=tmp_site, outdir=outroot / "freesurfer"
+                )
