@@ -1,8 +1,8 @@
 from pathlib import Path
-from typing import Literal
 
 import click
 
+from snapshot import models
 from snapshot.flows import (
     add_ria_wf,
     archive_wf,
@@ -65,34 +65,11 @@ def copy_v1_to_dst(inroot: Path, outroot: Path) -> None:
 @click.argument(
     "store",
     nargs=-1,
-    type=click.Choice(
-        (
-            "rawdata",
-            "cat12",
-            "fmriprep-anat",
-            "fmriprep-cuff",
-            "fmriprep-rest",
-            "qsiprep",
-            "mriqc",
-            "freesurfer",
-        )
-    ),
+    type=click.Choice(models.STORE_DIR),
 )
 def init_datalad(
     releasedir: Path,
-    store: tuple[
-        Literal[
-            "rawdata",
-            "cat12",
-            "qsiprep",
-            "mriqc",
-            "fmriprep-anat",
-            "fmriprep-cuff",
-            "fmriprep-rest",
-            "freesurfer",
-        ],
-        ...,
-    ],
+    store: tuple[models.store, ...],
     n_jobs: int = 1,
 ) -> None:
     init_datalad_wf.main(inroot=releasedir, store=store, n_jobs=n_jobs)
@@ -111,35 +88,12 @@ def init_datalad(
 @click.argument(
     "store",
     nargs=-1,
-    type=click.Choice(
-        (
-            "rawdata",
-            "cat12",
-            "fmriprep-anat",
-            "fmriprep-cuff",
-            "fmriprep-rest",
-            "qsiprep",
-            "mriqc",
-            "freesurfer",
-        )
-    ),
+    type=click.Choice(models.STORE_DIR),
 )
 def add_ria(
     releasedir: Path,
     ria: str,
-    store: tuple[
-        Literal[
-            "rawdata",
-            "cat12",
-            "qsiprep",
-            "mriqc",
-            "fmriprep-anat",
-            "fmriprep-cuff",
-            "fmriprep-rest",
-            "freesurfer",
-        ],
-        ...,
-    ],
+    store: tuple[models.store, ...],
 ) -> None:
     """
     snapshot add_ria \
@@ -166,36 +120,13 @@ def add_ria(
 @click.argument(
     "store",
     nargs=-1,
-    type=click.Choice(
-        (
-            "rawdata",
-            "cat12",
-            "fmriprep-anat",
-            "fmriprep-cuff",
-            "fmriprep-rest",
-            "qsiprep",
-            "mriqc",
-            "freesurfer",
-        )
-    ),
+    type=click.Choice(models.STORE_DIR),
 )
 @click.option("--n-jobs", type=click.IntRange(min=1, min_open=True), default=1)
 def archive(
     releasedir: Path,
     ria: Path,
-    store: tuple[
-        Literal[
-            "rawdata",
-            "cat12",
-            "qsiprep",
-            "mriqc",
-            "fmriprep-anat",
-            "fmriprep-cuff",
-            "fmriprep-rest",
-            "freesurfer",
-        ],
-        ...,
-    ],
+    store: tuple[models.store, ...],
     n_jobs: int = 1,
 ) -> None:
     archive_wf.main(releasedir=releasedir, ria=ria, store=store, n_jobs=n_jobs)

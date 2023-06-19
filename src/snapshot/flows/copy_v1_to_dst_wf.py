@@ -1,22 +1,13 @@
 import shutil
 from pathlib import Path
 
-from snapshot import datasets
+from snapshot import datasets, models
 from snapshot.tasks import utils
 
 
 def main(inroot: Path, outroot: Path) -> None:
     records = datasets.get_v1_recordids()
-    for job in [
-        "bids",
-        "cat12",
-        "qsiprep",
-        "mriqc",
-        "fmriprep-anat",
-        "fmriprep-cuff",
-        "fmriprep-rest",
-        "freesurfer",
-    ]:
+    for job in models.STORE_DIR:
         injobdir = inroot / job
 
         # get list of subjects that are present in the input
