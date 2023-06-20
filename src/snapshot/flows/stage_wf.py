@@ -7,7 +7,6 @@ from snapshot.flows import (
     cat12_wf,
     fmriprep_wf,
     freesurfer_wf,
-    fslanat_wf,
     mriqc_wf,
     qsiprep_wf,
 )
@@ -22,7 +21,7 @@ SITE_LONG = {
     "WS": "WS_wayne_state",
 }
 
-JOBS = ["bids", "fmriprep", "cat12", "mriqc", "qsiprep", "fslanat"]
+JOBS = ["bids", "fmriprep", "cat12", "mriqc", "qsiprep"]
 
 
 def _test_sub(
@@ -56,10 +55,6 @@ def _test_sub(
         ).exists()
     )
 
-    not_already_processed_fslanat = not (
-        (outroot / "fslanat" / f"sub-{sub}_ses-{ses}.anat").exists()
-    )
-
     all_regular_outputs_not_empty = all(
         (jobdir := (inroot / site_long / j / subsesdir.name)).exists()
         and len(list(jobdir.iterdir()))
@@ -77,7 +72,6 @@ def _test_sub(
         not_already_processed
         and not_already_processed_fs
         and not_already_processed_cat
-        and not_already_processed_fslanat
         and all_regular_outputs_not_empty
         and all_subdirs_not_empty
     )
@@ -148,4 +142,3 @@ def main(inroot: Path, outroot: Path, max_subs: float | int = float("inf")):
                 freesurfer_wf.main(
                     inroot=tmp_site, outdir=outroot / "freesurfer"
                 )
-                fslanat_wf.main(inroot=tmp_site, outdir=outroot / "fslanat")

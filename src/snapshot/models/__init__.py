@@ -9,7 +9,6 @@ STORE_DIR = (
     "fmriprep-cuff",
     "fmriprep-rest",
     "freesurfer",
-    "fslanat",
 )
 
 store = Literal[
@@ -21,5 +20,4 @@ store = Literal[
     "fmriprep-cuff",
     "fmriprep-rest",
     "freesurfer",
-    "fslanat",
 ]
