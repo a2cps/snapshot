@@ -8,33 +8,12 @@ from snapshot.flows import (
     archive_wf,
     copy_v1_to_dst_wf,
     init_datalad_wf,
-    stage_wf,
 )
 
 
 @click.group(context_settings={"help_option_names": ["-h", "--help"]})
 def main() -> None:
     pass
-
-
-@main.command()
-@click.argument(
-    "inroot",
-    type=click.Path(
-        exists=True, file_okay=False, resolve_path=True, path_type=Path
-    ),
-)
-@click.argument(
-    "outroot",
-    type=click.Path(
-        exists=False, file_okay=False, resolve_path=True, path_type=Path
-    ),
-)
-@click.option("--max-subs", type=float, default=float("inf"))
-def stage(
-    inroot: Path, outroot: Path, max_subs: float | int = float("inf")
-) -> None:
-    stage_wf.main(inroot=inroot, outroot=outroot, max_subs=max_subs)
 
 
 @main.command()

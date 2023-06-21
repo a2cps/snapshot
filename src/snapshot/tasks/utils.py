@@ -7,9 +7,7 @@ from pathlib import Path
 import datalad.api as dla
 import ibis
 import nibabel as nb
-import numpy as np
 from ibis import _
-from nilearn import masking
 
 from snapshot import datasets
 
@@ -107,18 +105,6 @@ def _symlink_if_needed(src, dst, *args, **kwargs) -> Path:  # noqa: ARG001
     return dst
 
 
-def _deface(volume: Path, mask: Path, make_mask: bool = False) -> None:  # type: ignore  # noqa: FBT002, FBT001
-    if make_mask:
-        _mask = nb.load(mask)  # type: ignore
-        mask_data = np.asarray(_mask.get_fdata() > 0, dtype=np.uint8)
-        mask: nb.Nifti1Image = nb.Nifti1Image(mask_data, affine=_mask.affine)  # type: ignore
-
-    masked_data = masking.apply_mask(volume, mask)
-    masked: nb.Nifti1Image = masking.unmask(masked_data, mask)  # type: ignore
-    volume.unlink()
-    nb.save(masked, volume)  # type: ignore
-
-
 def _write_participants(records: list[int], outdir: Path) -> None:
     demographics = (
         ibis.read_csv(DEMOGRAPHICS)
@@ -126,21 +112,21 @@ def _write_participants(records: list[int], outdir: Path) -> None:
         .mutate(
             sex=_.sex.cases(
                 ((1, "male"), (2, "female"), (3, "n/a"), (4, "other"))
-            ),
+            ),  # type: ignore
             handedness=_.dom_hand.cases(
                 ((1, "right"), (2, "left"), (3, "ambidextrous")), default="n/a"
-            ),
+            ),  # type: ignore
         )
     )
     (
         ibis.read_csv(ILOG)
         .select("site", "subject_id", "visit", "Magnet Name")
-        .filter(_.visit.contains("V1"))
-        .filter(_.subject_id.isin(records))
+        .filter(_.visit.contains("V1"))  # type: ignore
+        .filter(_.subject_id.isin(records))  # type: ignore
         .relabel({"Magnet Name": "magnet", "subject_id": "sub", "visit": "ses"})
-        .mutate(UM=_.magnet.cases((("1", "2"), ("2", "1")), default=""))
-        .mutate(scanner=_.site + _.UM)
-        .join(demographics, _.sub == demographics.record_id)
+        .mutate(UM=_.magnet.cases((("1", "2"), ("2", "1")), default=""))  # type: ignore
+        .mutate(scanner=_.site + _.UM)  # type: ignore
+        .join(demographics, _.sub == demographics.record_id)  # type: ignore
         .select("sub", "scanner", "sex", "handedness")
         .execute()
     ).to_csv(
@@ -158,12 +144,12 @@ def _update_scans(outdir: Path) -> None:
             ibis.read_csv(scanstsv, header=True)
             .select("filename")
             .mutate(
-                sub=_.filename.re_extract(r"\d{5}", 0).cast("int64"),
-                ses=_.filename.re_extract("V1|V3", 0),
+                sub=_.filename.re_extract(r"\d{5}", 0).cast("int64"),  # type: ignore
+                ses=_.filename.re_extract("V1|V3", 0),  # type: ignore
                 scan=_.filename.re_extract(
                     "fmap|anat|dwi|cuff_run-01|cuff_run-02|rest_run-01|rest_run-02",
                     0,
-                ),
+                ),  # type: ignore
             )
             .mutate(
                 scan=_.scan.cases(
@@ -176,7 +162,7 @@ def _update_scans(outdir: Path) -> None:
                         ("rest_run-02", "REST2"),
                     ),
                     default=None,
-                )
+                )  # type: ignore
             )
             .join(qclog, ("sub", "ses", "scan"), how="left")
             .select("filename", "rating")
@@ -198,10 +184,12 @@ def _write_events(outdir: Path) -> None:
             continue
         else:
             scan = ""
-        pressure.filter(_.record_id == int(_get_sub(nii))).filter(
-            _.visit == _get_ses(nii)
-        ).filter(_.scan == scan).mutate(
-            onset=0, duration=nb.load(nii).shape[-1]
+        pressure.filter(_.record_id == int(_get_sub(nii))).filter(  # type: ignore
+            _.visit == _get_ses(nii)  # type: ignore
+        ).filter(
+            _.scan == scan  # type: ignore
+        ).mutate(
+            onset=0, duration=nb.load(nii).shape[-1]  # type: ignore
         ).select(
             "onset", "duration", "applied_pressure"
         ).execute().to_csv(
@@ -230,109 +218,3 @@ def _prep_staged_dir(outroot: Path) -> None:
         ):
             logging.warning(f"deleting empty directory: {to_del}")
             os.removedirs(to_del)
-
-
-def _deface_all(subsesdir: Path, tmp_site: Path) -> None:
-    sub = _get_sub(subsesdir)
-    ses = _get_ses(subsesdir)
-    subses_fmriprep = tmp_site / "fmriprep" / subsesdir
-    fmriprep_mask = (
-        subses_fmriprep
-        / "anat"
-        / "fmriprep"
-        / f"sub-{sub}"
-        / f"ses-{ses}"
-        / "anat"
-        / f"sub-{sub}_ses-{ses}_desc-brain_mask.nii.gz"
-    )
-    _deface(
-        tmp_site
-        / "bids"
-        / subsesdir
-        / f"sub-{sub}"
-        / f"ses-{ses}"
-        / "anat"
-        / f"sub-{sub}_ses-{ses}_T1w.nii.gz",
-        fmriprep_mask,
-    )
-    for subjob in ["anat", "cuff", "rest"]:
-        # output might not exist
-        for output in (
-            subses_fmriprep / subjob / "fmriprep" / f"sub-{sub}"
-        ).glob("ses*"):
-            _deface(
-                output
-                / "anat"
-                / f"sub-{sub}_ses-{ses}_desc-preproc_T1w.nii.gz",
-                fmriprep_mask,
-            )
-
-            _deface(
-                output
-                / "anat"
-                / f"sub-{sub}_ses-{ses}_space-MNI152NLin2009cAsym_desc-preproc_T1w.nii.gz",
-                output
-                / "anat"
-                / f"sub-{sub}_ses-{ses}_space-MNI152NLin2009cAsym_desc-brain_mask.nii.gz",
-            )
-    # now freesurfer
-    _deface(
-        subses_fmriprep
-        / "anat"
-        / "freesurfer"
-        / f"sub-{sub}"
-        / "mri"
-        / "orig"
-        / "001.mgz",
-        fmriprep_mask,
-    )
-    _deface(
-        subses_fmriprep
-        / "anat"
-        / "freesurfer"
-        / f"sub-{sub}"
-        / "mri"
-        / "rawavg.mgz",
-        fmriprep_mask,
-    )
-    for mgz in FSOUTPUTS:
-        _deface(
-            subses_fmriprep
-            / "anat"
-            / "freesurfer"
-            / f"sub-{sub}"
-            / "mri"
-            / mgz,
-            subses_fmriprep
-            / "anat"
-            / "freesurfer"
-            / f"sub-{sub}"
-            / "mri"
-            / "brainmask.mgz",
-            make_mask=True,
-        )
-    subses_qsiprep = tmp_site / "qsiprep" / subsesdir
-    _deface(
-        subses_qsiprep
-        / "qsiprep"
-        / f"sub-{sub}"
-        / "anat"
-        / f"sub-{sub}_desc-preproc_T1w.nii.gz",
-        subses_qsiprep
-        / "qsiprep"
-        / f"sub-{sub}"
-        / "anat"
-        / f"sub-{sub}_desc-brain_mask.nii.gz",
-    )
-    _deface(
-        subses_qsiprep
-        / "qsiprep"
-        / f"sub-{sub}"
-        / "anat"
-        / f"sub-{sub}_space-MNI152NLin2009cAsym_desc-preproc_T1w.nii.gz",
-        subses_qsiprep
-        / "qsiprep"
-        / f"sub-{sub}"
-        / "anat"
-        / f"sub-{sub}_space-MNI152NLin2009cAsym_desc-brain_mask.nii.gz",
-    )
