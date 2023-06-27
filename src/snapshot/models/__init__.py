@@ -1,7 +1,7 @@
 from typing import Literal
 
 STORE_DIR = (
-    "rawdata",
+    "bids",
     "cat12",
     "qsiprep",
     "mriqc",

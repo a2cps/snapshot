@@ -42,19 +42,6 @@ def update(dataset: Path, n_jobs: int = 1) -> None:
     dla.save(dataset=dataset, jobs=n_jobs)  # type: ignore
 
 
-def add_ria(
-    dataset: Path, alias: str, ria: str, ria_sibling: str = "ria"
-) -> None:
-    # create RIA
-    dla.create_sibling_ria(  # type: ignore
-        url=ria,
-        name=ria_sibling,
-        dataset=dataset,
-        alias=alias,
-        new_store_ok=True,
-    )
-
-
 def archive_to_ria2(
     dataset: Path, archive_dir: Path, ria_sibling: str = "ria", n_jobs: int = 1
 ) -> None:
