@@ -14,7 +14,7 @@ def main(inroot: Path, outroot: Path) -> None:
                 injobdir = inroot / job
                 outjobdir = outroot / job
             case _:
-                injobdir = inroot / "derivatives" / job
+                injobdir = inroot / job
                 outjobdir = outroot / "derivatives" / job
 
         # get list of subjects that are present in the input
