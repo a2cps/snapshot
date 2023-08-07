@@ -3,7 +3,6 @@ from typing import Literal
 STORE_DIR = (
     "bids",
     "cat12",
-    "qsiprep",
     "mriqc",
     "fmriprep-anat",
     "fmriprep-cuff",
@@ -14,7 +13,6 @@ STORE_DIR = (
 store = Literal[
     "rawdata",
     "cat12",
-    "qsiprep",
     "mriqc",
     "fmriprep-anat",
     "fmriprep-cuff",
