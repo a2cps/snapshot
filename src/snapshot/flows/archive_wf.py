@@ -4,6 +4,7 @@ from pathlib import Path
 from snapshot import models
 from snapshot.tasks import utils
 
+
 def main(releasedir: Path, ria: Path, n_jobs: int = 1):
     for s in models.STORE_DIR:
         match s:
