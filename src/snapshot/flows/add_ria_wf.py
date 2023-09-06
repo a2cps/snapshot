@@ -1,4 +1,5 @@
 from pathlib import Path
+
 import datalad.api as dla
 
 from snapshot import models
