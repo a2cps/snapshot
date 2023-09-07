@@ -43,7 +43,7 @@ def main(inroot: Path, outroot: Path) -> None:
             injobdir,
             outjobdir,
             ignore=shutil.ignore_patterns(
-                "*V3*", *[f"*{sub}*" for sub in subs_to_exclude]
+                "*V3*", *(f"*{sub}*" for sub in subs_to_exclude)
             ),
         )
 
