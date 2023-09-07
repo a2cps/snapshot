@@ -4,7 +4,6 @@ from pathlib import Path
 from snapshot import datasets, models
 from snapshot.tasks import utils
 
-# TODO: filter input table
 
 def main(inroot: Path, outroot: Path) -> None:
     records = datasets.get_v1_recordids()
@@ -53,3 +52,4 @@ def main(inroot: Path, outroot: Path) -> None:
     utils._write_participants(records=records, outdir=outroot / "bids")
     utils._update_scans(outdir=outroot / "bids")
     utils._write_events(outdir=outroot / "bids")
+    utils._write_readme(outdir=outroot)

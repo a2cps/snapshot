@@ -1,5 +1,4 @@
 import logging
-import os
 import re
 import shutil
 from pathlib import Path
@@ -25,8 +24,6 @@ QCLOG = Path(
 DEMOGRAPHICS = Path(
     "/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/demographics/demographics-2023-05-19.csv"
 )
-
-FSOUTPUTS = ("orig.mgz", "orig_nu.mgz", "T1.mgz")
 
 
 def init_and_save(dataset: Path, n_jobs: int = 1) -> None:
@@ -110,7 +107,9 @@ def _write_participants(records: list[int], outdir: Path) -> None:
         .select("site", "subject_id", "visit", "Magnet Name")
         .filter(_.visit.contains("V1"))  # type: ignore
         .filter(_.subject_id.isin(records))  # type: ignore
-        .relabel({"Magnet Name": "magnet", "subject_id": "sub", "visit": "ses"})
+        .relabel(
+            {"Magnet Name": "magnet", "subject_id": "sub", "visit": "ses"}
+        )
         .mutate(UM=_.magnet.cases((("1", "2"), ("2", "1")), default=""))  # type: ignore
         .mutate(scanner=_.site + _.UM)  # type: ignore
         .join(demographics, _.sub == demographics.record_id)  # type: ignore
@@ -184,24 +183,5 @@ def _write_events(outdir: Path) -> None:
         )
 
 
-def _prep_staged_dir(outroot: Path) -> None:
-    # delete broken symlinks (e.g., files created by previous run of heudiconv that no longer exist)
-    for target in os.walk(outroot):
-        tar_dir = Path(target[0])
-        for f in target[2]:
-            if not (broken := tar_dir / f).exists():
-                logging.warning(f"deleting broken symlink: {broken}")
-                broken.unlink()
-
-    # delete empty directories
-    for target in os.walk(outroot, topdown=False):
-        if (len(target[1] + target[2]) == 0) and (
-            (to_del := Path(target[0])).name
-            not in [
-                "tmp",
-                "bak",
-                "trash",
-            ]  # these folders from FreeSurfer are generally empty (and should be kept)
-        ):
-            logging.warning(f"deleting empty directory: {to_del}")
-            os.removedirs(to_del)
+def _write_readme(outdir: Path) -> None:
+    shutil.copy2(datasets.get_readme(), outdir / "README")

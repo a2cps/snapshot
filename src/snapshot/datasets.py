@@ -14,3 +14,9 @@ def get_applied_pressures() -> Path:
     with resources.path("snapshot.data", "applied_pressure.csv") as f:
         data_file_path = f
     return data_file_path
+
+
+def get_readme() -> Path:
+    with resources.path("snapshot.data", "README") as f:
+        data_file_path = f
+    return data_file_path
