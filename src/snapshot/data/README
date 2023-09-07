@@ -1,0 +1,187 @@
+# README
+
+A2CPS: the Acute to Chronic Pain Signatures project (<https://a2cps.org>)
+
+This NIH funded initiative is generating data on participants who
+undergo surgery in order to study chronic pain.
+
+This BIDS dataset is an interim product of the A2CPS project, and
+includes pre-surgery magnetic resonance imaging (MRI) data from
+pre-surgery on the subset of individuals designated as "Release 1"
+(597 cases).
+
+## Background and Policies
+
+See <https://confluence.a2cps.org/display/WG/First+Data+Release> for a
+summary of the first release and the procedure for accessing data and
+creating publications based on it.
+
+## DataLad Access
+
+This is a DataLad dataset (id: 220fbe98-2d7c-411d-a419-32213ec8dfef).
+
+### DataLad datasets and how to use them
+
+This repository is a [DataLad](https://www.datalad.org/) dataset. It provides
+fine-grained data access down to the level of individual files, and allows for
+tracking future updates. In order to use this repository for data retrieval,
+[DataLad](https://www.datalad.org/) is required. It is a free and open source
+command line tool, available for all major operating systems, and builds up on
+Git and [git-annex](https://git-annex.branchable.com/) to allow sharing,
+synchronizing, and version controlling collections of large files.
+
+More information on how to install DataLad and [how to install](http://handbook.datalad.org/en/latest/intro/installation.html)
+it can be found in the [DataLad Handbook](https://handbook.datalad.org/en/latest/index.html).
+
+### Get the dataset
+
+A DataLad dataset can be `cloned` by running
+
+```
+datalad clone <url>
+```
+
+Once a dataset is cloned, it is a light-weight directory on your local machine.
+At this point, it contains only small metadata and information on the identity
+of the files in the dataset, but not actual *content* of the (sometimes large)
+data files.
+
+### Retrieve dataset content
+
+After cloning a dataset, you can retrieve file contents by running
+
+```
+datalad get <path/to/directory/or/file>
+```
+
+This command will trigger a download of the files, directories, or subdatasets
+you have specified.
+
+DataLad datasets can contain other datasets, so called *subdatasets*.  If you
+clone the top-level dataset, subdatasets do not yet contain metadata and
+information on the identity of files, but appear to be empty directories. In
+order to retrieve file availability metadata in subdatasets, run
+
+```
+datalad get -n <path/to/subdataset>
+```
+
+Afterwards, you can browse the retrieved metadata to find out about subdataset
+contents, and retrieve individual files with `datalad get`.  If you use
+`datalad get <path/to/subdataset>`, all contents of the subdataset will be
+downloaded at once.
+
+### Stay up-to-date
+
+DataLad datasets can be updated. The command `datalad update` will *fetch*
+updates and store them on a different branch (by default
+`remotes/origin/master`). Running
+
+```
+datalad update --merge
+```
+
+will *pull* available updates and integrate them in one go.
+
+### Find out what has been done
+
+DataLad datasets contain their history in the ``git log``.  By running ``git
+log`` (or a tool that displays Git history) in the dataset or on specific
+files, you can find out what has been done to the dataset or to individual
+files by whom, and when.
+
+## Contact information
+
+For additional information, please contact
+
+- [ ] DIRC imaging group, <a2cps-dirc-report-imaging@a2cps.org>
+
+## History
+
+Data collection began in late 2020, and continued during the COVID-19
+pandemic, though with fluctuations due to temporary restrictions at
+imaging sites. The data included in Release 1 are from subjects with
+surgeries completed by February 2023.
+
+## Overview
+
+The various data collection components of A2CPS were intended to
+capture possible features that could predict the development of
+chronic pain. In the case of imaging, there are structural MRI,
+diffusion MRI, and functional MRI scans; for the last, two resting
+state scans bracket a pair of scans during which pain was administered
+via an inflated leg cuff.
+
+### BIDS Information
+
+Summary:             Available Tasks:     Available Modalities:
+9039 Files, 335.1GB  cuff                 MRI
+361 - Subject        rest
+1 - Session
+
+### Subjects
+
+Subjects were patients undergoing one of two surgery types: knee (TKA,
+Total Knee Arthroplasty) or thoracic. The numeric part of an A2CPS ID records
+MCC (first digit) and surgery type (second digit):
+
+- [ ] 10000-14999: MCC1 TKA
+- [ ] 15000-19999: MCC1 Thoracic
+- [ ] 20000-24999: MCC2 Thoracic
+- [ ] 25000-29999: MCC2 TKA
+
+### Task organization
+
+The two tasks used a subject-specific cuff pressure (CUFF1) and a
+standard pressure (CUFF2). In some cases, administration of cuff
+pressure was contraindicated entirely, or the standard pressure was
+too high to be tolerated, so that one or both of the Cuff scans were
+skipped. In cases where both were skipped, the imaging protocol
+allowed REST2 to be skipped as well, though it was occasionally
+collected (especially prior to this being formalized in the
+protocol).
+
+Tasks were not counter-balanced. Counterbalancing would be desirable
+in some respects, but posed a standardization issue across sites and
+would have added a potential failure point. In addition, which is more
+painful may vary across patients in ways hard to predict. We thus kept
+the runs in the same order, with pressure calibrated to pain-40 (P40)
+first and a standard intensity (115 mm Hg) second.
+
+Recording of patient pain ratings was interspersed between the fMRIs.
+
+### Additional data acquired
+
+The project includes collection of blood samples (for proteomics,
+lipidomics, metabolomics, exRNA, and gene variant measures),
+psychosocial questionnaires, quantitative sensory testing (QST) and
+functional testing measures, and medical record (EHR) data.
+
+### Experimental location
+
+MRIs were collected at six imaging sites organized in two consortia
+("multi-site clinical centers", or MCCs):
+
+MCC1: Chicago, Illinois
+
+- [ ] UI: University of Illinois Chicago
+- [ ] UC: University of Chicago
+- [ ] NS: NorthShore University HealthSystem
+
+MCC2: Michigan
+
+- [ ] UM: University of Michigan (2 scanners)
+- [ ] WS: Wayne State University
+- [ ] SH: Corewell Health (formerly Spectrum Health)/Michigan State University Grand Rapids
+
+### Site specific variations in protocols
+
+In general, the A2CPS project used the protocol developed by the ABCD
+study, and in some cases used ABCD MRI sequences directly. However, on
+older scanners some adjustments were required. Please see the Release
+Notes for details.
+
+### Further Details
+
+Further details on the procedures for cuff pain administration, recruitment criteria, and
+other points can be found in the Method of Procedures manual (MOP).
