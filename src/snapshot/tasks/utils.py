@@ -59,11 +59,11 @@ def _get_entity(f: Path, pattern: str) -> str:
 
 
 def _get_sub(f: Path) -> str:
-    return _get_entity(f=f, pattern=r"\d{5}")
+    return _get_entity(f=f, pattern=r"(?<=sub-)\d{5}")
 
 
 def _get_ses(f: Path) -> str:
-    return _get_entity(f=f, pattern=r"V[13]")
+    return _get_entity(f=f, pattern=r"(?<=ses-)V[13]")
 
 
 def _copy_if_needed(src, dst, *args, **kwargs) -> Path:  # noqa: ARG001
