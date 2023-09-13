@@ -48,8 +48,7 @@ def main(inroot: Path, outroot: Path) -> None:
         )
 
     # handle top-level stuff
-    records = datasets.get_v1_recordids()
     utils._write_participants(records=records, outdir=outroot / "bids")
     utils._update_scans(outdir=outroot / "bids")
     utils._write_events(outdir=outroot / "bids")
-    utils._write_readme(outdir=outroot)
+    utils._write_readme(outdir=outroot / "bids")
