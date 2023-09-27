@@ -104,3 +104,23 @@ def get_signature_rawdata_json() -> Path:
     with resources.path("snapshot.data", "signature-rawdata.json") as f:
         data_file_path = f
     return data_file_path
+
+
+def get_ilog() -> Path:
+    with resources.path(
+        "snapshot.data", "imaging-log-20230927T010002Z.csv"
+    ) as f:
+        data_file_path = f
+    return data_file_path
+
+
+def get_qclog() -> Path:
+    with resources.path("snapshot.data", "qc-log-20230927T010002Z.csv") as f:
+        data_file_path = f
+    return data_file_path
+
+
+def get_demographics() -> Path:
+    with resources.path("snapshot.data", "demographics-2023-05-19.csv") as f:
+        data_file_path = f
+    return data_file_path
