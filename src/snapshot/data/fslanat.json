@@ -1,0 +1,105 @@
+{
+    "Brain-Stem /4th Ventricle": {
+        "LongName": "Brain-Stem /4th Ventricle",
+        "Description": "Voxels in Brain-Stem /4th Ventricle",
+        "TermURL": "https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FIRST/UserGuide#Labels"
+    },
+    "Left-Accumbens-area": {
+        "LongName": "Left-Accumbens-area",
+        "Description": "Voxels in Left-Accumbens-area",
+        "TermURL": "https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FIRST/UserGuide#Labels"
+    },
+    "Left-Amygdala": {
+        "LongName": "Left-Amygdala",
+        "Description": "Voxels in Left-Amygdala",
+        "TermURL": "https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FIRST/UserGuide#Labels"
+    },
+    "Left-Caudate": {
+        "LongName": "Left-Caudate",
+        "Description": "Voxels in Left-Caudate",
+        "TermURL": "https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FIRST/UserGuide#Labels"
+    },
+    "Left-Hippocampus": {
+        "LongName": "Left-Hippocampus",
+        "Description": "Voxels in Left-Hippocampus",
+        "TermURL": "https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FIRST/UserGuide#Labels"
+    },
+    "Left-Pallidum": {
+        "LongName": "Left-Pallidum",
+        "Description": "Voxels in Left-Pallidum",
+        "TermURL": "https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FIRST/UserGuide#Labels"
+    },
+    "Left-Putamen": {
+        "LongName": "Left-Putamen",
+        "Description": "Voxels in Left-Putamen",
+        "TermURL": "https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FIRST/UserGuide#Labels"
+    },
+    "Left-Thalamus-Proper": {
+        "LongName": "Left-Thalamus-Proper",
+        "Description": "Voxels in Left-Thalamus-Proper",
+        "TermURL": "https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FIRST/UserGuide#Labels"
+    },
+    "Right-Accumbens-area": {
+        "LongName": "Right-Accumbens-area",
+        "Description": "Voxels in Right-Accumbens-area",
+        "TermURL": "https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FIRST/UserGuide#Labels"
+    },
+    "Right-Amygdala": {
+        "LongName": "Right-Amygdala",
+        "Description": "Voxels in Right-Amygdala",
+        "TermURL": "https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FIRST/UserGuide#Labels"
+    },
+    "Right-Caudate": {
+        "LongName": "Right-Caudate",
+        "Description": "Voxels in Right-Caudate",
+        "TermURL": "https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FIRST/UserGuide#Labels"
+    },
+    "Right-Hippocampus": {
+        "LongName": "Right-Hippocampus",
+        "Description": "Voxels in Right-Hippocampus",
+        "TermURL": "https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FIRST/UserGuide#Labels"
+    },
+    "Right-Pallidum": {
+        "LongName": "Right-Pallidum",
+        "Description": "Voxels in Right-Pallidum",
+        "TermURL": "https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FIRST/UserGuide#Labels"
+    },
+    "Right-Putamen": {
+        "LongName": "Right-Putamen",
+        "Description": "Voxels in Right-Putamen",
+        "TermURL": "https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FIRST/UserGuide#Labels"
+    },
+    "Right-Thalamus-Proper": {
+        "LongName": "Right-Thalamus-Proper",
+        "Description": "Voxels in Right-Thalamus-Proper",
+        "TermURL": "https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FIRST/UserGuide#Labels"
+    },
+    "t1_to_mni_scaling": {
+        "LongName": "t1_to_mni_scaling",
+        "Description": "Scaling factor from T1 to MNI (using skull-constrained linear registration)"
+    },
+    "t1_space_orig_volume": {
+        "LongName": "t1_space_orig_volume",
+        "Description": "Brain volume in native/original space",
+        "Units": "mm^3"
+    },
+    "t1_space_mni_volume": {
+        "LongName": "t1_space_mni_volume",
+        "Description": "Brain volume normalised to MNI",
+        "Units": "mm^3"
+    },
+    "sub": {
+        "LongName": "Subject",
+        "Description": "Study Participant, BIDS Subject ID",
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/appendices/entities.html#sub"
+    },
+    "ses": {
+        "LongName": "Session",
+        "Description": "Visit, BIDS Session ID",
+        "Levels": {
+            "V1": "Baseline Visit",
+            "V3": "3 Month Followup Viist"
+        },
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/appendices/entities.html#ses"
+    }
+}

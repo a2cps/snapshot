@@ -1,0 +1,73 @@
+{
+    "tr": {
+        "LongName": "Repetition Time",
+        "Description": "Index for time",
+        "Units": "seconds",
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/glossary.html#repetitiontime-metadata"
+    },
+    "component": {
+        "LongName": "Anatomical CompCor Component",
+        "Description": "Index for PCA Component"
+    },
+    "value": {
+        "LongName": "Component Value",
+        "Description": "Value of component at given TR"
+    },
+    "n_samples": {
+        "LongName": "Number of Samples",
+        "Description": "Number of Voxels within Mask. See attribute n_samples at https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA"
+    },
+    "explained_variance_ratio": {
+        "LongName": "Explained Variance Ratio",
+        "Description": "Percentage of variance explained by each of the selected components. See attribute explained_variance_ratio_ at https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html#sklearn.decomposition.PCA"
+    },
+    "label": {
+        "LongName": "Label",
+        "Description": "Mask Label",
+        "Levels": {
+            "CSF": "Cerebrospinal Fluid",
+            "WM": "White Matter",
+            "WM+CSF": "Union of White Matter and Cerebrospinal Fluid"
+        }
+    },
+    "src": {
+        "LongName": "Source",
+        "Description": "Name of image from which components were derived (fMRIPrep)."
+    },
+    "sub": {
+        "LongName": "Subject",
+        "Description": "Study Participant, BIDS Subject ID",
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/appendices/entities.html#sub"
+    },
+    "ses": {
+        "LongName": "Session",
+        "Description": "Visit, BIDS Session ID",
+        "Levels": {
+            "V1": "Baseline Visit",
+            "V3": "3 Month Followup Viist"
+        },
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/appendices/entities.html#ses"
+    },
+    "task": {
+        "LongName": "Task",
+        "Description": "Functional MRI Task, BIDS Task ID",
+        "Levels": {
+            "cuff": "cuff pressure task",
+            "rest": "resting state scan"
+        },
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/appendices/entities.html#task"
+    },
+    "run": {
+        "LongName": "Run",
+        "Description": "Task Run Number, BIDS Run ID",
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/appendices/entities.html#run"
+    },
+    "space": {
+        "LongName": "Space",
+        "Description": "Space of src image, BIDS Space ID",
+        "Levels": {
+            "MNI152NLin2009cAsym": "https://www.templateflow.org"
+        },
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/appendices/entities.html#space"
+    }
+}

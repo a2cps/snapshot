@@ -52,3 +52,7 @@ def main(inroot: Path, outroot: Path) -> None:
     utils._update_scans(outdir=outroot / "bids")
     utils._write_events(outdir=outroot / "bids")
     utils._write_readme(outdir=outroot / "bids")
+    utils.write_freesurfer_tables(outroot=outroot, inroot=inroot, records=records)
+    utils.write_fslanat_tables(outroot=outroot, inroot=inroot, records=records)
+    utils.write_fcn_jsons(outroot=outroot)
+    utils.write_signatures_jsons(outroot=outroot)

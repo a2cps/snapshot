@@ -1,0 +1,144 @@
+{
+    "BrainSegVol": {
+        "LongName": "Brain Segmentation Volume",
+        "Description": "Sum of the volume of the structures identified in the aseg.mgz volume",
+        "TermURL": "https://www.freesurfer.net/fswiki/MorphometryStats",
+        "Units": "mm^3"
+    },
+    "BrainSegVolNotVent": {
+        "LongName": "Brain Segmentation Volume Without Ventricles",
+        "Description": "Sum of the volume of the structures identified in the aseg.mgz volume",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/MorphometryStats",
+        "Units": "mm^3"
+    },
+    "BrainSegVolNotVentSurf": {
+        "LongName": "Brain Segmentation Volume Without Ventricles from Surf",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/MorphometryStats",
+        "Units": "mm^3"
+    },
+    "VentricleChoroidVol": {
+        "LongName": "VentricleChoroidVol",
+        "Description": "Volume of ventricles and choroid plexus",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/mri_segstats"
+    },
+    "lhCortexVol": {
+        "LongName": "lhCortexVol",
+        "Description": "Left hemisphere cortical gray matter volume",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/MorphometryStats",
+        "Units": "mm^3"
+    },
+    "rhCortexVol": {
+        "LongName": "rhCortexVol",
+        "Description": "Right hemisphere cortical gray matter volume",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/MorphometryStats",
+        "Units": "mm^3"
+    },
+    "CortexVol": {
+        "LongName": "CortexVol",
+        "Description": "Total cortical gray matter volume",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/MorphometryStats",
+        "Units": "mm^3"
+    },
+    "lhCerebralWhiteMatterVol": {
+        "LongName": "lhCerebralWhiteMatterVol",
+        "Description": "Left hemisphere cerebral white matter volume",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/MorphometryStats",
+        "Units": "mm^3"
+    },
+    "rhCerebralWhiteMatterVol": {
+        "LongName": "rhCerebralWhiteMatterVol",
+        "Description": "Right hemisphere cerebral white matter volume",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/MorphometryStats",
+        "Units": "mm^3"
+    },
+    "CerebralWhiteMatterVol": {
+        "LongName": "rhCerebralWhiteMatterVol",
+        "Description": "Total cerebral white matter volume",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/MorphometryStats",
+        "Units": "mm^3"
+    },
+    "SubCortGrayVol": {
+        "LongName": "SubCortGrayVol",
+        "Description": "Subcortical gray matter volume",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/MorphometryStats",
+        "Units": "mm^3"
+    },
+    "TotalGrayVol": {
+        "LongName": "TotalGrayVol",
+        "Description": "Total gray matter volume",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/MorphometryStats",
+        "Units": "mm^3"
+    },
+    "SupraTentorialVol": {
+        "LongName": "SupraTentorialVol",
+        "Description": "Supratentorial volume",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/MorphometryStats",
+        "Units": "mm^3"
+    },
+    "SupraTentorialVolNotVent": {
+        "LongName": "SupraTentorialVol",
+        "Description": "Supratentorial volume, without ventricles, CSF, and choroid plexus",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/MorphometryStats",
+        "Units": "mm^3"
+    },
+    "SupraTentorialVolNotVentVox": {
+        "Description": "Supratentorial volume voxel count",
+        "Units": "mm^3"
+    },
+    "MaskVol": {
+        "LongName": "MaskVol",
+        "Description": "Mask Volume",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/MorphometryStats",
+        "Units": "mm^3"
+    },
+    "BrainSegVol-to-eTIV": {
+        "LongName": "BrainSegVol-to-eTIV",
+        "Description": "Ratio of BrainSegVol to eTIV"
+    },
+    "Mask-to-eTIV": {
+        "LongName": "MaskVol-to-eTIV",
+        "Description": "Ratio of MaskVol to eTIV"
+    },
+    "lhSurfaceHoles": {
+        "LongName": "lhSurfaceHoles",
+        "Description": "Number of defect holes in lh surfaces prior to fixing"
+    },
+    "rhSurfaceHole": {
+        "LongName": "rhSurfaceHoles",
+        "Description": "Number of defect holes in rh surfaces prior to fixing"
+    },
+    "eTIV": {
+        "LongName": "eTIV",
+        "Description": "Estimated Total Intracranial Volume",
+        "TermURL": "https://www.freesurfer.net/fswiki/eTIV",
+        "Units": "mm^3"
+    },
+    "sub": {
+        "LongName": "Subject",
+        "Description": "Study Participant, BIDS Subject ID",
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/appendices/entities.html#sub"
+    },
+    "ses": {
+        "LongName": "Session",
+        "Description": "Visit, BIDS Session ID",
+        "Levels": {
+            "V1": "Baseline Visit",
+            "V3": "3 Month Followup Viist"
+        },
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/appendices/entities.html#ses"
+    },
+    "NumVert": {
+        "LongName": "NumVert",
+        "Description": "Number of Vertices"
+    },
+    "WhiteSurfArea": {
+        "LongName": "WhiteSurfArea",
+        "Description": "White Surface Total Area",
+        "Units": "mm^2"
+    },
+    "MeanThickness": {
+        "LongName": "MeanThickness",
+        "Description": "Mean Thickness",
+        "Units": "mm"
+    }
+}
