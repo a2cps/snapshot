@@ -1,0 +1,83 @@
+{
+    "Index": {
+        "LongName": "Index",
+        "Description": "Index",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/FsTutorial/AnatomicalROI"
+    },
+    "SegId": {
+        "LongName": "SegId",
+        "Description": "Segmentation ID",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/FsTutorial/AnatomicalROI"
+    },
+    "NVoxels": {
+        "LongName": "NVoxels",
+        "Description": "Number of Voxels",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/FsTutorial/AnatomicalROI"
+    },
+    "Volume_mm3": {
+        "LongName": "Volume_mm3",
+        "Description": "Volume",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/FsTutorial/AnatomicalROI",
+        "Units": "mm^3"
+    },
+    "StructName": {
+        "LongName": "StructName",
+        "Description": "Structure Name",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/FsTutorial/AnatomicalROI"
+    },
+    "normMean": {
+        "LongName": "normMean",
+        "Description": "Intensity normMean",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/FsTutorial/AnatomicalROI"
+    },
+    "normStdDev": {
+        "LongName": "normStdDev",
+        "Description": "Intensity normStdDev",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/FsTutorial/AnatomicalROI"
+    },
+    "normMin": {
+        "LongName": "normMin",
+        "Description": "Intensity normMin",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/FsTutorial/AnatomicalROI"
+    },
+    "normMax": {
+        "LongName": "normMax",
+        "Description": "Intensity normMax",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/FsTutorial/AnatomicalROI"
+    },
+    "normRange": {
+        "LongName": "normMnormRangeax",
+        "Description": "Intensity normRange",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/FsTutorial/AnatomicalROI"
+    },
+    "sub": {
+        "LongName": "Subject",
+        "Description": "Study Participant, BIDS Subject ID",
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/appendices/entities.html#sub"
+    },
+    "ses": {
+        "LongName": "Session",
+        "Description": "Visit, BIDS Session ID",
+        "Levels": {
+            "V1": "Baseline Visit",
+            "V3": "3 Month Followup Viist"
+        },
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/appendices/entities.html#ses"
+    },
+    "hemisphere": {
+        "LongName": "Hemisphere",
+        "Description": "Cortical Hemisphere",
+        "Levels": {
+            "lh": "Left Hemisphere",
+            "rh": "Right Hemisphere"
+        }
+    },
+    "seg": {
+        "LongName": "Anatomical Segmentation",
+        "Description": "FreeSurfer Segmentation",
+        "Levels": {
+            "aseg": "aseg",
+            "wmparc": "wmparc"
+        }
+    }
+}

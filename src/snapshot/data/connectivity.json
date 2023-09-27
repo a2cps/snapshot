@@ -1,0 +1,74 @@
+{
+    "source": {
+        "LongName": "Source Region",
+        "Description": "Index of Region in Atlas"
+    },
+    "target": {
+        "LongName": "Target Region",
+        "Description": "Index of Region in Atlas"
+    },
+    "connectivity": {
+        "LongName": "Connectivity",
+        "Description": "Connectivity between source and target"
+    },
+    "run": {
+        "LongName": "Run",
+        "Description": "Task Run Number, BIDS Run ID",
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/appendices/entities.html#run"
+    },
+    "space": {
+        "LongName": "Space",
+        "Description": "Space of src image, BIDS Space ID",
+        "Levels": {
+            "MNI152NLin2009cAsym": "https://www.templateflow.org"
+        },
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/appendices/entities.html#space"
+    },
+    "atlas": {
+        "LongName": "Atlas",
+        "Description": "Name of Atlas Defining Regions",
+        "Levels": {
+            "schaefer_nrois-400_resolution-2_networks-7": "Schaefer et al. Atlas. See https://nilearn.github.io/stable/modules/generated/nilearn.datasets.fetch_atlas_schaefer_2018.html#nilearn.datasets.fetch_atlas_schaefer_2018",
+            "schaefer_nrois-400_resolution-2_networks-17": "Schaefer et al. Atlas. See https://nilearn.github.io/stable/modules/generated/nilearn.datasets.fetch_atlas_schaefer_2018.html#nilearn.datasets.fetch_atlas_schaefer_2018",
+            "fan_resolution-2": "Brainnetome Atlas. https://atlas.brainnetome.org",
+            "gordon_space-mni_resolution-2": "https://sites.wustl.edu/petersenschlaggarlab/files/2018/06/Parcels-19cwpgu.zip",
+            "difumo_dimension-64_resolution-2mm": "DiFuMo Atlas with Dimension 64. See https://nilearn.github.io/stable/modules/generated/nilearn.datasets.fetch_atlas_difumo.html#nilearn.datasets.fetch_atlas_difumo",
+            "difumo_dimension-1024_resolution-2mm": "DiFuMo Atlas with Dimension 1024. See https://nilearn.github.io/stable/modules/generated/nilearn.datasets.fetch_atlas_difumo.html#nilearn.datasets.fetch_atlas_difumo",
+            "power": "Modified Power et al. Atlas. See https://github.com/a2cps/functional_connectivity/blob/3aa91a6c10d14dcc7d1fe9890e7a6db95d2aad8b/tools/download_data.py#L24-L30",
+            "dmn": "Default Mode Network. Coordinates defined by Baliki et al. https://github.com/a2cps/functional_connectivity/blob/3aa91a6c10d14dcc7d1fe9890e7a6db95d2aad8b/src/functional_connectivity/data/baliki.csv"
+        },
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/appendices/entities.html#atlas"
+    },
+    "estimator": {
+        "LongName": "Covariance Estimator",
+        "Description": "Method for estimating connectivity",
+        "Levels": {
+            "empirical": "https://scikit-learn.org/stable/modules/generated/sklearn.covariance.EmpiricalCovariance.html#sklearn.covariance.EmpiricalCovariance",
+            "leodit_wolf": "https://scikit-learn.org/stable/modules/generated/sklearn.covariance.LedoitWolf.html#sklearn.covariance.LedoitWolf",
+            "minimum_covariance_determinant": "https://scikit-learn.org/stable/modules/generated/sklearn.covariance.MinCovDet.html#sklearn.covariance.MinCovDet"
+        }
+    },
+    "sub": {
+        "LongName": "Subject",
+        "Description": "Study Participant, BIDS Subject ID",
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/appendices/entities.html#sub"
+    },
+    "ses": {
+        "LongName": "Session",
+        "Description": "Visit, BIDS Session ID",
+        "Levels": {
+            "V1": "Baseline Visit",
+            "V3": "3 Month Followup Viist"
+        },
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/appendices/entities.html#ses"
+    },
+    "task": {
+        "LongName": "Task",
+        "Description": "Functional MRI Task, BIDS Task ID",
+        "Levels": {
+            "cuff": "cuff pressure task",
+            "rest": "resting state scan"
+        },
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/appendices/entities.html#task"
+    }
+}

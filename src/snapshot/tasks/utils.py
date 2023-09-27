@@ -6,6 +6,7 @@ from pathlib import Path
 import datalad.api as dla
 import ibis
 import nibabel as nb
+import pandas as pd
 from ibis import _
 
 from snapshot import datasets
@@ -185,3 +186,72 @@ def _write_events(outdir: Path) -> None:
 
 def _write_readme(outdir: Path) -> None:
     shutil.copy2(datasets.get_readme(), outdir / "README")
+
+
+def write_freesurfer_tables(
+    outroot: Path, inroot: Path, records: list[int]
+) -> None:
+    for tbl in ["aparc", "aseg", "headers"]:
+        df: pd.DataFrame = (
+            (ibis.read_csv(inroot / "freesurfer" / f"{tbl}.tsv"))
+            .filter(_.ses.contains("V1"))  # type: ignore
+            .filter(_.subject_id.isin(records))  # type: ignore
+            .execute()
+        )
+
+        df.to_csv(outroot / f"{tbl}.tsv", index=False, sep="\t")
+
+    shutil.copy2(datasets.get_aparc_json(), outroot / "aparc.json")
+    shutil.copy2(datasets.get_aseg_json(), outroot / "aseg.json")
+    shutil.copy2(datasets.get_headers_json(), outroot / "headers.json")
+
+
+def write_fslanat_tables(
+    inroot: Path, outroot: Path, records: list[int]
+) -> None:
+    df: pd.DataFrame = (
+        (ibis.read_csv(inroot / "freesurfer" / "fslanat.tsv"))
+        .filter(_.ses.contains("V1"))  # type: ignore
+        .filter(_.subject_id.isin(records))  # type: ignore
+        .execute()
+    )
+
+    df.to_csv(outroot / "fslanat.tsv", index=False, sep="\t")
+    shutil.copy2(datasets.get_fslanat_json(), outroot / "fslanat.json")
+
+
+def write_fcn_jsons(outroot: Path) -> None:
+    shutil.copy2(
+        datasets.get_connectivity_acompcor_json(), outroot / "acompcor.json"
+    )
+    shutil.copy2(
+        datasets.get_connectivity_confounds_json(),
+        outroot / "connectivity-confounds.json",
+    )
+    shutil.copy2(
+        datasets.get_connectivity_json(), outroot / "connectivity.json"
+    )
+
+
+def write_signatures_jsons(outroot: Path) -> None:
+    shutil.copy2(
+        datasets.get_signature_by_part_json(),
+        outroot / "signature-by-part.json",
+    )
+    shutil.copy2(
+        datasets.get_signature_by_run_json(), outroot / "signature-by-run.json"
+    )
+    shutil.copy2(
+        datasets.get_signature_by_tr_json(), outroot / "signature-by-tr.json"
+    )
+    shutil.copy2(
+        datasets.get_signature_confounds_json(),
+        outroot / "signature-confounds.json",
+    )
+    shutil.copy2(
+        datasets.get_signature_labels_json(), outroot / "signature-labels.json"
+    )
+    shutil.copy2(
+        datasets.get_signature_rawdata_json(),
+        outroot / "signature-rawdata.json",
+    )

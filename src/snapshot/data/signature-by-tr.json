@@ -1,0 +1,52 @@
+{
+    "t": {
+        "LongName": "Repetition Time",
+        "Description": "Index for time",
+        "Units": "seconds",
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/glossary.html#repetitiontime-metadata"
+    },
+    "signature": {
+        "LongName": "Signature",
+        "Description": "Index for of Signature. See signature_labels.json"
+    },
+    "correlation": {
+        "LongName": "Correlation",
+        "Description": "Signature as Estimated by Correlation"
+    },
+    "dot": {
+        "LongName": "Dot Product",
+        "Description": "Signature as Estimated by Dot Product"
+    },
+    "cosine": {
+        "LongName": "Cosine Similarity",
+        "Description": "Signature as Estimated by Cosine Similarity"
+    },
+    "sub": {
+        "LongName": "Subject",
+        "Description": "Study Participant, BIDS Subject ID",
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/appendices/entities.html#sub"
+    },
+    "ses": {
+        "LongName": "Session",
+        "Description": "Visit, BIDS Session ID",
+        "Levels": {
+            "V1": "Baseline Visit",
+            "V3": "3 Month Followup Viist"
+        },
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/appendices/entities.html#ses"
+    },
+    "task": {
+        "LongName": "Task",
+        "Description": "Functional MRI Task, BIDS Task ID",
+        "Levels": {
+            "cuff": "cuff pressure task",
+            "rest": "resting state scan"
+        },
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/appendices/entities.html#task"
+    },
+    "run": {
+        "LongName": "Run",
+        "Description": "Task Run Number, BIDS Run ID",
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/appendices/entities.html#run"
+    }
+}

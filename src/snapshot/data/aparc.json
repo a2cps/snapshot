@@ -1,0 +1,92 @@
+{
+    "StructName": {
+        "LongName": "StructName",
+        "Description": "Structure Name",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/FsTutorial/AnatomicalROI"
+    },
+    "NumVert": {
+        "LongName": "NumVert",
+        "Description": "Number of Vertices",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/FsTutorial/AnatomicalROI"
+    },
+    "SurfArea": {
+        "LongName": "SurfArea",
+        "Description": "Surface Area",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/FsTutorial/AnatomicalROI",
+        "Units": "mm^2"
+    },
+    "GrayVol": {
+        "LongName": "GrayVol",
+        "Description": "Gray Matter Volume",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/FsTutorial/AnatomicalROI",
+        "Units": "mm^3"
+    },
+    "ThickAvg": {
+        "LongName": "ThickAvg",
+        "Description": "Average Thickness",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/FsTutorial/AnatomicalROI",
+        "Units": "mm"
+    },
+    "ThickStd": {
+        "LongName": "ThickStd",
+        "Description": "Thickness StdDev",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/FsTutorial/AnatomicalROI",
+        "Units": "mm"
+    },
+    "MeanCurv": {
+        "LongName": "MeanCurv",
+        "Description": "Integrated Rectified Mean Curvature",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/FsTutorial/AnatomicalROI",
+        "Units": "mm^-1"
+    },
+    "GausCurv": {
+        "LongName": "GausCurv",
+        "Description": "Integrated Rectified Gaussian Curvature",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/FsTutorial/AnatomicalROI",
+        "Units": "mm^-2"
+    },
+    "FoldInd": {
+        "LongName": "FoldInd",
+        "Description": "Folding Index",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/FsTutorial/AnatomicalROI"
+    },
+    "CurvInd": {
+        "LongName": "CurvInd",
+        "Description": "Intrinsic Curvature Index",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/FsTutorial/AnatomicalROI"
+    },
+    "sub": {
+        "LongName": "Subject",
+        "Description": "Study Participant, BIDS Subject ID",
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/appendices/entities.html#sub"
+    },
+    "ses": {
+        "LongName": "Session",
+        "Description": "Visit, BIDS Session ID",
+        "Levels": {
+            "V1": "Baseline Visit",
+            "V3": "3 Month Followup Viist"
+        },
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/appendices/entities.html#ses"
+    },
+    "hemisphere": {
+        "LongName": "Hemisphere",
+        "Description": "Cortical Hemisphere",
+        "Levels": {
+            "lh": "Left Hemisphere",
+            "rh": "Right Hemisphere"
+        }
+    },
+    "parc": {
+        "LongName": "Parcellation",
+        "Description": "FreeSurfer Parcellation",
+        "Levels": {
+            "aparc": "aparc",
+            "aparc.pial": "aparc pial",
+            "BA_exvivo": "BA exvivo",
+            "BA_exvivo.thresh": "BA exvivo threshold",
+            "aparc.DKTatlas": "aparc DKTatlas",
+            "aparc.a2009s": "aparc a2009s"
+        }
+    }
+}
