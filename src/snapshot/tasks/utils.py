@@ -16,16 +16,6 @@ GITATTRIBUTES = """
 * annex.largefiles=(((mimeencoding=binary)and(largerthan=0))or((include=*gii)or(include=*svg)or(include=*html)))
 """
 
-ILOG = Path(
-    "/corral-secure/projects/A2CPS/community/reports/imaging/imaging-log-latest.csv"
-)
-QCLOG = Path(
-    "/corral-secure/projects/A2CPS/community/reports/imaging/qc-log-latest.csv"
-)
-DEMOGRAPHICS = Path(
-    "/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery/demographics/demographics-2023-05-19.csv"
-)
-
 
 def init_and_save(dataset: Path, n_jobs: int = 1) -> None:
     # initialize the repository
@@ -92,7 +82,7 @@ def _symlink_if_needed(src, dst, *args, **kwargs) -> Path:  # noqa: ARG001
 
 def _write_participants(records: list[int], outdir: Path) -> None:
     demographics = (
-        ibis.read_csv(DEMOGRAPHICS)
+        ibis.read_csv(datasets.get_demographics())
         .select("record_id", "sex", "dom_hand")
         .mutate(
             sex=_.sex.cases(
@@ -104,7 +94,7 @@ def _write_participants(records: list[int], outdir: Path) -> None:
         )
     )
     (
-        ibis.read_csv(ILOG)
+        ibis.read_csv(datasets.get_ilog())
         .select("site", "subject_id", "visit", "Magnet Name")
         .filter(_.visit.contains("V1"))  # type: ignore
         .filter(_.subject_id.isin(records))  # type: ignore
@@ -125,7 +115,9 @@ def _write_participants(records: list[int], outdir: Path) -> None:
 
 
 def _update_scans(outdir: Path) -> None:
-    qclog = ibis.read_csv(QCLOG).select("sub", "ses", "scan", "rating")
+    qclog = ibis.read_csv(datasets.get_qclog()).select(
+        "sub", "ses", "scan", "rating"
+    )
     for scanstsv in outdir.rglob("*sub*scans.tsv"):
         (
             ibis.read_csv(scanstsv, header=True)
@@ -195,63 +187,88 @@ def write_freesurfer_tables_and_jsons(
         df: pd.DataFrame = (
             (ibis.read_csv(inroot / "freesurfer" / f"{tbl}.tsv"))
             .filter(_.ses.contains("V1"))  # type: ignore
-            .filter(_.subject_id.isin(records))  # type: ignore
+            .filter(_.sub.isin(records))  # type: ignore
             .execute()
         )
 
-        df.to_csv(outroot / f"{tbl}.tsv", index=False, sep="\t")
+        df.to_csv(
+            outroot / "derivatives" / "freesurfer" / f"{tbl}.tsv",
+            index=False,
+            sep="\t",
+        )
 
-    shutil.copy2(datasets.get_aparc_json(), outroot / "aparc.json")
-    shutil.copy2(datasets.get_aseg_json(), outroot / "aseg.json")
-    shutil.copy2(datasets.get_headers_json(), outroot / "headers.json")
+    shutil.copy2(
+        datasets.get_aparc_json(),
+        outroot / "derivatives" / "freesurfer" / "aparc.json",
+    )
+    shutil.copy2(
+        datasets.get_aseg_json(),
+        outroot / "derivatives" / "freesurfer" / "aseg.json",
+    )
+    shutil.copy2(
+        datasets.get_headers_json(),
+        outroot / "derivatives" / "freesurfer" / "headers.json",
+    )
 
 
 def write_fslanat_tables_and_jsons(
     inroot: Path, outroot: Path, records: list[int]
 ) -> None:
     df: pd.DataFrame = (
-        (ibis.read_csv(inroot / "freesurfer" / "fslanat.tsv"))
+        (ibis.read_csv(inroot / "fslanat" / "fslanat.tsv"))
         .filter(_.ses.contains("V1"))  # type: ignore
-        .filter(_.subject_id.isin(records))  # type: ignore
+        .filter(_.sub.isin(records))  # type: ignore
         .execute()
     )
 
-    df.to_csv(outroot / "fslanat.tsv", index=False, sep="\t")
-    shutil.copy2(datasets.get_fslanat_json(), outroot / "fslanat.json")
+    df.to_csv(
+        outroot / "derivatives" / "fslanat" / "fslanat.tsv",
+        index=False,
+        sep="\t",
+    )
+    shutil.copy2(
+        datasets.get_fslanat_json(),
+        outroot / "derivatives" / "fslanat" / "fslanat.json",
+    )
 
 
 def write_fcn_jsons(outroot: Path) -> None:
     shutil.copy2(
-        datasets.get_connectivity_acompcor_json(), outroot / "acompcor.json"
+        datasets.get_connectivity_acompcor_json(),
+        outroot / "derivatives" / "fcn" / "acompcor.json",
     )
     shutil.copy2(
         datasets.get_connectivity_confounds_json(),
-        outroot / "connectivity-confounds.json",
+        outroot / "derivatives" / "fcn" / "connectivity-confounds.json",
     )
     shutil.copy2(
-        datasets.get_connectivity_json(), outroot / "connectivity.json"
+        datasets.get_connectivity_json(),
+        outroot / "derivatives" / "fcn" / "connectivity.json",
     )
 
 
 def write_signatures_jsons(outroot: Path) -> None:
     shutil.copy2(
         datasets.get_signature_by_part_json(),
-        outroot / "signature-by-part.json",
+        outroot / "derivatives" / "signatures" / "signature-by-part.json",
     )
     shutil.copy2(
-        datasets.get_signature_by_run_json(), outroot / "signature-by-run.json"
+        datasets.get_signature_by_run_json(),
+        outroot / "derivatives" / "signatures" / "signature-by-run.json",
     )
     shutil.copy2(
-        datasets.get_signature_by_tr_json(), outroot / "signature-by-tr.json"
+        datasets.get_signature_by_tr_json(),
+        outroot / "derivatives" / "signatures" / "signature-by-tr.json",
     )
     shutil.copy2(
         datasets.get_signature_confounds_json(),
-        outroot / "signature-confounds.json",
+        outroot / "derivatives" / "signatures" / "signature-confounds.json",
     )
     shutil.copy2(
-        datasets.get_signature_labels_json(), outroot / "signature-labels.json"
+        datasets.get_signature_labels_json(),
+        outroot / "derivatives" / "signatures" / "signature-labels.json",
     )
     shutil.copy2(
         datasets.get_signature_rawdata_json(),
-        outroot / "signature-rawdata.json",
+        outroot / "derivatives" / "signatures" / "signature-rawdata.json",
     )
