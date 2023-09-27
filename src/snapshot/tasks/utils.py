@@ -188,7 +188,7 @@ def _write_readme(outdir: Path) -> None:
     shutil.copy2(datasets.get_readme(), outdir / "README")
 
 
-def write_freesurfer_tables(
+def write_freesurfer_tables_and_jsons(
     outroot: Path, inroot: Path, records: list[int]
 ) -> None:
     for tbl in ["aparc", "aseg", "headers"]:
@@ -206,7 +206,7 @@ def write_freesurfer_tables(
     shutil.copy2(datasets.get_headers_json(), outroot / "headers.json")
 
 
-def write_fslanat_tables(
+def write_fslanat_tables_and_jsons(
     inroot: Path, outroot: Path, records: list[int]
 ) -> None:
     df: pd.DataFrame = (
