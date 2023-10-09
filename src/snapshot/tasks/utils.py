@@ -1,6 +1,7 @@
 import logging
 import re
 import shutil
+import subprocess
 from pathlib import Path
 
 import datalad.api as dla
@@ -16,14 +17,37 @@ GITATTRIBUTES = """
 * annex.largefiles=(((mimeencoding=binary)and(largerthan=0))or((include=*gii)or(include=*svg)or(include=*html)))
 """
 
+MSG = "Prepare for Release"
+
 
 def init_and_save(dataset: Path, n_jobs: int = 1) -> None:
     # initialize the repository
     dla.create(path=dataset, force=True)  # type: ignore
     (dataset / ".gitattributes").write_text(GITATTRIBUTES)
 
-    # store files in repo
-    dla.save(dataset=dataset, jobs=n_jobs)  # type: ignore
+    logging.info(f"adding {dataset} files to annex")
+    try:
+        output = subprocess.run(
+            ["git", "annex", "add", "-q", "-J", str(n_jobs), "."],
+            check=True,
+            cwd=dataset,
+            capture_output=True,
+        )
+        logging.info(output)
+    except subprocess.CalledProcessError as e:
+        logging.error(e)
+
+    logging.info(f"saving {dataset}")
+    try:
+        output = subprocess.run(
+            ["git", "commit", "-m", MSG],
+            check=True,
+            cwd=dataset,
+            capture_output=True,
+        )
+        logging.info(output)
+    except subprocess.CalledProcessError as e:
+        logging.error(e)
 
 
 def update(dataset: Path, n_jobs: int = 1) -> None:
