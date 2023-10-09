@@ -5,14 +5,15 @@ save() {
     local J=$2
     case $cmd in
         datalad)
-            datalad save -J "${J}" .
+            datalad  -l critical save -J "${J}" .
             ;;
         annex)
-            git annex add -J "${J}" . \
+            git annex add -q -J "${J}" . \
             && git commit -m "annexed"
             ;;
     esac
 }
+export -f save
 
 cwd=$PWD
 
@@ -20,7 +21,7 @@ for n_files in 100; do
     echo "n_files: ${n_files}"
     for file in {1..$n_files}; do
         ds=/tmp/dataset
-        mkdir ${ds} \
+        mkdir ${ds} || exit \
         && cd $ds \
         && datalad create -d . \
         && truncate -s 1 "${file}".txt
@@ -29,13 +30,12 @@ for n_files in 100; do
         echo "cmd: ${cmd}"
         for J in 1 4; do
             echo "J: ${J}"
-            time save "${cmd}" "${J}" \
-            && cd "${cwd}" 
-            # && chmod -R a+rw "${ds}" \
-            # && rm -rf "${ds}"
-            break
+            log="${cwd}/cmd=${cmd}_n=${n_files}_J=${J}.log"
+            { time save "${cmd}" "${J}" ; } | grep -E "real" &> "${log}"
+            sed -iE '/real|user|sys/!d' "${log}"
+            cd "${cwd}" \
+            && chmod -R a+rw "${ds}" \
+            && rm -rf "${ds}"
         done
-        break
     done
-    break
 done
