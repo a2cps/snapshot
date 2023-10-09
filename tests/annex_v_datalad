@@ -1,0 +1,41 @@
+#!/bin/bash
+
+save() {
+    local cmd=$1
+    local J=$2
+    case $cmd in
+        datalad)
+            datalad save -J "${J}" .
+            ;;
+        annex)
+            git annex add -J "${J}" . \
+            && git commit -m "annexed"
+            ;;
+    esac
+}
+
+cwd=$PWD
+
+for n_files in 100; do
+    echo "n_files: ${n_files}"
+    for file in {1..$n_files}; do
+        ds=/tmp/dataset
+        mkdir ${ds} \
+        && cd $ds \
+        && datalad create -d . \
+        && truncate -s 1 "${file}".txt
+    done
+    for cmd in datalad annex; do
+        echo "cmd: ${cmd}"
+        for J in 1 4; do
+            echo "J: ${J}"
+            time save "${cmd}" "${J}" \
+            && cd "${cwd}" 
+            # && chmod -R a+rw "${ds}" \
+            # && rm -rf "${ds}"
+            break
+        done
+        break
+    done
+    break
+done
