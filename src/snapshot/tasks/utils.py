@@ -198,6 +198,7 @@ def _write_events(outdir: Path) -> None:
         ).execute().to_csv(
             fname, sep="\t", index=False, na_rep="n/a"
         )
+    shutil.copy2(datasets.get_events_json(), outdir)
 
 
 def _write_readme(outdir: Path) -> None:
