@@ -39,7 +39,7 @@
         "LongName": "Task",
         "Description": "Functional MRI Task, BIDS Task ID",
         "Levels": {
-            "cuff": "cuff pressure task",
+            "cuff": "cuff pressure scan",
             "rest": "resting state scan"
         },
         "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/appendices/entities.html#task"
