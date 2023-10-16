@@ -124,3 +124,9 @@ def get_demographics() -> Path:
     with resources.path("snapshot.data", "demographics-2023-05-19.csv") as f:
         data_file_path = f
     return data_file_path
+
+
+def get_events_json() -> Path:
+    with resources.path("snapshot.data", "task-cuff_events.json") as f:
+        data_file_path = f
+    return data_file_path
