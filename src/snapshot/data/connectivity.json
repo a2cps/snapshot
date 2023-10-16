@@ -58,7 +58,7 @@
         "Description": "Visit, BIDS Session ID",
         "Levels": {
             "V1": "Baseline Visit",
-            "V3": "3 Month Followup Viist"
+            "V3": "3 Month Followup Visit"
         },
         "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/appendices/entities.html#ses"
     },
