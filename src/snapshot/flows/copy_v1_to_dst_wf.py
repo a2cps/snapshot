@@ -98,6 +98,7 @@ async def main(inroot: Path, outroot: Path, max_workers: int | None = None) -> N
         )
 
     # handle top-level stuff
+    shutil.copy2(datasets.get_dataset_description_json(), outroot / "bids")
     utils._write_participants(records=records, outdir=outroot / "bids")
     utils._update_scans(outdir=outroot / "bids")
     utils._write_events(outdir=outroot / "bids")
