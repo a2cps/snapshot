@@ -1,5 +1,6 @@
 {
     "Name": "Acute to Chronic Pain Signatures (A2CPS) - Release 1.0",
     "BIDSVersion": "1.8.0",
+    "Authors": "A2CPS Data Integration and Resource Center (DIRC), Imaging Group",
     "DatasetType": "raw"
 }
