@@ -136,6 +136,7 @@ def _write_participants(records: list[int], outdir: Path) -> None:
         na_rep="n/a",
         index=False,
     )
+    shutil.copy2(datasets.get_participants_json(), outdir)
 
 
 def _update_scans(outdir: Path) -> None:

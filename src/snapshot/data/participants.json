@@ -1,0 +1,36 @@
+{
+    "sub": {
+        "LongName": "Subject",
+        "Description": "Study Participant, BIDS Subject ID",
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/appendices/entities.html#sub"
+    },
+    "scanner": {
+        "LongName": "Scanner",
+        "Description": "Code indicating the scanner used to collect the data",
+        "Levels": {
+            "UC": "University of Chicago (Philips)",
+            "UI": "University of Illinois at Chicago (GE)",
+            "NS": "NorthShore (Siemens)",
+            "UM1": "University of Michigan, Scanner 1 (GE)",
+            "UM2": "University of Michigan, Scanner 2 (GE)",
+            "SH": "Spectrum Health (Siemens)",
+            "WS": "Wayne State (Siemens)"
+        },
+        "TermURL": "https://confluence.a2cps.org/display/DOC/Site+Specific+Information"
+    },
+    "sex": {
+        "Description": "Reported sex of the participant",
+        "Levels": {
+            "M": "male",
+            "F": "female"
+        }
+    },
+    "handedness": {
+        "Description": "Handedness of the participant",
+        "Levels": {
+            "left": "left",
+            "right": "right",
+            "ambidextrous": "ambidextrous"
+        }
+    }
+}
