@@ -130,3 +130,9 @@ def get_events_json() -> Path:
     with resources.path("snapshot.data", "task-cuff_events.json") as f:
         data_file_path = f
     return data_file_path
+
+
+def get_participants_json() -> Path:
+    with resources.path("snapshot.data", "participants.json") as f:
+        data_file_path = f
+    return data_file_path

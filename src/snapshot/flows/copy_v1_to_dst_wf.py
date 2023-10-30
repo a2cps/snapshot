@@ -106,5 +106,3 @@ async def main(inroot: Path, outroot: Path, max_workers: int | None = None) -> N
     utils.write_fslanat_tables_and_jsons(outroot=outroot, inroot=inroot, records=records)
     utils.write_fcn_jsons(outroot=outroot)
     utils.write_signatures_jsons(outroot=outroot)
-    utils.write_signatures_jsons(outroot=outroot)
-    utils.write_signatures_jsons(outroot=outroot)
