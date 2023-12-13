@@ -1,7 +1,9 @@
+import json
 import logging
 import re
 import shutil
 import subprocess
+import typing
 from pathlib import Path
 
 import datalad.api as dla
@@ -298,3 +300,13 @@ def write_signatures_jsons(outroot: Path) -> None:
         datasets.get_signature_rawdata_json(),
         outroot / "derivatives" / "signatures" / "signature-rawdata.json",
     )
+
+
+def clean_sidecars(root: Path) -> None:
+    for sidecar in root.rglob("*json"):
+        data: dict[str, typing.Any] = json.loads(sidecar.read_text())
+        if data.get("InstitutionAddress"):
+            del data["InstitutionAddress"]
+        if data.get("InstitutionName"):
+            del data["InstitutionName"]
+        sidecar.write_text(json.dumps(data, indent=2))

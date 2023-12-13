@@ -103,6 +103,7 @@ async def main(inroot: Path, outroot: Path, max_workers: int | None = None) -> N
     utils._update_scans(outdir=outroot / "bids")
     utils._write_events(outdir=outroot / "bids")
     utils._write_readme(outdir=outroot / "bids")
+    utils.clean_sidecars(root=outroot / "bids")
     utils.write_freesurfer_tables_and_jsons(outroot=outroot, inroot=inroot, records=records)
     utils.write_fslanat_tables_and_jsons(outroot=outroot, inroot=inroot, records=records)
     utils.write_fcn_jsons(outroot=outroot)
