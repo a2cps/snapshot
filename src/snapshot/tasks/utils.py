@@ -131,6 +131,7 @@ def _write_participants(records: list[int], outdir: Path) -> None:
         .mutate(scanner=_.site + _.UM)  # type: ignore
         .join(demographics, _.sub == demographics.record_id)  # type: ignore
         .select("sub", "scanner", "sex", "age", "handedness")
+        .relabel({"participant_id": "sub"})
         .execute()
     ).to_csv(
         outdir / "participants.tsv",

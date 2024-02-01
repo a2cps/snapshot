@@ -1,8 +1,8 @@
 {
-    "sub": {
-        "LongName": "Subject",
+    "participant_id": {
+        "LongName": "Participant ID",
         "Description": "Study Participant, BIDS Subject ID",
-        "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/appendices/entities.html#sub"
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/glossary.html#participant_id-columns"
     },
     "scanner": {
         "LongName": "Scanner",
@@ -19,11 +19,13 @@
         "TermURL": "https://a2cps.atlassian.net/wiki/spaces/DOC/pages/5406782/Site+Specific+Information"
     },
     "sex": {
+        "LongName": "Sex",
         "Description": "Reported sex of the participant",
         "Levels": {
             "M": "male",
             "F": "female"
-        }
+        },
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/glossary.html#sex-columns"
     },
     "age": {
         "LongName": "Age",
@@ -31,11 +33,13 @@
         "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/glossary.html#objects.columns.age"
     },
     "handedness": {
+        "LongName": "Handedness",
         "Description": "Handedness of the participant",
         "Levels": {
             "left": "left",
             "right": "right",
             "ambidextrous": "ambidextrous"
-        }
+        },
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/glossary.html#handedness-columns"
     }
 }
