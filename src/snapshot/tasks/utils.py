@@ -109,7 +109,7 @@ def _symlink_if_needed(src, dst, *args, **kwargs) -> Path:  # noqa: ARG001
 def _write_participants(records: list[int], outdir: Path) -> None:
     demographics = (
         ibis.read_csv(datasets.get_demographics())
-        .select("record_id", "sex", "dom_hand")
+        .select("record_id", "sex", "age", "dom_hand")
         .mutate(
             sex=_.sex.cases(
                 ((1, "male"), (2, "female"), (3, "n/a"), (4, "other"))
@@ -130,7 +130,7 @@ def _write_participants(records: list[int], outdir: Path) -> None:
         .mutate(UM=_.magnet.cases((("1", "2"), ("2", "1")), default=""))  # type: ignore
         .mutate(scanner=_.site + _.UM)  # type: ignore
         .join(demographics, _.sub == demographics.record_id)  # type: ignore
-        .select("sub", "scanner", "sex", "handedness")
+        .select("sub", "scanner", "sex", "age", "handedness")
         .execute()
     ).to_csv(
         outdir / "participants.tsv",
