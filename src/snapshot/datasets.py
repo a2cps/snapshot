@@ -121,7 +121,7 @@ def get_qclog() -> Path:
 
 
 def get_demographics() -> Path:
-    with resources.path("snapshot.data", "demographics-2023-05-19.csv") as f:
+    with resources.path("snapshot.data", "demographics-2023-10-31.csv") as f:
         data_file_path = f
     return data_file_path
 
