@@ -1,0 +1,19 @@
+{
+    "filename": {
+        "Description": "Name of the nifti file"
+    },
+    "rating": {
+        "LongName": "Quality Rating",
+        "Description": "Quality Rating for Scan",
+        "TermURL": "https://a2cps.atlassian.net/wiki/spaces/DOC/pages/5406780/A2CPS+Imaging+Quality+Assurance",
+        "Levels": {
+            "red": "Significant variations/issues; not expected to be comparable",
+            "yellow": "Minor variations/issues; correctable",
+            "green": "No known issues"
+        }
+    },
+    "mask": {
+        "LongName": "Mask Status",
+        "Description": "Whether a mask was worn during the session"
+    }
+}
