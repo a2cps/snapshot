@@ -142,3 +142,9 @@ def get_dataset_description_json() -> Path:
     with resources.path("snapshot.data", "dataset_description.json") as f:
         data_file_path = f
     return data_file_path
+
+
+def get_scans_json() -> Path:
+    with resources.path("snapshot.data", "scans.json") as f:
+        data_file_path = f
+    return data_file_path

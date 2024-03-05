@@ -146,6 +146,12 @@ def _update_scans(outdir: Path) -> None:
     qclog = ibis.read_csv(datasets.get_qclog()).select(
         "sub", "ses", "scan", "rating"
     )
+    mask_log = (
+        ibis.read_csv(datasets.get_ilog())
+        .select("subject_id", "visit", "Face Mask")
+        .rename(ses="visit", sub="subject_id", mask="Face Mask")
+        .mutate(mask=_.mask.cast(bool))  # type: ignore
+    )
     for scanstsv in outdir.rglob("*sub*scans.tsv"):
         (
             ibis.read_csv(scanstsv, header=True)
@@ -172,9 +178,11 @@ def _update_scans(outdir: Path) -> None:
                 )  # type: ignore
             )
             .join(qclog, ("sub", "ses", "scan"), how="left")
-            .select("filename", "rating")
+            .join(mask_log, ("sub", "ses"), how="left")
+            .select("filename", "rating", "mask")
             .execute()
         ).to_csv(scanstsv, sep="\t", index=False, na_rep="n/a")
+        shutil.copy2(datasets.get_scans_json(), scanstsv.with_suffix(".json"))
 
 
 def _write_events(outdir: Path) -> None:
