@@ -148,3 +148,15 @@ def get_scans_json() -> Path:
     with resources.path("snapshot.data", "scans.json") as f:
         data_file_path = f
     return data_file_path
+
+
+def get_cat12_json() -> Path:
+    with resources.path("snapshot.data", "cluster_volumes.json") as f:
+        data_file_path = f
+    return data_file_path
+
+
+def get_sessions_json() -> Path:
+    with resources.path("snapshot.data", "sessions.json") as f:
+        data_file_path = f
+    return data_file_path

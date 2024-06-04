@@ -11,9 +11,5 @@
             "yellow": "Minor variations/issues; correctable",
             "green": "No known issues"
         }
-    },
-    "mask": {
-        "LongName": "Mask Status",
-        "Description": "Whether a mask was worn during the session"
     }
 }

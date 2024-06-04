@@ -8,6 +8,8 @@ from pathlib import Path
 
 import datalad.api as dla
 import ibis
+import ibis.expr
+import ibis.expr.types
 import nibabel as nb
 import pandas as pd
 from ibis import _
@@ -20,6 +22,35 @@ GITATTRIBUTES = """
 """
 
 MSG = "Prepare for Release"
+
+# values to parse from src files as null (n/a will be used for output)
+NULLS = ["", "na", "n/a"]
+
+# https://bids-specification.readthedocs.io/en/v1.9.0/common-principles.html#units
+DATE_FORMAT = "%Y-%m-%d%H:%M:%S"
+
+SIDECAR_FIELDS_TO_REMOVE = ["InstitutionAddress"]
+
+
+def to_bids_tsv(
+    tbl: ibis.expr.types.Table | pd.DataFrame,
+    dst: Path,
+    dt_columns: list[str] | None = None,
+) -> None:
+    if isinstance(tbl, ibis.expr.types.Table):
+        d = tbl.execute()
+    else:
+        d = tbl.copy()
+    if dt_columns:
+        for dt_column in dt_columns:
+            d[dt_column] = pd.to_datetime(d[dt_column])
+    d.to_csv(
+        dst,
+        sep="\t",
+        na_rep="n/a",
+        index=False,
+        date_format=DATE_FORMAT,
+    )
 
 
 def init_and_save(dataset: Path, n_jobs: int = 1) -> None:
@@ -106,9 +137,9 @@ def _symlink_if_needed(src, dst, *args, **kwargs) -> Path:  # noqa: ARG001
     return dst
 
 
-def _write_participants(records: list[int], outdir: Path) -> None:
+def write_participants(records: list[int], outdir: Path) -> None:
     demographics = (
-        ibis.read_csv(datasets.get_demographics())
+        ibis.read_csv(datasets.get_demographics(), nullstr=NULLS)
         .select("record_id", "sex", "age", "dom_hand")
         .mutate(
             sex=_.sex.cases(
@@ -119,42 +150,85 @@ def _write_participants(records: list[int], outdir: Path) -> None:
             ),  # type: ignore
         )
     )
-    (
-        ibis.read_csv(datasets.get_ilog())
-        .select("site", "subject_id", "visit", "Magnet Name")
-        .filter(_.visit.contains("V1"))  # type: ignore
-        .filter(_.subject_id.isin(records))  # type: ignore
-        .relabel(
-            {"Magnet Name": "magnet", "subject_id": "sub", "visit": "ses"}
-        )
-        .mutate(UM=_.magnet.cases((("1", "2"), ("2", "1")), default=""))  # type: ignore
-        .mutate(scanner=_.site + _.UM)  # type: ignore
+    tbl = (
+        ibis.read_csv(datasets.get_ilog(), nullstr=NULLS)
+        .select("site", sub="subject_id", ses="visit")
+        .filter(_.ses.contains("V1"))  # type: ignore
+        .filter(_.sub.isin(records))  # type: ignore
         .join(demographics, _.sub == demographics.record_id)  # type: ignore
-        .select("sub", "scanner", "sex", "age", "handedness")
-        .relabel({"participant_id": "sub"})
-        .execute()
-    ).to_csv(
-        outdir / "participants.tsv",
-        sep="\t",
-        na_rep="n/a",
-        index=False,
+        .select("sub", "sex", "age", "handedness", "site")
     )
+    to_bids_tsv(tbl, dst=outdir / "participants.tsv")
+
     shutil.copy2(datasets.get_participants_json(), outdir)
 
 
-def _update_scans(outdir: Path) -> None:
-    qclog = ibis.read_csv(datasets.get_qclog()).select(
+def write_sessions(outdir: Path) -> None:
+    ilog = (
+        ibis.read_csv(datasets.get_ilog(), nullstr=NULLS)
+        .filter(_.visit.contains("V1"))  # type: ignore
+        .select(
+            session_id="visit",
+            site="site",
+            sub="subject_id",
+            face_mask="Face Mask",
+            magnet="Magnet Name",
+            acquisition_week="acquisition_week",
+            t1_tech_rating="fMRI T1 Tech Rating",
+            cuff1_pressure_from_qst="Cuff1 QST Pressure",
+            cuff1_recalibrated_pressure="Cuff1 Recalibrated Pressure",
+            cuff1_applied_pressure="Cuff1 Applied Pressure",
+            surgical_site_pain_rest="Surgical site pain rest",
+            body_pain_rest="Body pain rest",
+            surgical_site_pain_after_first_scan="Surgical site pain after first scan",
+            body_pain_after_first_scan="Body pain after first scan",
+            cuff_pain_after_first_scan="Cuff pain after first scan",
+            cuff_pain_cuff1_beginning="Cuff pain cuff1 beginning",
+            cuff_pain_cuff1_middle="Cuff pain cuff1 middle",
+            cuff_pain_cuff1_end="Cuff pain cuff1 end",
+            cuff_pain_cuff2_beginning="Cuff pain cuff2 beginning",
+            cuff_pain_cuff2_middle="Cuff pain cuff2 middle",
+            cuff_pain_cuff2_end="Cuff pain cuff2 end",
+            cuff_pain_rest_beginning="Cuff pain rest beginning",
+            cuff_pain_rest_middle="Cuff pain rest middle",
+            cuff_pain_rest_end="Cuff pain rest end",
+            surgical_site_pain_after_last_scan="Surgical site pain after last scan",
+            body_pain_after_last_scan="Body pain after last scan",
+            cuff_contraindicated="Cuff contraindicated",
+            surgery_week="Surgery Week",
+            cuff_leg="Cuff Leg",
+        )
+        .mutate(session_id=_.session_id.re_replace("V", "ses-V"))  # type: ignore
+        .mutate(UM=_.magnet.cast(int).cast(str).cases((("1", "2"), ("2", "1")), default=""))  # type: ignore
+        .mutate(scanner=_.site + _.UM)  # type: ignore
+        .mutate(
+            face_mask=_.face_mask.cast(bool),  # type: ignore
+            cuff_contraindicated=_.cuff_contraindicated.cast(bool),  # type: ignore
+        )  # type: ignore
+        .drop("UM", "site", "magnet")
+    )
+
+    # look at parents of ses* dir rather than simply sub* because there may
+    # be files that match sub* at the top level
+    for sesdir in outdir.glob("sub*/ses*"):
+        sub = int(_get_sub(sesdir))
+        session = ilog.filter(_.sub == sub)  # type: ignore
+        to_bids_tsv(
+            session,
+            dst=sesdir.parent / f"sub-{sub}_sessions.tsv",
+            dt_columns=["acquisition_week", "surgery_week"],
+        )
+
+    shutil.copy2(datasets.get_sessions_json(), outdir / "sessions.json")
+
+
+def update_scans(outdir: Path) -> None:
+    qclog = ibis.read_csv(datasets.get_qclog(), nullstr=NULLS).select(
         "sub", "ses", "scan", "rating"
     )
-    mask_log = (
-        ibis.read_csv(datasets.get_ilog())
-        .select("subject_id", "visit", "Face Mask")
-        .rename(ses="visit", sub="subject_id", mask="Face Mask")
-        .mutate(mask=_.mask.cast(bool))  # type: ignore
-    )
     for scanstsv in outdir.rglob("*sub*scans.tsv"):
-        (
-            ibis.read_csv(scanstsv, header=True)
+        scans = (
+            ibis.read_csv(scanstsv, header=True, nullstr=NULLS)
             .select("filename")
             .mutate(
                 sub=_.filename.re_extract(r"\d{5}", 0).cast("int64"),  # type: ignore
@@ -178,61 +252,72 @@ def _update_scans(outdir: Path) -> None:
                 )  # type: ignore
             )
             .join(qclog, ("sub", "ses", "scan"), how="left")
-            .join(mask_log, ("sub", "ses"), how="left")
-            .select("filename", "rating", "mask")
-            .execute()
-        ).to_csv(scanstsv, sep="\t", index=False, na_rep="n/a")
-        shutil.copy2(datasets.get_scans_json(), scanstsv.with_suffix(".json"))
+            .select("filename", "rating")
+        )
+        to_bids_tsv(scans, scanstsv)
+        if (scansjson := scanstsv.with_suffix(".json")).exists():
+            scansjson.unlink()
+    shutil.copy2(datasets.get_scans_json(), outdir / "scans.json")
 
 
-def _write_events(outdir: Path) -> None:
-    pressure = ibis.read_csv(datasets.get_applied_pressures())
+def write_events(outdir: Path) -> None:
+    pressure = ibis.read_csv(datasets.get_applied_pressures(), nullstr=NULLS)
     for nii in outdir.rglob("*bold.nii.gz"):
-        fname = str(nii.resolve()).replace("bold.nii.gz", "events.tsv")
+        fname = Path(str(nii.resolve()).replace("bold.nii.gz", "events.tsv"))
         if "cuff_run-01" in nii.name:
             scan = "CUFF1"
         elif "cuff_run-02" in nii.name:
             scan = "CUFF2"
         elif "rest" in nii.name:
-            if (ev := Path(fname)).exists():
-                ev.unlink()
+            if fname.exists():
+                fname.unlink()
             continue
         else:
             scan = ""
-        pressure.filter(_.record_id == int(_get_sub(nii))).filter(  # type: ignore
-            _.visit == _get_ses(nii)  # type: ignore
-        ).filter(
-            _.scan == scan  # type: ignore
-        ).mutate(
-            onset=0, duration=nb.load(nii).shape[-1]  # type: ignore
-        ).select(
-            "onset", "duration", "applied_pressure"
-        ).execute().to_csv(
-            fname, sep="\t", index=False, na_rep="n/a"
+        events = (
+            pressure.filter(_.record_id == int(_get_sub(nii)))  # type: ignore
+            .filter(_.visit == _get_ses(nii))  # type: ignore
+            .filter(_.scan == scan)  # type: ignore
+            .mutate(onset=0, duration=nb.load(nii).shape[-1])  # type: ignore
+            .select("onset", "duration", "applied_pressure")
         )
+        to_bids_tsv(events, fname)
     shutil.copy2(datasets.get_events_json(), outdir)
 
 
-def _write_readme(outdir: Path) -> None:
+def write_readme(outdir: Path) -> None:
     shutil.copy2(datasets.get_readme(), outdir / "README")
+
+
+def write_cat12_tables_and_jsons(
+    inroot: Path, outroot: Path, records: list[int]
+) -> None:
+    df = (
+        ibis.read_csv(
+            inroot / "cat12" / "cluster_volumes.tsv",
+            delim=r"\t",
+            nullstr=NULLS,
+        )
+        .filter(_.ses.contains("V1"))  # type: ignore
+        .filter(_.sub.isin(records))  # type: ignore
+    )
+    to_bids_tsv(df, outroot / "derivatives" / "cat12" / "cluster_volumes.tsv")
+    shutil.copy2(
+        datasets.get_cat12_json(),
+        outroot / "derivatives" / "cat12" / "cluster_volumes.json",
+    )
 
 
 def write_freesurfer_tables_and_jsons(
     outroot: Path, inroot: Path, records: list[int]
 ) -> None:
     for tbl in ["aparc", "aseg", "headers"]:
-        df: pd.DataFrame = (
-            (ibis.read_csv(inroot / "freesurfer" / f"{tbl}.tsv"))
+        df = (
+            ibis.read_csv(inroot / "freesurfer" / f"{tbl}.tsv", nullstr=NULLS)
             .filter(_.ses.contains("V1"))  # type: ignore
             .filter(_.sub.isin(records))  # type: ignore
-            .execute()
         )
-
-        df.to_csv(
-            outroot / "derivatives" / "freesurfer" / f"{tbl}.tsv",
-            index=False,
-            sep="\t",
-        )
+        to_bids_tsv(df, outroot / "derivatives" / "freesurfer" / f"{tbl}.tsv")
 
     shutil.copy2(
         datasets.get_aparc_json(),
@@ -251,18 +336,13 @@ def write_freesurfer_tables_and_jsons(
 def write_fslanat_tables_and_jsons(
     inroot: Path, outroot: Path, records: list[int]
 ) -> None:
-    df: pd.DataFrame = (
-        (ibis.read_csv(inroot / "fslanat" / "fslanat.tsv"))
+    df = (
+        ibis.read_csv(inroot / "fslanat" / "fslanat.tsv", nullstr=NULLS)
         .filter(_.ses.contains("V1"))  # type: ignore
         .filter(_.sub.isin(records))  # type: ignore
-        .execute()
     )
+    to_bids_tsv(df, outroot / "derivatives" / "fslanat" / "fslanat.tsv")
 
-    df.to_csv(
-        outroot / "derivatives" / "fslanat" / "fslanat.tsv",
-        index=False,
-        sep="\t",
-    )
     shutil.copy2(
         datasets.get_fslanat_json(),
         outroot / "derivatives" / "fslanat" / "fslanat.json",
@@ -314,8 +394,7 @@ def write_signatures_jsons(outroot: Path) -> None:
 def clean_sidecars(root: Path) -> None:
     for sidecar in root.rglob("*json"):
         data: dict[str, typing.Any] = json.loads(sidecar.read_text())
-        if data.get("InstitutionAddress"):
-            del data["InstitutionAddress"]
-        if data.get("InstitutionName"):
-            del data["InstitutionName"]
-        sidecar.write_text(json.dumps(data, indent=2))
+        for field in SIDECAR_FIELDS_TO_REMOVE:
+            if data.get(field):
+                del data[field]
+        sidecar.write_text(json.dumps(data, indent=2, sort_keys=True))

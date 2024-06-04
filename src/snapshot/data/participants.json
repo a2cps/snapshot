@@ -4,17 +4,17 @@
         "Description": "Study Participant, BIDS Subject ID",
         "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/glossary.html#participant_id-columns"
     },
-    "scanner": {
-        "LongName": "Scanner",
-        "Description": "Code indicating the scanner used to collect the data",
+    "site": {
+        "LongName": "Site",
+        "Description": "Code indicating the site at which data were collected. See also scanner field in *sessions.tsv.",
         "Levels": {
-            "UC": "University of Chicago (Philips)",
-            "UI": "University of Illinois at Chicago (GE)",
-            "NS": "NorthShore (Siemens)",
-            "UM1": "University of Michigan, Scanner 1 (GE)",
-            "UM2": "University of Michigan, Scanner 2 (GE)",
-            "SH": "Spectrum Health (Siemens)",
-            "WS": "Wayne State (Siemens)"
+            "NS": "Endeavor Health",
+            "RU": "Rush University",
+            "SH": "Corewell Health",
+            "UC": "University of Chicago",
+            "UI": "University of Illinois at Chicago",
+            "UM": "University of Michigan",
+            "WS": "Wayne State University"
         },
         "TermURL": "https://a2cps.atlassian.net/wiki/spaces/DOC/pages/5406782/Site+Specific+Information"
     },
