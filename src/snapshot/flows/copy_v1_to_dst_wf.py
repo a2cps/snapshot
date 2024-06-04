@@ -43,7 +43,14 @@ async def copytree(src: Path, dst: Path, ignore: typing.Callable | None=None, ma
             dirpath_dst = dst / dirpath_fromtop
             if not dirpath_dst.exists():
                 continue
+            # need to ensure ignore is applied to files, too
+            if ignore is not None:
+                ignored_names = ignore(os.fspath(src), filenames)
+            else:
+                ignored_names = ()
             for file in filenames:
+                if file in ignored_names:
+                    continue
                 # note that we do not need the follow_symlinks argument to copyfile
                 awaitables.append(
                     loop.run_in_executor(
@@ -99,12 +106,14 @@ async def main(inroot: Path, outroot: Path, max_workers: int | None = None) -> N
 
     # handle top-level stuff
     shutil.copy2(datasets.get_dataset_description_json(), outroot / "bids")
-    utils._write_participants(records=records, outdir=outroot / "bids")
-    utils._update_scans(outdir=outroot / "bids")
-    utils._write_events(outdir=outroot / "bids")
-    utils._write_readme(outdir=outroot / "bids")
+    utils.write_participants(records=records, outdir=outroot / "bids")
+    utils.write_sessions(outdir=outroot / "bids")
+    utils.update_scans(outdir=outroot / "bids")
+    utils.write_events(outdir=outroot / "bids")
+    utils.write_readme(outdir=outroot / "bids")
     utils.clean_sidecars(root=outroot / "bids")
     utils.write_freesurfer_tables_and_jsons(outroot=outroot, inroot=inroot, records=records)
     utils.write_fslanat_tables_and_jsons(outroot=outroot, inroot=inroot, records=records)
+    utils.write_cat12_tables_and_jsons(outroot=outroot, inroot=inroot, records=records)
     utils.write_fcn_jsons(outroot=outroot)
     utils.write_signatures_jsons(outroot=outroot)

@@ -1,0 +1,134 @@
+{
+    "session_id": {
+        "LongName": "Session ID",
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/glossary.html#objects.columns.session_id"
+    },
+    "face_mask": {
+        "LongName": "Mask Status",
+        "Description": "Whether a mask was worn during the session. REDCap: fmri_face_mask."
+    },
+    "acquisition_week": {
+        "LongName": "Acquisition Week",
+        "Description": "The Monday that preceded the scanning session."
+    },
+    "t1_tech_rating": {
+        "LongName": "T1 Technologist Rating",
+        "Description": "Rating of the T1 given by the Technologist. REDCap: fmricufft1techrating,fmricufft1techrating2.",
+        "Levels": {
+            "1": "Red - unusable",
+            "2": "Yellow - borderline",
+            "3": "Green - good"
+        },
+        "TermURL": "https://a2cps.atlassian.net/wiki/spaces/DOC/pages/5406812/A2CPS+Tech+Manual"
+    },
+    "cuff1_pressure_from_qst": {
+        "LongName": "CUFF1 Pressure From QST",
+        "Description": "Cuff pressure to achieve 4/10 pain during Quantitative Sensory Testing (QST). REDCap: fmri_dt_1 (mmHg).",
+        "Units": "mm"
+    },
+    "cuff1_recalibrated_pressure": {
+        "LongName": "CUFF1 Recalibrated Pressure",
+        "Description": "Cuff pressure to acheive 4/10 pain rating, if recalibrated. REDCap: fmricuffcalfpressurerecal (mmHg).",
+        "Units": "mm"
+    },
+    "cuff1_applied_pressure": {
+        "LongName": "CUFF1 Applied Pressure",
+        "Description": "Pressure that was expected to be applied during CUFF1 (mmHg). For actual pressure, see *events.tsv.",
+        "Units": "mm"
+    },
+    "surgical_site_pain_rest": {
+        "LongName": "Surgical Site Pain Rest",
+        "Description": "Surgical site pain (range: 0 - 10, allow 0.5 increments). REDCap: fmricuffrestpainss."
+    },
+    "body_pain_rest": {
+        "LongName": "Body Pain Rest",
+        "Description": "Body pain (range: 0 - 10, allow 0.5 increments). REDCap: fmricuffrestpainovrall."
+    },
+    "surgical_site_pain_after_first_scan": {
+        "LongName": "Surgical Site Pain After First Scan",
+        "Description": "Surgical site pain (range: 0 - 10, allow 0.5 increments). REDCap: fmricuffcurrpainaftfirstscanss."
+    },
+    "body_pain_after_first_scan": {
+        "LongName": "Body Pain After First Scan",
+        "Description": "Body pain (range: 0 - 10, allow 0.5 increments). REDCap: fmricuffcurrpainaftfirstscanovrall."
+    },
+    "cuff_pain_after_first_scan": {
+        "LongName": "Cuff Pain After First Scan",
+        "Description": "Cuff pain (range: 0 - 10, allow 0.5 increments). REDCap: fmricuffcurrpainaftfirstscancp,fmricuffcurrpainaftfirstscancuff."
+    },
+    "cuff_pain_cuff1_beginning": {
+        "LongName": "Cuff Pain CUFF1 Beginning",
+        "Description": "Cuff pain during first third of CUFF1 (range: 0 - 10, allow 0.5 increments). REDCap: fmricuffpainbegin."
+    },
+    "cuff_pain_cuff1_middle": {
+        "LongName": "Cuff Pain CUFF1 Middle",
+        "Description": "Cuff pain during second third of CUFF1 (range: 0 - 10, allow 0.5 increments). REDCap: fmricuffpainmid."
+    },
+    "cuff_pain_cuff1_end": {
+        "LongName": "Cuff Pain CUFF1 End",
+        "Description": "Cuff pain during final third of CUFF1 (range: 0 - 10, allow 0.5 increments). REDCap: fmricuffpainend."
+    },
+    "cuff_pain_cuff2_beginning": {
+        "LongName": "Cuff Pain CUFF2 Beginning",
+        "Description": "Cuff pain during first third of CUFF2 (range: 0 - 10, allow 0.5 increments). REDCap: fmricuffpaincpbegin."
+    },
+    "cuff_pain_cuff2_middle": {
+        "LongName": "Cuff Pain CUFF2 Middle",
+        "Description": "Cuff pain during second third of CUFF2 (range: 0 - 10, allow 0.5 increments). REDCap: fmricuffpaincpmid."
+    },
+    "cuff_pain_cuff2_end": {
+        "LongName": "Cuff Pain CUFF2 End",
+        "Description": "Cuff pain during final third of CUFF2 (range: 0 - 10, allow 0.5 increments). REDCap: fmricuffpaincpend."
+    },
+    "cuff_pain_rest_beginning": {
+        "LongName": "Cuff Pain REST Beginning",
+        "Description": "Cuff pain during first third of REST2 (range: 0 - 10, allow 0.5 increments). REDCap: fmricuffpainrestscanbegin."
+    },
+    "cuff_pain_rest_middle": {
+        "LongName": "Cuff Pain REST Middle",
+        "Description": "Cuff pain during second third of REST2 (range: 0 - 10, allow 0.5 increments). REDCap: fmricuffpainrestscanmid."
+    },
+    "cuff_pain_rest_end": {
+        "LongName": "Cuff Pain REST End",
+        "Description": "Cuff pain during final third of REST2 (range: 0 - 10, allow 0.5 increments). REDCap: fmricuffpainrestscanend."
+    },
+    "surgical_site_pain_after_last_scan": {
+        "LongName": "Surgical Site Pain After Last Scan",
+        "Description": "Surgical site pain (range: 0 - 10, allow 0.5 increments). REDCap: fmricuffpainaftlastscanss."
+    },
+    "body_pain_after_last_scan": {
+        "LongName": "Body Pain After Last Scan",
+        "Description": "Body pain (range: 0 - 10, allow 0.5 increments). REDCap: fmricuffpainaftlastscanany."
+    },
+    "cuff_contraindicated": {
+        "LongName": "Cuff Contraindicated",
+        "Description": "Whether cuff pressure was contraindicated. REDCap: fmricuffcontrayn,cuffpfmricontraindyn."
+    },
+    "surgery_week": {
+        "LongName": "Surgery Week",
+        "Description": "The Monday that preceded surgery."
+    },
+    "scanner": {
+        "LongName": "Scanner",
+        "Description": "Scanner on which data were collected--similar to collection site from participants.tsv but distinguishes between the scanners within a site. Levels map to DeviceSerialNumber.",
+        "Levels": {
+            "NS": "70032",
+            "RU": "166295",
+            "SH": "66022",
+            "UC": "71399",
+            "UI": "000000312996MR3T",
+            "UM1": "0007347633TMRFIX",
+            "UM2": "000000000UM750MR",
+            "WS": "40292"
+        },
+        "TermURL": "https://a2cps.atlassian.net/wiki/spaces/DOC/pages/5406782/Site+Specific+Information"
+    },
+    "cull_leg": {
+        "LongName": "Cuff Leg",
+        "Description": "Leg on which cuff pressure was applied. In TKA patients, this is the leg that is not receiving surgery.",
+        "Levels": {
+            "Left": "Left",
+            "Right": "Right"
+        }
+    }
+}

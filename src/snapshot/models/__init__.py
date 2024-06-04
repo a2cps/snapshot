@@ -1,12 +1,15 @@
 STORE_DIR = (
     "bids",
+    "brainager",
     "cat12",
-    "mriqc",
+    "eddyqc",
+    "fcn",
     "fmriprep-anat",
     "fmriprep-cuff",
     "fmriprep-rest",
     "freesurfer",
     "fslanat",
-    "fcn",
+    "mriqc",
+    "qsiprep-V1",
     "signatures",
 )

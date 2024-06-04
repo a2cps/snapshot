@@ -1,0 +1,37 @@
+{
+    "sub": {
+        "LongName": "Subject",
+        "Description": "Study Participant, BIDS Subject ID",
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/appendices/entities.html#sub"
+    },
+    "ses": {
+        "LongName": "Session",
+        "Description": "Visit, BIDS Session ID",
+        "Levels": {
+            "V1": "Baseline Visit",
+            "V3": "3 Month Followup Visit"
+        },
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/appendices/entities.html#ses"
+    },
+    "mri": {
+        "LongName": "MRI Filename",
+        "Description": "Product of CAT12 in which volumes were calculated",
+        "TermURL": "https://neuro-jena.github.io/cat12-help/#naming"
+    },
+    "atlas": {
+        "LongName": "Atlas of Clusters",
+        "Description": "Source file in which clusters are defined",
+        "Levels": {
+            "tpl-MNI152NLin2009cAsym_atlas-smallwood_dseg": "https://a2cps.atlassian.net/wiki/spaces/DOC/pages/5406884/Smallwood+et+al.+2013+Materials",
+            "tpl-MNI152NLin2009cAsym_atlas-henn_desc-controlspatientgmtfce05_dseg": "https://doi.org/10.1097/j.pain.0000000000002681, Table 4"
+        }
+    },
+    "cluster": {
+        "LongName": "Cluster Number",
+        "Description": "ID of cluster as reported by FSL. May not match ID in source paper."
+    },
+    "volume": {
+        "LongName": "Cluster Volume",
+        "Description": "Volume of cluster_id from atlas_id in mri_id calculated as number of voxels times voxel volume."
+    }
+}
