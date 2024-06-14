@@ -3,10 +3,10 @@
         "editor.defaultFormatter": "ms-python.black-formatter",
         "editor.formatOnSave": true,
         "editor.codeActionsOnSave": {
-            "source.organizeImports": true
+            "source.organizeImports": "explicit"
         }
     },
     "ruff.importStrategy": "useBundled",
-    "ruff.run": "onSave",
+    "ruff.lint.run": "onSave",
     "python.analysis.typeCheckingMode": "basic"
 }
