@@ -14,7 +14,7 @@
     "run": {
         "LongName": "Run",
         "Description": "Task Run Number, BIDS Run ID",
-        "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/appendices/entities.html#run"
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#run"
     },
     "space": {
         "LongName": "Space",
@@ -22,7 +22,7 @@
         "Levels": {
             "MNI152NLin2009cAsym": "https://www.templateflow.org"
         },
-        "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/appendices/entities.html#space"
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#space"
     },
     "atlas": {
         "LongName": "Atlas",
@@ -37,7 +37,7 @@
             "power": "Modified Power et al. Atlas. See https://github.com/a2cps/functional_connectivity/blob/3aa91a6c10d14dcc7d1fe9890e7a6db95d2aad8b/tools/download_data.py#L24-L30",
             "dmn": "Default Mode Network. Coordinates defined by Baliki et al. https://github.com/a2cps/functional_connectivity/blob/3aa91a6c10d14dcc7d1fe9890e7a6db95d2aad8b/src/functional_connectivity/data/baliki.csv"
         },
-        "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/appendices/entities.html#atlas"
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#atlas"
     },
     "estimator": {
         "LongName": "Covariance Estimator",
@@ -51,7 +51,7 @@
     "sub": {
         "LongName": "Subject",
         "Description": "Study Participant, BIDS Subject ID",
-        "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/appendices/entities.html#sub"
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#sub"
     },
     "ses": {
         "LongName": "Session",
@@ -60,7 +60,7 @@
             "V1": "Baseline Visit",
             "V3": "3 Month Followup Visit"
         },
-        "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/appendices/entities.html#ses"
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#ses"
     },
     "task": {
         "LongName": "Task",
@@ -69,6 +69,6 @@
             "cuff": "cuff pressure scan",
             "rest": "resting state scan"
         },
-        "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/appendices/entities.html#task"
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#task"
     }
 }

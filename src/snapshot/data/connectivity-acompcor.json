@@ -3,7 +3,7 @@
         "LongName": "Repetition Time",
         "Description": "Index for time",
         "Units": "seconds",
-        "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/glossary.html#repetitiontime-metadata"
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/glossary.html#repetitiontime-metadata"
     },
     "component": {
         "LongName": "Anatomical CompCor Component",
@@ -37,7 +37,7 @@
     "sub": {
         "LongName": "Subject",
         "Description": "Study Participant, BIDS Subject ID",
-        "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/appendices/entities.html#sub"
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#sub"
     },
     "ses": {
         "LongName": "Session",
@@ -46,7 +46,7 @@
             "V1": "Baseline Visit",
             "V3": "3 Month Followup Visit"
         },
-        "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/appendices/entities.html#ses"
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#ses"
     },
     "task": {
         "LongName": "Task",
@@ -55,12 +55,12 @@
             "cuff": "cuff pressure scan",
             "rest": "resting state scan"
         },
-        "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/appendices/entities.html#task"
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#task"
     },
     "run": {
         "LongName": "Run",
         "Description": "Task Run Number, BIDS Run ID",
-        "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/appendices/entities.html#run"
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#run"
     },
     "space": {
         "LongName": "Space",
@@ -68,6 +68,6 @@
         "Levels": {
             "MNI152NLin2009cAsym": "https://www.templateflow.org"
         },
-        "TermURL": "https://bids-specification.readthedocs.io/en/v1.8.0/appendices/entities.html#space"
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#space"
     }
 }
