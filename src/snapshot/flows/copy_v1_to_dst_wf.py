@@ -1,4 +1,5 @@
 import asyncio
+import logging
 import os
 import shutil
 import typing
@@ -87,6 +88,7 @@ def main(inroot: Path, outroot: Path, max_workers: int | None = None) -> None:
 
         # copy all files from input directory, except those excluded subs
         # and any V3 data
+        logging.info(f"Copying {injobdir}, excluding {subs_to_exclude}")
         asyncio.run(
             copytree(
                 injobdir,
