@@ -9,6 +9,7 @@ STORE_DIR = (
     "fmriprep-rest",
     "freesurfer",
     "fslanat",
+    "gift_rest",
     "mriqc",
     "qsiprep-V1",
     "signatures",
