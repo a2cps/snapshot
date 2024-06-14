@@ -14,7 +14,12 @@ def copy_directory(src: str, dst: str) -> None:
         shutil.copy2(src, dst)
 
 
-async def copytree(src: Path, dst: Path, ignore: typing.Callable | None=None, max_workers: int | None = None) -> None:
+async def copytree(
+    src: Path,
+    dst: Path,
+    ignore: typing.Callable | None = None,
+    max_workers: int | None = None,
+) -> None:
     """Copy a directory tree using multiple threads
 
     Args:
@@ -28,16 +33,9 @@ async def copytree(src: Path, dst: Path, ignore: typing.Callable | None=None, ma
         avoid race conditions. After the directory tree has been created in the destination,
         the files can all be copied over in a single gather.
     """
-    shutil.copytree(
-            src,
-            dst,
-            ignore=ignore,
-            copy_function=copy_directory
-        )
-    loop = asyncio.get_running_loop()
-    with futures.ThreadPoolExecutor(max_workers=max_workers) as pool:
-        awaitables = []
-        for (dirpath, _, filenames) in os.walk(src):
+    shutil.copytree(src, dst, ignore=ignore, copy_function=copy_directory)
+    with futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+        for dirpath, _, filenames in os.walk(src):
             d = Path(dirpath)
             dirpath_fromtop = d.relative_to(src)
             dirpath_dst = dst / dirpath_fromtop
@@ -52,16 +50,10 @@ async def copytree(src: Path, dst: Path, ignore: typing.Callable | None=None, ma
                 if file in ignored_names:
                     continue
                 # note that we do not need the follow_symlinks argument to copyfile
-                awaitables.append(
-                    loop.run_in_executor(
-                        pool, shutil.copyfile, d / file, dirpath_dst / file
-                    )
-                )
-        await asyncio.gather(*awaitables)
+                executor.submit(shutil.copyfile, d / file, dirpath_dst / file)
 
 
-
-async def main(inroot: Path, outroot: Path, max_workers: int | None = None) -> None:
+def main(inroot: Path, outroot: Path, max_workers: int | None = None) -> None:
     records = datasets.get_v1_recordids()
     for job in models.STORE_DIR:
         match job:
@@ -90,18 +82,20 @@ async def main(inroot: Path, outroot: Path, max_workers: int | None = None) -> N
                 file.is_dir()
                 and (len(sessions := list(file.glob("ses*"))) == 1)
                 and ("V3" in sessions[0].name)
-                ):
+            ):
                 subs_to_exclude.add(sub)
 
         # copy all files from input directory, except those excluded subs
         # and any V3 data
-        await copytree(
-            injobdir,
-            outjobdir,
-            ignore=shutil.ignore_patterns(
-                "*V3*", *(f"*{sub}*" for sub in subs_to_exclude)
-            ),
-            max_workers=max_workers
+        asyncio.run(
+            copytree(
+                injobdir,
+                outjobdir,
+                ignore=shutil.ignore_patterns(
+                    "*V3*", *(f"*{sub}*" for sub in subs_to_exclude)
+                ),
+                max_workers=max_workers,
+            )
         )
 
     # handle top-level stuff
@@ -112,8 +106,14 @@ async def main(inroot: Path, outroot: Path, max_workers: int | None = None) -> N
     utils.write_events(outdir=outroot / "bids")
     utils.write_readme(outdir=outroot / "bids")
     utils.clean_sidecars(root=outroot / "bids")
-    utils.write_freesurfer_tables_and_jsons(outroot=outroot, inroot=inroot, records=records)
-    utils.write_fslanat_tables_and_jsons(outroot=outroot, inroot=inroot, records=records)
-    utils.write_cat12_tables_and_jsons(outroot=outroot, inroot=inroot, records=records)
+    utils.write_freesurfer_tables_and_jsons(
+        outroot=outroot, inroot=inroot, records=records
+    )
+    utils.write_fslanat_tables_and_jsons(
+        outroot=outroot, inroot=inroot, records=records
+    )
+    utils.write_cat12_tables_and_jsons(
+        outroot=outroot, inroot=inroot, records=records
+    )
     utils.write_fcn_jsons(outroot=outroot)
     utils.write_signatures_jsons(outroot=outroot)

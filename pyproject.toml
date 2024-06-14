@@ -10,15 +10,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
 keywords = []
-authors = [{ name = "Patrick Sadil", email = "psadil@gmail.com" }]
-classifiers = [
-  "Development Status :: 4 - Beta",
-  "Programming Language :: Python",
-  "Programming Language :: Python :: 3.10",
-  "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python :: Implementation :: CPython",
-  "Programming Language :: Python :: Implementation :: PyPy",
-]
+authors = [{ name = "Patrick Sadil", email = "psadil1@jh.edu" }]
 dependencies = [
   "ancpbids",
   "click",
@@ -65,7 +57,7 @@ fmt = ["black {args:.}", "ruff --fix {args:.}", "style"]
 all = ["style", "typing"]
 
 [tool.black]
-target-version = ["py37"]
+target-version = ["py312"]
 line-length = 80
 skip-string-normalization = true
 

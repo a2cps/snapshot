@@ -5,7 +5,7 @@
 ROOT=/corral-secure/projects/A2CPS/products/mris
 TARGET=/corral-secure/projects/A2CPS/shared/psadil/jobs/release/products/mris
 SITES=(NS_northshore SH_spectrum_health UC_uchicago UI_uic UM_umichigan WS_wayne_state)
-APPS=(bids cat12 fmriprep mriqc qsiprep)
+APPS=(bids brainager cat12 fcn fmriprep fslanat gift_rest mriqc qsiprep-V1 signatures)
 N_SUB=2
 
 set -xu
@@ -35,9 +35,16 @@ for site in "${SITES[@]}"; do
                     ln -s "${ROOT}/${site}/${app}/${sub}/${subjob}" "${subdir}/${subjob}"
                 done
             ;;
+            qsiprep)
+                subdir="${target_app_dir}/${sub}"
+                mkdir -p "${subdir}"
+                for subjob in qsiprep eddyqc; do
+                    ln -s "${ROOT}/${site}/${app}/${sub}/${subjob}" "${subdir}/${subjob}"
+                done
+            ;;
             *)
                 ln -s "${ROOT}/${site}/${app}/${sub}" "${target_app_dir}/${sub}"
-        esac        
-    done    
+        esac
+    done
   done
 done
