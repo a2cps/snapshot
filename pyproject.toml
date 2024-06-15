@@ -12,7 +12,6 @@ license = "MIT"
 keywords = []
 authors = [{ name = "Patrick Sadil", email = "psadil1@jh.edu" }]
 dependencies = [
-  "ancpbids",
   "click",
   "datalad",
   "ibis-framework[duckdb]",
