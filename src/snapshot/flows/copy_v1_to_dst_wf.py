@@ -67,8 +67,28 @@ def main(inroot: Path, outroot: Path, max_workers: int | None = None) -> None:
 
         # get list of subjects that are present in the input
         # directory but which won't be included in release
+        # this pattern covers:
+
         subs_to_exclude = set()
-        for file in injobdir.glob("sub-*"):
+        match job:
+            case (
+                "bids"
+                | "fmriprep-anat"
+                | "fmriprep-cuff"
+                | "fmriprep-rest"
+                | "freesurfer"
+                | "fslanat"
+                | "mriqc"
+                | "gift_rest"
+                | "qsiprep-V1"
+                | "eddyqc"
+            ):
+                generator = injobdir.glob("sub-*")
+            case "cat12":
+                generator = injobdir.glob("report/catreport_sub-*pdf")
+            case "fcn" | "signatures":
+                generator = injobdir.glob("*cleaned/sub-*")
+        for file in generator:
             sub = int(utils._get_sub(file))
             if sub not in records:
                 subs_to_exclude.add(sub)
