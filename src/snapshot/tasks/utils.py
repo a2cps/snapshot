@@ -398,3 +398,8 @@ def clean_sidecars(root: Path) -> None:
             if data.get(field):
                 del data[field]
         sidecar.write_text(json.dumps(data, indent=2, sort_keys=True))
+
+
+def write_release_notes(outroot: Path) -> None:
+    release_notes = datasets.get_release_notes(version="1.1")
+    shutil.copyfile(release_notes, outroot / "A2CPS_Release_1.1_Notes.docx")
