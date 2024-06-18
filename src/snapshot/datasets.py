@@ -108,14 +108,14 @@ def get_signature_rawdata_json() -> Path:
 
 def get_ilog() -> Path:
     with resources.path(
-        "snapshot.data", "imaging-log-20230927T010002Z.csv"
+        "snapshot.data", "imaging-log-20240618T010003Z.csv"
     ) as f:
         data_file_path = f
     return data_file_path
 
 
 def get_qclog() -> Path:
-    with resources.path("snapshot.data", "qc-log-20230927T010002Z.csv") as f:
+    with resources.path("snapshot.data", "qc-log-20240618T010003Z.csv") as f:
         data_file_path = f
     return data_file_path
 
