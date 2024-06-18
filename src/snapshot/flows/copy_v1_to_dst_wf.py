@@ -139,3 +139,4 @@ def main(inroot: Path, outroot: Path, max_workers: int | None = None) -> None:
     )
     utils.write_fcn_jsons(outroot=outroot)
     utils.write_signatures_jsons(outroot=outroot)
+    utils.write_release_notes(outroot=outroot)

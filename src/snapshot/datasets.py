@@ -17,7 +17,7 @@ def get_applied_pressures() -> Path:
 
 
 def get_readme() -> Path:
-    with resources.path("snapshot.data", "README") as f:
+    with resources.path("snapshot.data", "README.md") as f:
         data_file_path = f
     return data_file_path
 
@@ -158,5 +158,13 @@ def get_cat12_json() -> Path:
 
 def get_sessions_json() -> Path:
     with resources.path("snapshot.data", "sessions.json") as f:
+        data_file_path = f
+    return data_file_path
+
+
+def get_release_notes(version: str) -> Path:
+    with resources.path(
+        "snapshot.data", f"A2CPS_Release_{version}_Notes.docx"
+    ) as f:
         data_file_path = f
     return data_file_path
