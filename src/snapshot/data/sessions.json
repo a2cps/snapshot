@@ -9,7 +9,7 @@
     },
     "acquisition_week": {
         "LongName": "Acquisition Week",
-        "Description": "The Monday that preceded the scanning session."
+        "Description": "Monday of week (Mon-Sun) of surgery."
     },
     "t1_tech_rating": {
         "LongName": "T1 Technologist Rating",
