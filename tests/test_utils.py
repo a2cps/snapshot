@@ -2,6 +2,7 @@ import json
 import typing
 from pathlib import Path
 
+from snapshot import datasets
 from snapshot.tasks import utils
 
 
@@ -12,9 +13,7 @@ def test_write_fcn_jsons(tmp_path: Path) -> None:
     confounds = (
         tmp_path / "derivatives" / "fcn" / "connectivity-confounds.json"
     ).exists()
-    connectivity = (
-        tmp_path / "derivatives" / "fcn" / "connectivity.json"
-    ).exists()
+    connectivity = (tmp_path / "derivatives" / "fcn" / "connectivity.json").exists()
 
     assert all([acompcor, confounds, connectivity])
 
@@ -22,15 +21,9 @@ def test_write_fcn_jsons(tmp_path: Path) -> None:
 def test_write_signatures_jsons(tmp_path: Path) -> None:
     (tmp_path / "derivatives" / "signatures").mkdir(parents=True)
     utils.write_signatures_jsons(tmp_path)
-    part = (
-        tmp_path / "derivatives" / "signatures" / "signature-by-part.json"
-    ).exists()
-    run = (
-        tmp_path / "derivatives" / "signatures" / "signature-by-run.json"
-    ).exists()
-    tr = (
-        tmp_path / "derivatives" / "signatures" / "signature-by-tr.json"
-    ).exists()
+    part = (tmp_path / "derivatives" / "signatures" / "signature-by-part.json").exists()
+    run = (tmp_path / "derivatives" / "signatures" / "signature-by-run.json").exists()
+    tr = (tmp_path / "derivatives" / "signatures" / "signature-by-tr.json").exists()
     confounds = (
         tmp_path / "derivatives" / "signatures" / "signature-confounds.json"
     ).exists()
@@ -57,12 +50,8 @@ def test_clean_sidecars(tmp_path: Path) -> None:
 
     file_with_institution_name = tmp_path / "sub-00_T1w.json"
     file_without_institution_name = tmp_path / "sub-01_T1w.json"
-    file_with_institution_name.write_text(
-        json.dumps(data_with_institution_name)
-    )
-    file_without_institution_name.write_text(
-        json.dumps(data_without_institution_name)
-    )
+    file_with_institution_name.write_text(json.dumps(data_with_institution_name))
+    file_without_institution_name.write_text(json.dumps(data_without_institution_name))
 
     utils.clean_sidecars(tmp_path)
 
@@ -82,3 +71,24 @@ def test_clean_sidecars(tmp_path: Path) -> None:
     ]
 
     assert all(no_institutionname + no_institutionname)
+
+
+def test_write_participants(tmp_path: Path):
+    participants = tmp_path / "participants.tsv"
+    utils.write_participants(datasets.get_v1_recordids(), participants.parent)
+
+    assert participants.exists()
+
+
+def test_write_sessions(tmp_path: Path):
+    dst = tmp_path / "sessions.json"
+    utils.write_sessions(dst.parent)
+
+    assert dst.exists()
+
+
+def test_write_readme(tmp_path: Path):
+    dst = tmp_path / "README"
+    utils.write_readme(dst.parent)
+
+    assert dst.exists()
