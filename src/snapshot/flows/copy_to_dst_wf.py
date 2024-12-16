@@ -79,6 +79,7 @@ def main(
         match job:
             case (
                 "bids"
+                | "brainager"
                 | "fmriprep"
                 | "freesurfer"
                 | "fslanat"
