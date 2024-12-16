@@ -125,7 +125,7 @@ def update_scans(outdir: Path) -> None:
     )
     for scanstsv in outdir.rglob("*sub*scans.tsv"):
         scans = (
-            pl.read_csv(scanstsv, null_values=NULLS)
+            pl.read_csv(scanstsv, null_values=NULLS, separator="\t")
             .select("filename")
             .with_columns(
                 sub=pl.col("filename").str.extract(r"\d{5}", 0).cast(pl.Int64),
@@ -231,7 +231,9 @@ def write_fslanat_tables_and_jsons(
     inroot: Path, outroot: Path, records: typing.Collection[int]
 ) -> None:
     df = (
-        pl.read_csv(inroot / "fslanat" / "fslanat.tsv", null_values=NULLS)
+        pl.read_csv(
+            inroot / "fslanat" / "fslanat.tsv", null_values=NULLS, separator="\t"
+        )
         .filter(pl.col("ses").str.contains("V1"))
         .filter(pl.col("sub").is_in(records))
     )
