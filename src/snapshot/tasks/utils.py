@@ -188,7 +188,7 @@ def write_cat12_tables_and_jsons(
 ) -> None:
     df = (
         pl.read_csv(
-            inroot / "cat12" / "cluster_volumes.tsv", separator=r"\t", null_values=NULLS
+            inroot / "cat12" / "cluster_volumes.tsv", separator="\t", null_values=NULLS
         )
         .filter(pl.col("ses").str.contains("V1"))
         .filter(pl.col("sub").is_in(records))
@@ -205,7 +205,9 @@ def write_freesurfer_tables_and_jsons(
 ) -> None:
     for tbl in ["aparc", "aseg", "headers"]:
         df = (
-            pl.read_csv(inroot / "freesurfer" / f"{tbl}.tsv", null_values=NULLS)
+            pl.read_csv(
+                inroot / "freesurfer" / f"{tbl}.tsv", null_values=NULLS, separator="\t"
+            )
             .filter(pl.col("ses").str.contains("V1"))
             .filter(pl.col("sub").is_in(records))
         )
