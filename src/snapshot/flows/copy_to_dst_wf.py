@@ -66,7 +66,7 @@ def main(
         match job:
             case "bids":
                 injobdir = inroot / job
-                outjobdir = outroot / job
+                outjobdir = outroot / "rawdata"
             case _:
                 injobdir = inroot / job
                 outjobdir = outroot / "derivatives" / job
@@ -128,13 +128,15 @@ def main(
         # handle top-level stuff
         match job:
             case "bids":
-                shutil.copy2(datasets.get_dataset_description_json(), outroot / "bids")
-                utils.write_participants(records=records, outdir=outroot / "bids")
-                utils.write_sessions(outdir=outroot / "bids")
-                utils.update_scans(outdir=outroot / "bids")
-                utils.write_events(outdir=outroot / "bids")
-                utils.write_readme(outdir=outroot / "bids")
-                utils.clean_sidecars(root=outroot / "bids")
+                shutil.copy2(
+                    datasets.get_dataset_description_json(), outroot / "rawdata"
+                )
+                utils.write_participants(records=records, outdir=outroot / "rawdata")
+                utils.write_sessions(outdir=outroot / "rawdata")
+                utils.update_scans(outdir=outroot / "rawdata")
+                utils.write_events(outdir=outroot / "rawdata")
+                utils.write_readme(outdir=outroot / "rawdata")
+                utils.clean_sidecars(root=outroot / "rawdata")
                 utils.write_release_notes(outroot=outroot)
             case "freesurfer":
                 utils.write_freesurfer_tables_and_jsons(
