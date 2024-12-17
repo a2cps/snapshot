@@ -6,7 +6,7 @@ import polars as pl
 
 def get_v1_recordids() -> list[int]:
     with resources.as_file(
-        resources.files("snapshot.data").joinpath("DataFreeze_1_022823.csv")
+        resources.files("snapshot.data").joinpath("DataFreeze_2_022924.csv")
     ) as f:
         record_ids = pl.read_csv(f).select(pl.col("record_id")).to_series().to_list()
     return record_ids
@@ -138,7 +138,7 @@ def get_signature_rawdata_json() -> Path:
 
 def get_ilog() -> Path:
     with resources.as_file(
-        resources.files("snapshot.data").joinpath("imaging-log-20240618T010003Z.csv")
+        resources.files("snapshot.data").joinpath("imaging-log-20241217T010003Z.csv")
     ) as f:
         data_file_path = f
     return data_file_path
@@ -146,7 +146,7 @@ def get_ilog() -> Path:
 
 def get_qclog() -> Path:
     with resources.as_file(
-        resources.files("snapshot.data").joinpath("qc-log-20240618T010003Z.csv")
+        resources.files("snapshot.data").joinpath("qc-log-20241217T010003Z.csv")
     ) as f:
         data_file_path = f
     return data_file_path
@@ -154,7 +154,7 @@ def get_qclog() -> Path:
 
 def get_demographics() -> Path:
     with resources.as_file(
-        resources.files("snapshot.data").joinpath("demographics-2023-10-31.csv")
+        resources.files("snapshot.data").joinpath("demographics-2024-06-20.csv")
     ) as f:
         data_file_path = f
     return data_file_path
@@ -212,5 +212,11 @@ def get_release_notes(version: str) -> Path:
     with resources.as_file(
         resources.files("snapshot.data").joinpath(f"A2CPS_Release_{version}_Notes.docx")
     ) as f:
+        data_file_path = f
+    return data_file_path
+
+
+def get_guids() -> Path:
+    with resources.as_file(resources.files("snapshot.data").joinpath("guids.csv")) as f:
         data_file_path = f
     return data_file_path

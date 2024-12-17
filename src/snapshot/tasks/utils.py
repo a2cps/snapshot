@@ -51,6 +51,7 @@ def write_participants(records: typing.Collection[int], outdir: Path) -> None:
         )
         .rename({"record_id": "sub"})
     )
+    guids = pl.read_csv(datasets.get_guids())
     tbl = (
         pl.read_csv(datasets.get_ilog(), null_values=NULLS)
         .select("site", sub="subject_id", ses="visit")
@@ -58,6 +59,7 @@ def write_participants(records: typing.Collection[int], outdir: Path) -> None:
         .filter(pl.col("sub").is_in(records))
         .join(demographics, on="sub", how="left")
         .select("sub")
+        .join(guids, on="sub", how="left")
     )
     to_bids_tsv(tbl, dst=outdir / "participants.tsv")
 
