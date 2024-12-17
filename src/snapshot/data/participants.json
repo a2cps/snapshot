@@ -6,15 +6,15 @@
     },
     "site": {
         "LongName": "Site",
-        "Description": "Code indicating the site at which data were collected. See also scanner field in *sessions.tsv.",
+        "Description": "Code indicating the site at which data were collected.",
         "Levels": {
-            "NS": "Endeavor Health",
-            "RU": "Rush University",
-            "SH": "Corewell Health",
-            "UC": "University of Chicago",
-            "UI": "University of Illinois at Chicago",
-            "UM": "University of Michigan",
-            "WS": "Wayne State University"
+            "NS": "MCC1: NorthShore University HealthSystem",
+            "RU": "MCC1: Rush University Medical Center",
+            "SH": "MCC2: Spectrum Health",
+            "UC": "MCC1: The University of Chicago Medical Center",
+            "UI": "MCC1: Institute for Translational Medicine",
+            "UM": "MCC2: University of Michigan",
+            "WS": "MCC2: Wayne State"
         },
         "TermURL": "https://a2cps.atlassian.net/wiki/spaces/DOC/pages/5406782/Site+Specific+Information"
     },
