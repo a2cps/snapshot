@@ -1,7 +1,12 @@
 {
     "session_id": {
         "LongName": "Session ID",
-        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/glossary.html#objects.columns.session_id"
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/glossary.html#objects.columns.session_id",
+        "Description": "Visit, Protocol, BIDS Session ID",
+        "Levels": {
+            "ses-V1": "baseline_visit",
+            "ses-V3": "3mo_postop"
+        }
     },
     "face_mask": {
         "LongName": "Mask Status",

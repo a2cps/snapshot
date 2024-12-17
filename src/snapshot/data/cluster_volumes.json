@@ -6,10 +6,10 @@
     },
     "ses": {
         "LongName": "Session",
-        "Description": "Visit, BIDS Session ID",
+        "Description": "Visit, Protocol, BIDS Session ID",
         "Levels": {
-            "V1": "Baseline Visit",
-            "V3": "3 Month Followup Visit"
+            "V1": "baseline_visit",
+            "V3": "3mo_postop"
         },
         "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#ses"
     },
