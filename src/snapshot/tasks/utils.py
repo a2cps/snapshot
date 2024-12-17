@@ -103,6 +103,12 @@ def write_sessions(outdir: Path) -> None:
                 "Cuff Leg": "cuff_leg",
             }
         )
+        .join(
+            datasets.get_device_serial_number_tbl(),
+            how="left",
+            left_on="session_id",
+            right_on="ses",
+        )
         .with_columns(
             session_id=pl.col("session_id").str.replace("V", "ses-V"),
             face_mask=pl.col("face_mask").cast(bool),

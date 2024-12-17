@@ -1,3 +1,5 @@
+import polars as pl
+
 from snapshot import datasets
 
 
@@ -71,3 +73,7 @@ def test_get_signature_rawdata_json():
 
 def test_get_release_notes():
     assert datasets.get_release_notes("1.1").exists()
+
+
+def test_get_deviceserialnumber():
+    assert isinstance(datasets.get_device_serial_number_tbl(), pl.DataFrame)

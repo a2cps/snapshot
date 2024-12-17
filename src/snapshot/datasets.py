@@ -220,3 +220,15 @@ def get_guids() -> Path:
     with resources.as_file(resources.files("snapshot.data").joinpath("guids.csv")) as f:
         data_file_path = f
     return data_file_path
+
+
+def get_device_serial_number_file() -> Path:
+    with resources.as_file(
+        resources.files("snapshot.data").joinpath("deviceserialnumber.tsv")
+    ) as f:
+        data_file_path = f
+    return data_file_path
+
+
+def get_device_serial_number_tbl() -> pl.DataFrame:
+    return pl.read_csv(get_device_serial_number_file(), separator="\t")

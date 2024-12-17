@@ -113,19 +113,9 @@
         "LongName": "Surgery Week",
         "Description": "The Monday that preceded surgery."
     },
-    "scanner": {
-        "LongName": "Scanner",
-        "Description": "Scanner on which data were collected--similar to collection site from participants.tsv but distinguishes between the scanners within a site. Levels map to DeviceSerialNumber.",
-        "Levels": {
-            "NS": "70032",
-            "RU": "166295",
-            "SH": "66022",
-            "UC": "71399",
-            "UI": "000000312996MR3T",
-            "UM1": "0007347633TMRFIX",
-            "UM2": "000000000UM750MR",
-            "WS": "40292"
-        },
+    "deviceserialnumber": {
+        "LongName": "Device Serial Number",
+        "Description": "Serial number of scanner used to collect scans",
         "TermURL": "https://a2cps.atlassian.net/wiki/spaces/DOC/pages/5406782/Site+Specific+Information"
     },
     "cull_leg": {
