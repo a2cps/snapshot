@@ -2,6 +2,8 @@ import json
 import typing
 from pathlib import Path
 
+import polars as pl
+
 from snapshot import datasets
 from snapshot.tasks import utils
 
@@ -80,6 +82,20 @@ def test_write_participants(tmp_path: Path):
     utils.write_participants(datasets.get_recordids(), tmp_path)
 
     assert all([participants.exists(), sidecar.exists()])
+
+
+def test_participants_columns(tmp_path: Path):
+    participants = tmp_path / "participants.tsv"
+    utils.write_participants(datasets.get_recordids(), tmp_path)
+
+    sidecar: dict[str, typing.Any] = json.loads(
+        datasets.get_participants_json().read_text()
+    )
+    d = pl.read_csv(participants, separator="\t", null_values=utils.NULLS)
+    all_expected_there = all(key in d.columns for key in sidecar.keys())
+    nothing_extra = all(c in sidecar.keys() for c in d.columns)
+
+    assert all([all_expected_there, nothing_extra])
 
 
 def test_write_sessions(tmp_path: Path):
