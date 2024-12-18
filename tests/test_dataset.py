@@ -23,12 +23,12 @@ def test_get_aseg_json():
     assert datasets.get_aseg_json().exists()
 
 
-def test_get_connectivity_acompcor_json():
-    assert datasets.get_connectivity_acompcor_json().exists()
+def test_get_timeseries_json():
+    assert datasets.get_timeseries_json().exists()
 
 
-def test_get_connectivity_confounds_json():
-    assert datasets.get_connectivity_confounds_json().exists()
+def test_get_confounds_json():
+    assert datasets.get_confounds_json().exists()
 
 
 def test_get_connectivity_json():
@@ -43,32 +43,16 @@ def test_get_headers_json():
     assert datasets.get_headers_json().exists()
 
 
-def test_get_signature_bold_json():
-    assert datasets.get_signature_bold_json().exists()
-
-
 def test_get_signature_by_part_json():
-    assert datasets.get_signature_by_part_json().exists()
+    assert datasets.get_signatures_by_part_json().exists()
 
 
 def test_get_signature_by_run_json():
-    assert datasets.get_signature_by_run_json().exists()
+    assert datasets.get_signatures_by_run_json().exists()
 
 
 def test_get_signature_by_tr_json():
-    assert datasets.get_signature_by_tr_json().exists()
-
-
-def test_get_signature_confounds_json():
-    assert datasets.get_signature_confounds_json().exists()
-
-
-def test_get_signature_labels_json():
-    assert datasets.get_signature_labels_json().exists()
-
-
-def test_get_signature_rawdata_json():
-    assert datasets.get_signature_rawdata_json().exists()
+    assert datasets.get_signatures_by_tr_json().exists()
 
 
 def test_get_release_notes():

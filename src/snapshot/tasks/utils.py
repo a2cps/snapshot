@@ -258,43 +258,47 @@ def write_fslanat_tables_and_jsons(
 
 def write_fcn_jsons(outroot: Path) -> None:
     shutil.copy2(
-        datasets.get_connectivity_acompcor_json(),
-        outroot / "derivatives" / "fcn" / "acompcor.json",
-    )
-    shutil.copy2(
-        datasets.get_connectivity_confounds_json(),
-        outroot / "derivatives" / "fcn" / "connectivity-confounds.json",
+        datasets.get_confounds_json(),
+        outroot / "derivatives" / "fcn" / "confounds.json",
     )
     shutil.copy2(
         datasets.get_connectivity_json(),
         outroot / "derivatives" / "fcn" / "connectivity.json",
     )
+    shutil.copy2(
+        datasets.get_timeseries_json(),
+        outroot / "derivatives" / "fcn" / "timeseries.json",
+    )
 
 
 def write_signatures_jsons(outroot: Path) -> None:
     shutil.copy2(
-        datasets.get_signature_by_part_json(),
-        outroot / "derivatives" / "signatures" / "signature-by-part.json",
+        datasets.get_signatures_by_part_json(),
+        outroot / "derivatives" / "signatures" / "signatures-by-part.json",
     )
     shutil.copy2(
-        datasets.get_signature_by_run_json(),
-        outroot / "derivatives" / "signatures" / "signature-by-run.json",
+        datasets.get_signatures_by_run_json(),
+        outroot / "derivatives" / "signatures" / "signatures-by-run.json",
     )
     shutil.copy2(
-        datasets.get_signature_by_tr_json(),
-        outroot / "derivatives" / "signatures" / "signature-by-tr.json",
+        datasets.get_signatures_by_tr_json(),
+        outroot / "derivatives" / "signatures" / "signatures-by-tr.json",
     )
     shutil.copy2(
-        datasets.get_signature_confounds_json(),
-        outroot / "derivatives" / "signatures" / "signature-confounds.json",
+        datasets.get_confounds_json(),
+        outroot / "derivatives" / "signatures" / "confounds.json",
     )
     shutil.copy2(
-        datasets.get_signature_labels_json(),
-        outroot / "derivatives" / "signatures" / "signature-labels.json",
+        datasets.get_signatures_by_part_diff_json(),
+        outroot / "derivatives" / "signatures" / "signatures-by-part-diff.json",
     )
     shutil.copy2(
-        datasets.get_signature_rawdata_json(),
-        outroot / "derivatives" / "signatures" / "signature-rawdata.json",
+        datasets.get_signatures_by_run_diff_json(),
+        outroot / "derivatives" / "signatures" / "signatures-by-run-diff.json",
+    )
+    shutil.copy2(
+        datasets.get_signatures_by_tr_diff_json(),
+        outroot / "derivatives" / "signatures" / "signatures-by-tr-diff.json",
     )
 
 
