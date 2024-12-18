@@ -115,6 +115,9 @@ def write_sessions(outdir: Path) -> None:
             cuff_contraindicated=pl.col("cuff_contraindicated").cast(bool),
             acquisition_week=pl.col("acquisition_week").str.to_datetime("%Y-%m-%d"),
             surgery_week=pl.col("surgery_week").str.to_datetime("%Y-%m-%d"),
+            protocol_name=pl.when(pl.col("session_id") == "ses-V1")
+            .then("baseline_visit")
+            .otherwise("3mo_postop"),
         )
         .drop("sub")
     )

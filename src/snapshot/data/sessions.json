@@ -125,5 +125,13 @@
             "Left": "Left",
             "Right": "Right"
         }
+    },
+    "protocol_name": {
+        "LongName": "Protocol Name",
+        "Description": "A2CPS visit identifier. There is a one-to-one relationship between session_id and protocol_name. Other modalities use protocol_name terminology.",
+        "Levels": {
+            "baseline_visit": "ses-V1",
+            "3mo_postop": "ses-V3"
+        }
     }
 }
