@@ -118,7 +118,7 @@
         "Description": "Serial number of scanner used to collect scans",
         "TermURL": "https://a2cps.atlassian.net/wiki/spaces/DOC/pages/5406782/Site+Specific+Information"
     },
-    "cull_leg": {
+    "cuff_leg": {
         "LongName": "Cuff Leg",
         "Description": "Leg on which cuff pressure was applied. In TKA patients, this is the leg that is not receiving surgery.",
         "Levels": {

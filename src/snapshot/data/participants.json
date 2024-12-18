@@ -9,20 +9,6 @@
         "Description": "Globally Unique ID to locate participants within the NIMH Data Archive. This is also useful for linking participants within A2CPS across modalities.",
         "TermURL": "https://nda.nih.gov/nda/nda-tools"
     },
-    "site": {
-        "LongName": "Site",
-        "Description": "Code indicating the site at which data were collected.",
-        "Levels": {
-            "NS": "MCC1: NorthShore University HealthSystem",
-            "RU": "MCC1: Rush University Medical Center",
-            "SH": "MCC2: Spectrum Health",
-            "UC": "MCC1: The University of Chicago Medical Center",
-            "UI": "MCC1: Institute for Translational Medicine",
-            "UM": "MCC2: University of Michigan",
-            "WS": "MCC2: Wayne State"
-        },
-        "TermURL": "https://a2cps.atlassian.net/wiki/spaces/DOC/pages/5406782/Site+Specific+Information"
-    },
     "sex": {
         "LongName": "Sex",
         "Description": "Reported sex of the participant",

@@ -54,11 +54,14 @@ def write_participants(records: typing.Collection[int], outdir: Path) -> None:
     guids = pl.read_csv(datasets.get_guids())
     tbl = (
         pl.read_csv(datasets.get_ilog(), null_values=NULLS)
-        .select("site", sub="subject_id", ses="visit")
+        .select(participant_id="subject_id", ses="visit")
         .filter(pl.col("ses").str.contains("V1"))
         .filter(pl.col("sub").is_in(records))
         .join(demographics, on="sub", how="left")
-        .select("sub")
+        .with_columns(
+            participant_id=pl.concat_str(pl.lit("sub-"), pl.col("participant_id"))
+        )
+        .select("participant_id", "sex", "age", "handedness", "guid")
         .join(guids, on="sub", how="left")
     )
     to_bids_tsv(tbl, dst=outdir / "participants.tsv")
@@ -67,42 +70,40 @@ def write_participants(records: typing.Collection[int], outdir: Path) -> None:
 
 
 def write_sessions(outdir: Path) -> None:
+    mappings = {
+        "visit": "session_id",
+        "subject_id": "sub",
+        "Face Mask": "face_mask",
+        "acquisition_week": "acquisition_week",
+        "fMRI T1 Tech Rating": "t1_tech_rating",
+        "Cuff1 QST Pressure": "cuff1_pressure_from_qst",
+        "Cuff1 Recalibrated Pressure": "cuff1_recalibrated_pressure",
+        "Cuff1 Applied Pressure": "cuff1_applied_pressure",
+        "Surgical site pain rest": "surgical_site_pain_rest",
+        "Body pain rest": "body_pain_rest",
+        "Surgical site pain after first scan": "surgical_site_pain_after_first_scan",
+        "Body pain after first scan": "body_pain_after_first_scan",
+        "Cuff pain after first scan": "cuff_pain_after_first_scan",
+        "Cuff pain cuff1 beginning": "cuff_pain_cuff1_beginning",
+        "Cuff pain cuff1 middle": "cuff_pain_cuff1_middle",
+        "Cuff pain cuff1 end": "cuff_pain_cuff1_end",
+        "Cuff pain cuff2 beginning": "cuff_pain_cuff2_beginning",
+        "Cuff pain cuff2 middle": "cuff_pain_cuff2_middle",
+        "Cuff pain cuff2 end": "cuff_pain_cuff2_end",
+        "Cuff pain rest beginning": "cuff_pain_rest_beginning",
+        "Cuff pain rest middle": "cuff_pain_rest_middle",
+        "Cuff pain rest end": "cuff_pain_rest_end",
+        "Surgical site pain after last scan": "surgical_site_pain_after_last_scan",
+        "Body pain after last scan": "body_pain_after_last_scan",
+        "Cuff contraindicated": "cuff_contraindicated",
+        "Surgery Week": "surgery_week",
+        "Cuff Leg": "cuff_leg",
+    }
     ilog = (
         pl.read_csv(datasets.get_ilog(), null_values=NULLS)
         .filter(pl.col("visit").str.contains("V1"))
-        .rename(
-            {
-                "visit": "session_id",
-                "site": "site",
-                "subject_id": "sub",
-                "Face Mask": "face_mask",
-                "Magnet Name": "magnet",
-                "acquisition_week": "acquisition_week",
-                "fMRI T1 Tech Rating": "t1_tech_rating",
-                "Cuff1 QST Pressure": "cuff1_pressure_from_qst",
-                "Cuff1 Recalibrated Pressure": "cuff1_recalibrated_pressure",
-                "Cuff1 Applied Pressure": "cuff1_applied_pressure",
-                "Surgical site pain rest": "surgical_site_pain_rest",
-                "Body pain rest": "body_pain_rest",
-                "Surgical site pain after first scan": "surgical_site_pain_after_first_scan",
-                "Body pain after first scan": "body_pain_after_first_scan",
-                "Cuff pain after first scan": "cuff_pain_after_first_scan",
-                "Cuff pain cuff1 beginning": "cuff_pain_cuff1_beginning",
-                "Cuff pain cuff1 middle": "cuff_pain_cuff1_middle",
-                "Cuff pain cuff1 end": "cuff_pain_cuff1_end",
-                "Cuff pain cuff2 beginning": "cuff_pain_cuff2_beginning",
-                "Cuff pain cuff2 middle": "cuff_pain_cuff2_middle",
-                "Cuff pain cuff2 end": "cuff_pain_cuff2_end",
-                "Cuff pain rest beginning": "cuff_pain_rest_beginning",
-                "Cuff pain rest middle": "cuff_pain_rest_middle",
-                "Cuff pain rest end": "cuff_pain_rest_end",
-                "Surgical site pain after last scan": "surgical_site_pain_after_last_scan",
-                "Body pain after last scan": "body_pain_after_last_scan",
-                "Cuff contraindicated": "cuff_contraindicated",
-                "Surgery Week": "surgery_week",
-                "Cuff Leg": "cuff_leg",
-            }
-        )
+        .rename(mappings)
+        .select(mappings.values())
         .join(
             datasets.get_device_serial_number_tbl(),
             how="left",
@@ -114,7 +115,7 @@ def write_sessions(outdir: Path) -> None:
             face_mask=pl.col("face_mask").cast(bool),
             cuff_contraindicated=pl.col("cuff_contraindicated").cast(bool),
         )
-        .drop("site", "magnet")
+        .drop("sub")
     )
 
     # look at parents of ses* dir rather than simply sub* because there may
