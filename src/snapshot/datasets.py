@@ -10,7 +10,7 @@ def get_data(file: str) -> Path:
     return out
 
 
-def get_v1_recordids() -> list[int]:
+def get_recordids() -> list[int]:
     f = get_data("DataFreeze_2_022924.csv")
     record_ids = pl.read_csv(f).select(pl.col("record_id")).to_series().to_list()
     return record_ids
@@ -85,7 +85,7 @@ def get_qclog() -> Path:
 
 
 def get_demographics() -> Path:
-    return get_data("demographics-2024-06-20.csv")
+    return get_data("demographics-2024-11-06.csv")
 
 
 def get_events_json() -> Path:

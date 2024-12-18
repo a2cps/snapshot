@@ -54,15 +54,14 @@ def write_participants(records: typing.Collection[int], outdir: Path) -> None:
     guids = pl.read_csv(datasets.get_guids())
     tbl = (
         pl.read_csv(datasets.get_ilog(), null_values=NULLS)
-        .select(participant_id="subject_id", ses="visit")
+        .select(sub="subject_id", ses="visit")
         .filter(pl.col("ses").str.contains("V1"))
         .filter(pl.col("sub").is_in(records))
         .join(demographics, on="sub", how="left")
-        .with_columns(
-            participant_id=pl.concat_str(pl.lit("sub-"), pl.col("participant_id"))
-        )
-        .select("participant_id", "sex", "age", "handedness", "guid")
         .join(guids, on="sub", how="left")
+        .with_columns(participant_id=pl.concat_str(pl.lit("sub-"), pl.col("sub")))
+        .drop("sub")
+        .select("participant_id", "sex", "age", "handedness", "guid")
     )
     to_bids_tsv(tbl, dst=outdir / "participants.tsv")
 

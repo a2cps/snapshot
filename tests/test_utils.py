@@ -9,32 +9,33 @@ from snapshot.tasks import utils
 def test_write_fcn_jsons(tmp_path: Path) -> None:
     (tmp_path / "derivatives" / "fcn").mkdir(parents=True)
     utils.write_fcn_jsons(tmp_path)
-    acompcor = (tmp_path / "derivatives" / "fcn" / "acompcor.json").exists()
-    confounds = (
-        tmp_path / "derivatives" / "fcn" / "connectivity-confounds.json"
-    ).exists()
+    confounds = (tmp_path / "derivatives" / "fcn" / "confounds.json").exists()
     connectivity = (tmp_path / "derivatives" / "fcn" / "connectivity.json").exists()
+    timeseries = (tmp_path / "derivatives" / "fcn" / "timeseries.json").exists()
 
-    assert all([acompcor, confounds, connectivity])
+    assert all([confounds, connectivity, timeseries])
 
 
 def test_write_signatures_jsons(tmp_path: Path) -> None:
     (tmp_path / "derivatives" / "signatures").mkdir(parents=True)
     utils.write_signatures_jsons(tmp_path)
-    part = (tmp_path / "derivatives" / "signatures" / "signature-by-part.json").exists()
-    run = (tmp_path / "derivatives" / "signatures" / "signature-by-run.json").exists()
-    tr = (tmp_path / "derivatives" / "signatures" / "signature-by-tr.json").exists()
-    confounds = (
-        tmp_path / "derivatives" / "signatures" / "signature-confounds.json"
+    part = (
+        tmp_path / "derivatives" / "signatures" / "signatures-by-part.json"
     ).exists()
-    labels = (
-        tmp_path / "derivatives" / "signatures" / "signature-labels.json"
+    run = (tmp_path / "derivatives" / "signatures" / "signatures-by-run.json").exists()
+    tr = (tmp_path / "derivatives" / "signatures" / "signatures-by-tr.json").exists()
+    confounds = (tmp_path / "derivatives" / "signatures" / "confounds.json").exists()
+    part_diff = (
+        tmp_path / "derivatives" / "signatures" / "signatures-by-part-diff.json"
     ).exists()
-    rawdata = (
-        tmp_path / "derivatives" / "signatures" / "signature-rawdata.json"
+    run_diff = (
+        tmp_path / "derivatives" / "signatures" / "signatures-by-run-diff.json"
+    ).exists()
+    tr_diff = (
+        tmp_path / "derivatives" / "signatures" / "signatures-by-tr-diff.json"
     ).exists()
 
-    assert all([part, run, tr, confounds, labels, rawdata])
+    assert all([part, run, tr, part_diff, run_diff, tr_diff, confounds])
 
 
 def test_clean_sidecars(tmp_path: Path) -> None:
@@ -75,9 +76,10 @@ def test_clean_sidecars(tmp_path: Path) -> None:
 
 def test_write_participants(tmp_path: Path):
     participants = tmp_path / "participants.tsv"
-    utils.write_participants(datasets.get_v1_recordids(), participants.parent)
+    sidecar = tmp_path / "participants.json"
+    utils.write_participants(datasets.get_recordids(), tmp_path)
 
-    assert participants.exists()
+    assert all([participants.exists(), sidecar.exists()])
 
 
 def test_write_sessions(tmp_path: Path):

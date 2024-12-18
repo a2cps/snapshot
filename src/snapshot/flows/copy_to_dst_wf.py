@@ -61,7 +61,7 @@ def main(
     max_workers: int | None = None,
     jobs_to_copy: typing.Sequence[jobs.STORE_DIR] = jobs.STORE_DIRS,
 ) -> None:
-    records = datasets.get_v1_recordids()
+    records = datasets.get_recordids()
     for job in jobs_to_copy:
         match job:
             case "bids":

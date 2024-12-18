@@ -4,7 +4,7 @@ from snapshot import datasets
 
 
 def test_get_v1_recordids():
-    assert isinstance(datasets.get_v1_recordids(), list)
+    assert isinstance(datasets.get_recordids(), list)
 
 
 def test_get_applied_pressures():
