@@ -8,3 +8,5 @@ grep DeviceSerialNumber sub*/ses*/anat/*json \
     | sed 's@/.*:[[:space:]]*@\t@' \
     | sed 's/"//' \
     | sed 's/"//'
+
+# Note: NS10427V1 doesn't have a DeviceSerialNumber in json sidecars. needs to be added manually (70032)
