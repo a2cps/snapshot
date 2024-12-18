@@ -13,13 +13,13 @@ from snapshot import datasets
 NULLS = ["", "na", "n/a"]
 
 # https://bids-specification.readthedocs.io/en/v1.9.0/common-principles.html#units
-DATE_FORMAT = "%Y-%m-%d%H:%M:%S"
+DATETIME_FORMAT = "%Y-%m-%d%H:%M:%S"
 
 SIDECAR_FIELDS_TO_REMOVE = ["InstitutionAddress"]
 
 
 def to_bids_tsv(d: pl.DataFrame, dst: Path) -> None:
-    d.write_csv(dst, separator="\t", null_value="n/a", date_format=DATE_FORMAT)
+    d.write_csv(dst, separator="\t", null_value="n/a", datetime_format=DATETIME_FORMAT)
 
 
 def _get_entity(f: Path, pattern: str) -> str:
@@ -114,6 +114,8 @@ def write_sessions(outdir: Path) -> None:
             session_id=pl.col("session_id").str.replace("V", "ses-V"),
             face_mask=pl.col("face_mask").cast(bool),
             cuff_contraindicated=pl.col("cuff_contraindicated").cast(bool),
+            acquisition_week=pl.col("acquisition_week").str.to_datetime("%Y-%m-%d"),
+            surgery_week=pl.col("surgery_week").str.to_datetime("%Y-%m-%d"),
         )
         .drop("sub")
     )
