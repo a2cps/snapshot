@@ -1,5 +1,5 @@
-2.0.0 2025-01-07
-- NDA GUIDs added to participants.tsv
+2.0.0 2025-01-14
+- REDCap GUIDs added to participants.tsv
 - Fixed "sex" column in participants.json (added missing category "other")
 - Removed "site" information from participants.tsv (available in other A2CPS modalities)
 - Added "protocol_name" information to *sessions.tsv (similar to session_id, but useful for merging with other modalities)

@@ -40,7 +40,7 @@ def _get_ses(f: Path) -> str:
 def write_participants(records: typing.Collection[int], outdir: Path) -> None:
     demographics = (
         pl.read_csv(datasets.get_demographics(), null_values=NULLS)
-        .select("record_id", "sex", "age", "dom_hand")
+        .select("record_id", "sex", "age", "dom_hand", "guid")
         .with_columns(
             sex=pl.col("sex").replace_strict(
                 {1: "male", 2: "female", 3: "n/a", 4: "other"}
@@ -51,14 +51,12 @@ def write_participants(records: typing.Collection[int], outdir: Path) -> None:
         )
         .rename({"record_id": "sub"})
     )
-    guids = pl.read_csv(datasets.get_guids())
     tbl = (
         pl.read_csv(datasets.get_ilog(), null_values=NULLS)
         .select(sub="subject_id", ses="visit")
         .filter(pl.col("ses").str.contains("V1"))
         .filter(pl.col("sub").is_in(records))
         .join(demographics, on="sub", how="left")
-        .join(guids, on="sub", how="left")
         .with_columns(participant_id=pl.concat_str(pl.lit("sub-"), pl.col("sub")))
         .drop("sub")
         .select("participant_id", "sex", "age", "handedness", "guid")

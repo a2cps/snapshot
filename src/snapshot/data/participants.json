@@ -5,9 +5,8 @@
         "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/glossary.html#participant_id-columns"
     },
     "guid": {
-        "LongName": "NDA Pseudo-GUID",
-        "Description": "Globally Unique ID to locate participants within the NIMH Data Archive. This is also useful for linking participants within A2CPS across modalities.",
-        "TermURL": "https://nda.nih.gov/nda/nda-tools"
+        "LongName": "REDCap GUID",
+        "Description": "Globally Unique ID from REDCap. This is also useful for linking participants within A2CPS across modalities."
     },
     "sex": {
         "LongName": "Sex",
