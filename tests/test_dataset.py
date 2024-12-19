@@ -15,6 +15,10 @@ def test_get_readme():
     assert datasets.get_readme().exists()
 
 
+def test_get_changes():
+    assert datasets.get_changes().exists()
+
+
 def test_get_aparc_json():
     assert datasets.get_aparc_json().exists()
 

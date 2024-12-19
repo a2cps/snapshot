@@ -110,3 +110,10 @@ def test_write_readme(tmp_path: Path):
     utils.write_readme(dst.parent)
 
     assert dst.exists()
+
+
+def test_write_changes(tmp_path: Path):
+    dst = tmp_path / "CHANGES"
+    utils.write_changes(dst.parent)
+
+    assert dst.exists()

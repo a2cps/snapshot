@@ -114,8 +114,8 @@ def write_sessions(outdir: Path) -> None:
             acquisition_week=pl.col("acquisition_week").str.to_datetime("%Y-%m-%d"),
             surgery_week=pl.col("surgery_week").str.to_datetime("%Y-%m-%d"),
             protocol_name=pl.when(pl.col("session_id") == "ses-V1")
-            .then("baseline_visit")
-            .otherwise("3mo_postop"),
+            .then(pl.lit("baseline_visit"))
+            .otherwise(pl.lit("3mo_postop")),
         )
         .drop("sub")
     )
@@ -192,6 +192,10 @@ def write_events(outdir: Path) -> None:
 
 def write_readme(outdir: Path) -> None:
     shutil.copy2(datasets.get_readme(), outdir / "README")
+
+
+def write_changes(outdir: Path) -> None:
+    shutil.copy2(datasets.get_changes(), outdir / "CHANGES")
 
 
 def write_cat12_tables_and_jsons(

@@ -24,6 +24,10 @@ def get_readme() -> Path:
     return get_data("README.md")
 
 
+def get_changes() -> Path:
+    return get_data("CHANGES")
+
+
 def get_aparc_json() -> Path:
     return get_data("aparc.json")
 

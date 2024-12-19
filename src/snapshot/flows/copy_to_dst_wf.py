@@ -136,6 +136,7 @@ def main(
                 utils.update_scans(outdir=outroot / "rawdata")
                 utils.write_events(outdir=outroot / "rawdata")
                 utils.write_readme(outdir=outroot / "rawdata")
+                utils.write_changes(outdir=outroot / "rawdata")
                 utils.clean_sidecars(root=outroot / "rawdata")
                 utils.write_release_notes(outroot=outroot)
             case "freesurfer":
