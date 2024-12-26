@@ -117,14 +117,13 @@ def write_sessions(outdir: Path) -> None:
             .then(pl.lit("baseline_visit"))
             .otherwise(pl.lit("3mo_postop")),
         )
-        .drop("sub")
     )
 
     # look at parents of ses* dir rather than simply sub* because there may
     # be files that match sub* at the top level
     for sesdir in outdir.glob("sub*/ses*"):
         sub = int(_get_sub(sesdir))
-        session = ilog.filter(pl.col("sub") == sub)
+        session = ilog.filter(pl.col("sub") == sub).drop("sub")
         to_bids_tsv(session, dst=sesdir.parent / f"sub-{sub}_sessions.tsv")
 
     shutil.copy2(datasets.get_sessions_json(), outdir / "sessions.json")
