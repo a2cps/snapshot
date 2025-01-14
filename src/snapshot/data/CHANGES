@@ -16,7 +16,6 @@
 1.1.0 2024-06-21
 - Documentation improvements (Release Notes have been added)
 - Improvements in BIDS
-See the Release Notes document for more details.
 
 1.0.0 2023-11-15
-- Initial release
+- Initial release including A2CPS participants with surgeries completed by February 2023.
