@@ -30,7 +30,6 @@ python = ["3.12"]
 
 
 [tool.ruff]
-exclude = ["tools"]
 target-version = "py312"
 select = [
   "A",
@@ -89,6 +88,4 @@ ban-relative-imports = "all"
 "tests/**/*" = ["PLR2004", "S101", "TID252"]
 
 [dependency-groups]
-dev = [
-    "pytest>=8.3.4",
-]
+dev = ["pytest>=8.3.4"]
