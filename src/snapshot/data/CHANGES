@@ -1,0 +1,21 @@
+2.0.0 2025-02-01
+
+[Highlights]
+- Added Release 2.x.x participants: all A2CPS participants with surgeries completed by February 2024.
+
+[Fixes]
+- Fixed "sex" column in participants.json (added missing category "other")
+- Replace truncated CUFF1 with repeated, complete CUFF1 for UC10049V1
+
+[Enhancements]
+- Added "protocol_name" information to *sessions.tsv (similar to session_id, but useful for merging with other modalities)
+
+[Changes]
+- Removed "site" information from participants.tsv (available in other A2CPS modalities)
+
+1.1.0 2024-06-21
+- Documentation improvements (Release Notes have been added)
+- Improvements in BIDS
+
+1.0.0 2023-11-15
+- Initial release including A2CPS participants with surgeries completed by February 2023.

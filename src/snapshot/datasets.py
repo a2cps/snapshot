@@ -1,170 +1,132 @@
 from importlib import resources
 from pathlib import Path
 
-import pandas as pd
+import polars as pl
 
 
-def get_v1_recordids() -> list[int]:
-    with resources.path("snapshot.data", "DataFreeze_1_022823.csv") as f:
-        record_ids = pd.read_csv(f).record_id.to_list()
+def get_data(file: str) -> Path:
+    with resources.as_file(resources.files("snapshot.data").joinpath(file)) as f:
+        out = f
+    return out
+
+
+def get_recordids() -> list[int]:
+    f = get_data("DataFreeze_2_022924.csv")
+    record_ids = pl.read_csv(f).select(pl.col("record_id")).to_series().to_list()
     return record_ids
 
 
 def get_applied_pressures() -> Path:
-    with resources.path("snapshot.data", "applied_pressure.csv") as f:
-        data_file_path = f
-    return data_file_path
+    return get_data("applied_pressure.csv")
 
 
 def get_readme() -> Path:
-    with resources.path("snapshot.data", "README.md") as f:
-        data_file_path = f
-    return data_file_path
+    return get_data("README.md")
+
+
+def get_changes() -> Path:
+    return get_data("CHANGES")
 
 
 def get_aparc_json() -> Path:
-    with resources.path("snapshot.data", "aparc.json") as f:
-        data_file_path = f
-    return data_file_path
+    return get_data("aparc.json")
 
 
 def get_aseg_json() -> Path:
-    with resources.path("snapshot.data", "aseg.json") as f:
-        data_file_path = f
-    return data_file_path
+    return get_data("aseg.json")
 
 
-def get_connectivity_acompcor_json() -> Path:
-    with resources.path("snapshot.data", "connectivity-acompcor.json") as f:
-        data_file_path = f
-    return data_file_path
+def get_confounds_json() -> Path:
+    return get_data("confounds.json")
 
 
-def get_connectivity_confounds_json() -> Path:
-    with resources.path("snapshot.data", "connectivity-confounds.json") as f:
-        data_file_path = f
-    return data_file_path
+def get_timeseries_json() -> Path:
+    return get_data("timeseries.json")
 
 
 def get_connectivity_json() -> Path:
-    with resources.path("snapshot.data", "connectivity.json") as f:
-        data_file_path = f
-    return data_file_path
+    return get_data("connectivity.json")
 
 
 def get_fslanat_json() -> Path:
-    with resources.path("snapshot.data", "fslanat.json") as f:
-        data_file_path = f
-    return data_file_path
+    return get_data("fslanat.json")
 
 
 def get_headers_json() -> Path:
-    with resources.path("snapshot.data", "headers.json") as f:
-        data_file_path = f
-    return data_file_path
+    return get_data("headers.json")
 
 
-def get_signature_bold_json() -> Path:
-    with resources.path("snapshot.data", "signature-bold.json") as f:
-        data_file_path = f
-    return data_file_path
+def get_signatures_by_part_json() -> Path:
+    return get_data("signatures-by-part.json")
 
 
-def get_signature_by_part_json() -> Path:
-    with resources.path("snapshot.data", "signature-by-part.json") as f:
-        data_file_path = f
-    return data_file_path
+def get_signatures_by_run_json() -> Path:
+    return get_data("signatures-by-run.json")
 
 
-def get_signature_by_run_json() -> Path:
-    with resources.path("snapshot.data", "signature-by-run.json") as f:
-        data_file_path = f
-    return data_file_path
+def get_signatures_by_tr_json() -> Path:
+    return get_data("signatures-by-tr.json")
 
 
-def get_signature_by_tr_json() -> Path:
-    with resources.path("snapshot.data", "signature-by-tr.json") as f:
-        data_file_path = f
-    return data_file_path
+def get_signatures_by_part_diff_json() -> Path:
+    return get_data("signatures-by-part-diff.json")
 
 
-def get_signature_confounds_json() -> Path:
-    with resources.path("snapshot.data", "signature-confounds.json") as f:
-        data_file_path = f
-    return data_file_path
+def get_signatures_by_run_diff_json() -> Path:
+    return get_data("signatures-by-run-diff.json")
 
 
-def get_signature_labels_json() -> Path:
-    with resources.path("snapshot.data", "signature-labels.json") as f:
-        data_file_path = f
-    return data_file_path
-
-
-def get_signature_rawdata_json() -> Path:
-    with resources.path("snapshot.data", "signature-rawdata.json") as f:
-        data_file_path = f
-    return data_file_path
+def get_signatures_by_tr_diff_json() -> Path:
+    return get_data("signatures-by-tr-diff.json")
 
 
 def get_ilog() -> Path:
-    with resources.path(
-        "snapshot.data", "imaging-log-20240618T010003Z.csv"
-    ) as f:
-        data_file_path = f
-    return data_file_path
+    return get_data("imaging-log-20250129T010002Z.csv")
 
 
 def get_qclog() -> Path:
-    with resources.path("snapshot.data", "qc-log-20240618T010003Z.csv") as f:
-        data_file_path = f
-    return data_file_path
+    return get_data("qc-log-20250129T010002Z.csv")
 
 
 def get_demographics() -> Path:
-    with resources.path("snapshot.data", "demographics-2023-10-31.csv") as f:
-        data_file_path = f
-    return data_file_path
+    return get_data("demographics-2024-11-06.csv")
 
 
 def get_events_json() -> Path:
-    with resources.path("snapshot.data", "task-cuff_events.json") as f:
-        data_file_path = f
-    return data_file_path
+    return get_data("task-cuff_events.json")
 
 
 def get_participants_json() -> Path:
-    with resources.path("snapshot.data", "participants.json") as f:
-        data_file_path = f
-    return data_file_path
+    return get_data("participants.json")
 
 
 def get_dataset_description_json() -> Path:
-    with resources.path("snapshot.data", "dataset_description.json") as f:
-        data_file_path = f
-    return data_file_path
+    return get_data("dataset_description.json")
 
 
 def get_scans_json() -> Path:
-    with resources.path("snapshot.data", "scans.json") as f:
-        data_file_path = f
-    return data_file_path
+    return get_data("scans.json")
 
 
 def get_cat12_json() -> Path:
-    with resources.path("snapshot.data", "cluster_volumes.json") as f:
-        data_file_path = f
-    return data_file_path
+    return get_data("cluster_volumes.json")
 
 
 def get_sessions_json() -> Path:
-    with resources.path("snapshot.data", "sessions.json") as f:
-        data_file_path = f
-    return data_file_path
+    return get_data("sessions.json")
 
 
-def get_release_notes(version: str) -> Path:
-    with resources.path(
-        "snapshot.data", f"A2CPS_Release_{version}_Notes.docx"
-    ) as f:
-        data_file_path = f
-    return data_file_path
+def get_release_notes() -> Path:
+    return get_data("A2CPS_Release_2.0_Notes.docx")
+
+
+def get_guids() -> Path:
+    return get_data("guids.csv")
+
+
+def get_device_serial_number_file() -> Path:
+    return get_data("deviceserialnumber.tsv")
+
+
+def get_device_serial_number_tbl() -> pl.DataFrame:
+    return pl.read_csv(get_device_serial_number_file(), separator="\t")

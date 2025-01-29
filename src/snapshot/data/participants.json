@@ -4,26 +4,17 @@
         "Description": "Study Participant, BIDS Subject ID",
         "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/glossary.html#participant_id-columns"
     },
-    "site": {
-        "LongName": "Site",
-        "Description": "Code indicating the site at which data were collected. See also scanner field in *sessions.tsv.",
-        "Levels": {
-            "NS": "Endeavor Health",
-            "RU": "Rush University",
-            "SH": "Corewell Health",
-            "UC": "University of Chicago",
-            "UI": "University of Illinois at Chicago",
-            "UM": "University of Michigan",
-            "WS": "Wayne State University"
-        },
-        "TermURL": "https://a2cps.atlassian.net/wiki/spaces/DOC/pages/5406782/Site+Specific+Information"
+    "guid": {
+        "LongName": "REDCap GUID",
+        "Description": "Globally Unique ID from REDCap. This is also useful for linking participants within A2CPS across modalities."
     },
     "sex": {
         "LongName": "Sex",
         "Description": "Reported sex of the participant",
         "Levels": {
             "M": "male",
-            "F": "female"
+            "F": "female",
+            "O": "other"
         },
         "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/glossary.html#sex-columns"
     },

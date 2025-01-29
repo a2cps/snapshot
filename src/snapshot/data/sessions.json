@@ -1,7 +1,12 @@
 {
     "session_id": {
         "LongName": "Session ID",
-        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/glossary.html#objects.columns.session_id"
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/glossary.html#objects.columns.session_id",
+        "Description": "Visit, Protocol, BIDS Session ID",
+        "Levels": {
+            "ses-V1": "baseline_visit",
+            "ses-V3": "3mo_postop"
+        }
     },
     "face_mask": {
         "LongName": "Mask Status",
@@ -108,27 +113,25 @@
         "LongName": "Surgery Week",
         "Description": "The Monday that preceded surgery."
     },
-    "scanner": {
-        "LongName": "Scanner",
-        "Description": "Scanner on which data were collected--similar to collection site from participants.tsv but distinguishes between the scanners within a site. Levels map to DeviceSerialNumber.",
-        "Levels": {
-            "NS": "70032",
-            "RU": "166295",
-            "SH": "66022",
-            "UC": "71399",
-            "UI": "000000312996MR3T",
-            "UM1": "0007347633TMRFIX",
-            "UM2": "000000000UM750MR",
-            "WS": "40292"
-        },
+    "deviceserialnumber": {
+        "LongName": "Device Serial Number",
+        "Description": "Serial number of scanner used to collect scans",
         "TermURL": "https://a2cps.atlassian.net/wiki/spaces/DOC/pages/5406782/Site+Specific+Information"
     },
-    "cull_leg": {
+    "cuff_leg": {
         "LongName": "Cuff Leg",
         "Description": "Leg on which cuff pressure was applied. In TKA patients, this is the leg that is not receiving surgery.",
         "Levels": {
             "Left": "Left",
             "Right": "Right"
+        }
+    },
+    "protocol_name": {
+        "LongName": "Protocol Name",
+        "Description": "A2CPS visit identifier. There is a one-to-one relationship between session_id and protocol_name. Other modalities use protocol_name terminology.",
+        "Levels": {
+            "baseline_visit": "ses-V1",
+            "3mo_postop": "ses-V3"
         }
     }
 }

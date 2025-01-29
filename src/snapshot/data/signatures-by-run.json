@@ -1,17 +1,19 @@
 {
-    "t": {
-        "LongName": "Repetition Time",
-        "Description": "Index for time",
-        "Units": "seconds",
-        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/glossary.html#repetitiontime-metadata"
+    "signature": {
+        "LongName": "Signature",
+        "Description": "Index for of Signature. See signature_labels.json"
     },
-    "voxel": {
-        "LongName": "Voxels",
-        "Description": "Linear Index of Voxels"
+    "correlation": {
+        "LongName": "Correlation",
+        "Description": "Signature as Estimated by Correlation"
     },
-    "signal": {
-        "LongName": "Signal",
-        "Description": "Value of Voxel at Time t, Before Nuisance Regression"
+    "dot": {
+        "LongName": "Dot Product",
+        "Description": "Signature as Estimated by Dot Product"
+    },
+    "cosine": {
+        "LongName": "Cosine Similarity",
+        "Description": "Signature as Estimated by Cosine Similarity"
     },
     "sub": {
         "LongName": "Subject",
@@ -20,10 +22,10 @@
     },
     "ses": {
         "LongName": "Session",
-        "Description": "Visit, BIDS Session ID",
+        "Description": "Visit, Protocol, BIDS Session ID",
         "Levels": {
-            "V1": "Baseline Visit",
-            "V3": "3 Month Followup Visit"
+            "V1": "baseline_visit",
+            "V3": "3mo_postop"
         },
         "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#ses"
     },
