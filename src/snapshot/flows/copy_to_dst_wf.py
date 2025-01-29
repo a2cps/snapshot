@@ -12,8 +12,8 @@ from snapshot.tasks import utils
 
 
 def copy_directory(src: str, dst: str) -> None:
-    if Path(src).is_dir():
-        shutil.copy2(src, dst)
+    "Used for making directories in copytree (which has a call to mkdirs)"
+    pass
 
 
 async def copytree(
@@ -31,9 +31,9 @@ async def copytree(
         max_workers (int | None, optional): See ThreadPoolExecutor. Defaults to None.
 
     Details:
-        The directories are created in the destination first. This is done synchronously to
-        avoid race conditions. After the directory tree has been created in the destination,
-        the files can all be copied over in a single gather.
+        The directories are created in the destination first. This is done synchronously
+        to avoid race conditions. After the directory tree has been created in the
+        destination, the files can all be copied over in a single gather.
     """
     shutil.copytree(src, dst, ignore=ignore, copy_function=copy_directory)
     with futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
