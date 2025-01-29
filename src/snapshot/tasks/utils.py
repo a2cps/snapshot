@@ -315,5 +315,5 @@ def clean_sidecars(root: Path) -> None:
 
 
 def write_release_notes(outroot: Path) -> None:
-    release_notes = datasets.get_release_notes(version="1.1")
-    shutil.copyfile(release_notes, outroot / "A2CPS_Release_1.1_Notes.docx")
+    release_notes = datasets.get_release_notes()
+    shutil.copyfile(release_notes, outroot)

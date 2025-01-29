@@ -81,11 +81,11 @@ def get_signatures_by_tr_diff_json() -> Path:
 
 
 def get_ilog() -> Path:
-    return get_data("imaging-log-20241217T010003Z.csv")
+    return get_data("imaging-log-20250129T010002Z.csv")
 
 
 def get_qclog() -> Path:
-    return get_data("qc-log-20241217T010003Z.csv")
+    return get_data("qc-log-20250129T010002Z.csv")
 
 
 def get_demographics() -> Path:
@@ -116,8 +116,8 @@ def get_sessions_json() -> Path:
     return get_data("sessions.json")
 
 
-def get_release_notes(version: str) -> Path:
-    return get_data(f"A2CPS_Release_{version}_Notes.docx")
+def get_release_notes() -> Path:
+    return get_data("A2CPS_Release_2.0_Notes.docx")
 
 
 def get_guids() -> Path:

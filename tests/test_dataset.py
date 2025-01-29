@@ -60,7 +60,7 @@ def test_get_signature_by_tr_json():
 
 
 def test_get_release_notes():
-    assert datasets.get_release_notes("1.1").exists()
+    assert datasets.get_release_notes().exists()
 
 
 def test_get_deviceserialnumber():
