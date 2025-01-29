@@ -6,13 +6,14 @@ import typing
 from concurrent import futures
 from pathlib import Path
 
-from snapshot import datasets, models
+from snapshot import datasets
+from snapshot.models import jobs
 from snapshot.tasks import utils
 
 
 def copy_directory(src: str, dst: str) -> None:
-    if Path(src).is_dir():
-        shutil.copy2(src, dst)
+    "Used for making directories in copytree (which has a call to mkdirs)"
+    pass
 
 
 async def copytree(
@@ -30,9 +31,9 @@ async def copytree(
         max_workers (int | None, optional): See ThreadPoolExecutor. Defaults to None.
 
     Details:
-        The directories are created in the destination first. This is done synchronously to
-        avoid race conditions. After the directory tree has been created in the destination,
-        the files can all be copied over in a single gather.
+        The directories are created in the destination first. This is done synchronously
+        to avoid race conditions. After the directory tree has been created in the
+        destination, the files can all be copied over in a single gather.
     """
     shutil.copytree(src, dst, ignore=ignore, copy_function=copy_directory)
     with futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
@@ -54,13 +55,18 @@ async def copytree(
                 executor.submit(shutil.copyfile, d / file, dirpath_dst / file)
 
 
-def main(inroot: Path, outroot: Path, max_workers: int | None = None) -> None:
-    records = datasets.get_v1_recordids()
-    for job in models.STORE_DIR:
+def main(
+    inroot: Path,
+    outroot: Path,
+    max_workers: int | None = None,
+    jobs_to_copy: typing.Sequence[jobs.STORE_DIR] = jobs.STORE_DIRS,
+) -> None:
+    records = datasets.get_recordids()
+    for job in jobs_to_copy:
         match job:
             case "bids":
                 injobdir = inroot / job
-                outjobdir = outroot / job
+                outjobdir = outroot / "rawdata"
             case _:
                 injobdir = inroot / job
                 outjobdir = outroot / "derivatives" / job
@@ -73,13 +79,12 @@ def main(inroot: Path, outroot: Path, max_workers: int | None = None) -> None:
         match job:
             case (
                 "bids"
-                | "fmriprep-anat"
-                | "fmriprep-cuff"
-                | "fmriprep-rest"
+                | "brainager"
+                | "fmriprep"
                 | "freesurfer"
                 | "fslanat"
                 | "mriqc"
-                | "gift_rest"
+                | "gift"
                 | "qsiprep-V1"
                 | "eddyqc"
             ):
@@ -94,9 +99,9 @@ def main(inroot: Path, outroot: Path, max_workers: int | None = None) -> None:
                 subs_to_exclude.add(sub)
 
             # need to exclude participants that only have ses-V3 outputs available
-            # as subdirectories. This matters for cases like fmriprep-anat, with outputs
-            # fmriprep-anat/sub-10003/{figures,log,ses-V3}; ses-V3 will be excluded,
-            # but we'd still get fmriprep-anat/sub-10003/{figures,log}
+            # as subdirectories. This matters for cases like fmriprep, with outputs
+            # fmriprep/sub-10003/{figures,log,ses-V3}; ses-V3 will be excluded,
+            # but we'd still get fmriprep/sub-10003/{figures,log}
             # Names like sub-25052_ses-V3_T1w.anat will be excluded due to V3 in
             # the name at the top level
             if (
@@ -120,23 +125,33 @@ def main(inroot: Path, outroot: Path, max_workers: int | None = None) -> None:
             )
         )
 
-    # handle top-level stuff
-    shutil.copy2(datasets.get_dataset_description_json(), outroot / "bids")
-    utils.write_participants(records=records, outdir=outroot / "bids")
-    utils.write_sessions(outdir=outroot / "bids")
-    utils.update_scans(outdir=outroot / "bids")
-    utils.write_events(outdir=outroot / "bids")
-    utils.write_readme(outdir=outroot / "bids")
-    utils.clean_sidecars(root=outroot / "bids")
-    utils.write_freesurfer_tables_and_jsons(
-        outroot=outroot, inroot=inroot, records=records
-    )
-    utils.write_fslanat_tables_and_jsons(
-        outroot=outroot, inroot=inroot, records=records
-    )
-    utils.write_cat12_tables_and_jsons(
-        outroot=outroot, inroot=inroot, records=records
-    )
-    utils.write_fcn_jsons(outroot=outroot)
-    utils.write_signatures_jsons(outroot=outroot)
-    utils.write_release_notes(outroot=outroot)
+        # handle top-level stuff
+        match job:
+            case "bids":
+                shutil.copy2(
+                    datasets.get_dataset_description_json(), outroot / "rawdata"
+                )
+                utils.write_participants(records=records, outdir=outroot / "rawdata")
+                utils.write_sessions(outdir=outroot / "rawdata")
+                utils.update_scans(outdir=outroot / "rawdata")
+                utils.write_events(outdir=outroot / "rawdata")
+                utils.write_readme(outdir=outroot / "rawdata")
+                utils.write_changes(outdir=outroot / "rawdata")
+                utils.clean_sidecars(root=outroot / "rawdata")
+                utils.write_release_notes(outroot=outroot)
+            case "freesurfer":
+                utils.write_freesurfer_tables_and_jsons(
+                    outroot=outroot, inroot=inroot, records=records
+                )
+            case "fslanat":
+                utils.write_fslanat_tables_and_jsons(
+                    outroot=outroot, inroot=inroot, records=records
+                )
+            case "cat12":
+                utils.write_cat12_tables_and_jsons(
+                    outroot=outroot, inroot=inroot, records=records
+                )
+            case "fcn":
+                utils.write_fcn_jsons(outroot=outroot)
+            case "signatures":
+                utils.write_signatures_jsons(outroot=outroot)

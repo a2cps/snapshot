@@ -3,6 +3,15 @@
         "LongName": "Signature",
         "Description": "Index for of Signature. See signature_labels.json"
     },
+    "part": {
+        "LongName": "Part",
+        "Description": "Segment of the functional run, each approximately 2 minutes",
+        "Levels": {
+            "beginning": "First Third, without initial dummy scans",
+            "middle": "Second Third",
+            "end": "Final Third"
+        }
+    },
     "correlation": {
         "LongName": "Correlation",
         "Description": "Signature as Estimated by Correlation"
@@ -22,25 +31,22 @@
     },
     "ses": {
         "LongName": "Session",
-        "Description": "Visit, BIDS Session ID",
+        "Description": "Visit, Protocol, BIDS Session ID",
         "Levels": {
-            "V1": "Baseline Visit",
-            "V3": "3 Month Followup Visit"
+            "V1": "baseline_visit",
+            "V3": "3mo_postop"
         },
         "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#ses"
     },
-    "task": {
-        "LongName": "Task",
-        "Description": "Functional MRI Task, BIDS Task ID",
+    "scans": {
+        "LongName": "Scans",
+        "Description": "Scans used in comparison of signature calculation",
         "Levels": {
-            "cuff": "cuff pressure scan",
-            "rest": "resting state scan"
+            "cuff1rest1": "CUFF1 - REST1",
+            "cuff2rest1": "CUFF2 - REST1",
+            "cuff1rest2": "CUFF1 - REST2",
+            "cuff2rest2": "CUFF2 - REST2"
         },
         "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#task"
-    },
-    "run": {
-        "LongName": "Run",
-        "Description": "Task Run Number, BIDS Run ID",
-        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#run"
     }
 }

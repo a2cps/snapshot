@@ -152,3 +152,5 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
+tools/reformatted_*_qst.csv
+tools/muliple_qst.py

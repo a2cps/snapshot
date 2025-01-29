@@ -125,6 +125,26 @@
         "Description": "Square of Derivative of Estimated Motion Parameter",
         "TermURL": "https://fmriprep.org/en/stable/outputs.html#confound-regressors-description"
     },
+    "0": {
+        "LongName": "First aCompCor Component",
+        "Description": "Component explaining the largest amount of variance."
+    },
+    "1": {
+        "LongName": "Second aCompCor Component",
+        "Description": "Component explaining the second largest amount of variance."
+    },
+    "2": {
+        "LongName": "Third aCompCor Component",
+        "Description": "Component explaining the third largest amount of variance."
+    },
+    "3": {
+        "LongName": "Fourth aCompCor Component",
+        "Description": "Component explaining the fourth largest amount of variance."
+    },
+    "4": {
+        "LongName": "Fifth aCompCor Component",
+        "Description": "Component explaining the fifth largest amount of variance."
+    },
     "sub": {
         "LongName": "Subject",
         "Description": "Study Participant, BIDS Subject ID",
@@ -132,10 +152,10 @@
     },
     "ses": {
         "LongName": "Session",
-        "Description": "Visit, BIDS Session ID",
+        "Description": "Visit, Protocol, BIDS Session ID",
         "Levels": {
-            "V1": "Baseline Visit",
-            "V3": "3 Month Followup Visit"
+            "V1": "baseline_visit",
+            "V3": "3mo_postop"
         },
         "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#ses"
     },
