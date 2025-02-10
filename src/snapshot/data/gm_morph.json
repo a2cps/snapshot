@@ -1,0 +1,21 @@
+{
+    "surf_area_signature_bhatt": {
+        "LongName": "Surface Area Signature from Bhatt and Colleagues.",
+        "Description": "Secondary biomarker derived from effect size map of Bhatt and colleagues, who studied the relationship between cortical surface area and chronic pain in the UKB.",
+        "TermURL": "https://doi.org/10.1016/j.biopsych.2023.07.016"
+    },
+    "sub": {
+        "LongName": "Subject",
+        "Description": "Study Participant, BIDS Subject ID",
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#sub"
+    },
+    "ses": {
+        "LongName": "Session",
+        "Description": "Visit, Protocol, BIDS Session ID",
+        "Levels": {
+            "V1": "baseline_visit",
+            "V3": "3mo_postop"
+        },
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#ses"
+    }
+}

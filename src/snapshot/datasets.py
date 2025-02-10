@@ -130,3 +130,7 @@ def get_device_serial_number_file() -> Path:
 
 def get_device_serial_number_tbl() -> pl.DataFrame:
     return pl.read_csv(get_device_serial_number_file(), separator="\t")
+
+
+def get_gm_morph_json() -> Path:
+    return get_data("gm_morph.json")
