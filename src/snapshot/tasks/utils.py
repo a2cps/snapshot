@@ -217,7 +217,7 @@ def write_cat12_tables_and_jsons(
 def write_freesurfer_tables_and_jsons(
     outroot: Path, inroot: Path, records: typing.Collection[int]
 ) -> None:
-    for tbl in ["aparc", "aseg", "headers"]:
+    for tbl in ["aparc", "aseg", "headers", "gm_morph"]:
         df = (
             pl.read_csv(
                 inroot / "freesurfer" / f"{tbl}.tsv", null_values=NULLS, separator="\t"
