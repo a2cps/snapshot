@@ -239,6 +239,10 @@ def write_freesurfer_tables_and_jsons(
         datasets.get_headers_json(),
         outroot / "derivatives" / "freesurfer" / "headers.json",
     )
+    shutil.copy2(
+        datasets.get_gm_morph_json(),
+        outroot / "derivatives" / "freesurfer" / "gm_morph.json",
+    )
 
 
 def write_fslanat_tables_and_jsons(

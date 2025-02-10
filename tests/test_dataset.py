@@ -27,6 +27,10 @@ def test_get_aseg_json():
     assert datasets.get_aseg_json().exists()
 
 
+def test_get_gm_mortph_json():
+    assert datasets.get_gm_morph_json().exists()
+
+
 def test_get_timeseries_json():
     assert datasets.get_timeseries_json().exists()
 
