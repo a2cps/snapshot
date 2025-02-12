@@ -142,7 +142,7 @@ def update_scans(outdir: Path) -> None:
                 ses=pl.col("filename").str.extract("V1|V3", 0),
                 scan=pl.col("filename")
                 .str.extract(
-                    "fmap|anat|dwi|cuff_run-01|cuff_run-02|rest_run-01|rest_run-02",
+                    "(fmap|anat|dwi|cuff_run-01|cuff_run-02|rest_run-01|rest_run-02)",
                 )
                 .replace(
                     {
