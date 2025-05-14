@@ -16,6 +16,10 @@ def copy_directory(src: str, dst: str) -> None:
     pass
 
 
+def harlink_to(src: Path, target: Path) -> None:
+    src.hardlink_to(target)
+
+
 async def copytree(
     src: Path,
     dst: Path,
@@ -51,8 +55,7 @@ async def copytree(
             for file in filenames:
                 if file in ignored_names:
                     continue
-                # note that we do not need the follow_symlinks argument to copyfile
-                executor.submit(shutil.copyfile, d / file, dirpath_dst / file)
+                executor.submit(harlink_to, dirpath_dst / file, d / file)
 
 
 def main(
