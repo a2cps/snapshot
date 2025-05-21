@@ -16,10 +16,6 @@ def copy_directory(src: str, dst: str) -> None:
     pass
 
 
-def harlink_to(src: Path, target: Path) -> None:
-    src.hardlink_to(target)
-
-
 async def copytree(
     src: Path,
     dst: Path,
@@ -37,7 +33,7 @@ async def copytree(
     Details:
         The directories are created in the destination first. This is done synchronously
         to avoid race conditions. After the directory tree has been created in the
-        destination, the files can all be copied over in a single gather.
+        destination, the files can all be linked to in a single gather.
     """
     shutil.copytree(src, dst, ignore=ignore, copy_function=copy_directory)
     with futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
@@ -55,7 +51,7 @@ async def copytree(
             for file in filenames:
                 if file in ignored_names:
                     continue
-                executor.submit(harlink_to, dirpath_dst / file, d / file)
+                executor.submit(os.link, d / file, dirpath_dst / file)
 
 
 def main(
