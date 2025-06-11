@@ -1,0 +1,42 @@
+{
+    "sub": {
+        "LongName": "Subject",
+        "Description": "Study Participant, BIDS Subject ID",
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#sub"
+    },
+    "ses": {
+        "LongName": "Session",
+        "Description": "Visit, Protocol, BIDS Session ID",
+        "Levels": {
+            "V1": "baseline_visit",
+            "V3": "3mo_postop"
+        },
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#ses"
+    },
+    "task": {
+        "LongName": "Task",
+        "Description": "Functional MRI Task, BIDS Task ID",
+        "Levels": {
+            "cuff": "cuff pressure scan",
+            "rest": "resting state scan"
+        },
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#task"
+    },
+    "run": {
+        "LongName": "Run",
+        "Description": "Task Run Number, BIDS Run ID",
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#run"
+    },
+    "dmn_insula": {
+        "LongName": "Connectivity Between Default Mode Network and Insula.",
+        "Description": "DMN: component 91 in NeuroMark model 2.1; Insula: (-42, -2, 2)"
+    },
+    "dmn_s1": {
+        "LongName": "Connectivity Between Default Mode Network and S1.",
+        "Description": "DMN: component 91 in NeuroMark model 2.1; S1: A2CPS cluster derived from prior literature."
+    },
+    "sln_s1m1": {
+        "LongName": "Connectivity Between Salience Network and S1/M1.",
+        "Description": "SLN: component 95 in NeuroMark model 2.1; S1/M1: Cluster from Kutch et al. (2017). http://doi.org/10.1097/j.pain.0000000000001001."
+    }
+}
