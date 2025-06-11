@@ -41,6 +41,10 @@
     },
     "model": {
         "LongName": "Model",
-        "Description": "Version number of the NeuroMark model."
+        "Description": "Version number of the NeuroMark model.",
+        "Levels": {
+            "2.0": "template Neuromark_fMRI_2.0_modelorder-175",
+            "2.1": "template Neuromark_fMRI_2.1_modelorder-multi"
+        }
     }
 }
