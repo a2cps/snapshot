@@ -62,12 +62,12 @@ def main(
 ) -> None:
     records = datasets.get_recordids()
     for job in jobs_to_copy:
+        logging.info(f"Working on {job}")
+        injobdir = inroot / job
         match job:
             case "bids":
-                injobdir = inroot / job
                 outjobdir = outroot / "rawdata"
             case _:
-                injobdir = inroot / job
                 outjobdir = outroot / "derivatives" / job
 
         # get list of subjects that are present in the input
