@@ -1,0 +1,241 @@
+{
+    "sub": {
+        "LongName": "Subject",
+        "Description": "Study Participant, BIDS Subject ID",
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#sub"
+    },
+    "ses": {
+        "LongName": "Session",
+        "Description": "Visit, Protocol, BIDS Session ID",
+        "Levels": {
+            "V1": "baseline_visit",
+            "V3": "3mo_postop"
+        },
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#ses"
+    },
+    "BrainSegVol": {
+        "LongName": "Brain Segmentation Volume",
+        "Description": "Sum of the volume of the structures identified in the aseg.mgz volume",
+        "TermURL": "https://www.freesurfer.net/fswiki/MorphometryStats",
+        "Units": "mm^3"
+    },
+    "BrainSegVolNotVent": {
+        "LongName": "Brain Segmentation Volume Without Ventricles",
+        "Description": "Sum of the volume of the structures identified in the aseg.mgz volume",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/MorphometryStats",
+        "Units": "mm^3"
+    },
+    "BrainSegVolNotVentSurf": {
+        "LongName": "Brain Segmentation Volume Without Ventricles from Surf",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/MorphometryStats",
+        "Units": "mm^3"
+    },
+    "VentricleChoroidVol": {
+        "LongName": "VentricleChoroidVol",
+        "Description": "Volume of ventricles and choroid plexus",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/mri_segstats"
+    },
+    "lhCortexVol": {
+        "LongName": "lhCortexVol",
+        "Description": "Left hemisphere cortical gray matter volume",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/MorphometryStats",
+        "Units": "mm^3"
+    },
+    "rhCortexVol": {
+        "LongName": "rhCortexVol",
+        "Description": "Right hemisphere cortical gray matter volume",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/MorphometryStats",
+        "Units": "mm^3"
+    },
+    "CortexVol": {
+        "LongName": "CortexVol",
+        "Description": "Total cortical gray matter volume",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/MorphometryStats",
+        "Units": "mm^3"
+    },
+    "lhCerebralWhiteMatterVol": {
+        "LongName": "lhCerebralWhiteMatterVol",
+        "Description": "Left hemisphere cerebral white matter volume",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/MorphometryStats",
+        "Units": "mm^3"
+    },
+    "rhCerebralWhiteMatterVol": {
+        "LongName": "rhCerebralWhiteMatterVol",
+        "Description": "Right hemisphere cerebral white matter volume",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/MorphometryStats",
+        "Units": "mm^3"
+    },
+    "CerebralWhiteMatterVol": {
+        "LongName": "rhCerebralWhiteMatterVol",
+        "Description": "Total cerebral white matter volume",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/MorphometryStats",
+        "Units": "mm^3"
+    },
+    "SubCortGrayVol": {
+        "LongName": "SubCortGrayVol",
+        "Description": "Subcortical gray matter volume",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/MorphometryStats",
+        "Units": "mm^3"
+    },
+    "TotalGrayVol": {
+        "LongName": "TotalGrayVol",
+        "Description": "Total gray matter volume",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/MorphometryStats",
+        "Units": "mm^3"
+    },
+    "SupraTentorialVol": {
+        "LongName": "SupraTentorialVol",
+        "Description": "Supratentorial volume",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/MorphometryStats",
+        "Units": "mm^3"
+    },
+    "SupraTentorialVolNotVent": {
+        "LongName": "SupraTentorialVol",
+        "Description": "Supratentorial volume, without ventricles, CSF, and choroid plexus",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/MorphometryStats",
+        "Units": "mm^3"
+    },
+    "SupraTentorialVolNotVentVox": {
+        "Description": "Supratentorial volume voxel count",
+        "Units": "mm^3"
+    },
+    "MaskVol": {
+        "LongName": "MaskVol",
+        "Description": "Mask Volume",
+        "TermURL": "https://surfer.nmr.mgh.harvard.edu/fswiki/MorphometryStats",
+        "Units": "mm^3"
+    },
+    "BrainSegVol-to-eTIV": {
+        "LongName": "BrainSegVol-to-eTIV",
+        "Description": "Ratio of BrainSegVol to eTIV"
+    },
+    "Mask-to-eTIV": {
+        "LongName": "MaskVol-to-eTIV",
+        "Description": "Ratio of MaskVol to eTIV"
+    },
+    "lhSurfaceHoles": {
+        "LongName": "lhSurfaceHoles",
+        "Description": "Number of defect holes in lh surfaces prior to fixing"
+    },
+    "rhSurfaceHole": {
+        "LongName": "rhSurfaceHoles",
+        "Description": "Number of defect holes in rh surfaces prior to fixing"
+    },
+    "eTIV": {
+        "LongName": "eTIV",
+        "Description": "Estimated Total Intracranial Volume",
+        "TermURL": "https://www.freesurfer.net/fswiki/eTIV",
+        "Units": "mm^3"
+    },
+    "NumVert": {
+        "LongName": "NumVert",
+        "Description": "Number of Vertices"
+    },
+    "WhiteSurfArea": {
+        "LongName": "WhiteSurfArea",
+        "Description": "White Surface Total Area",
+        "Units": "mm^2"
+    },
+    "MeanThickness": {
+        "LongName": "MeanThickness",
+        "Description": "Mean Thickness",
+        "Units": "mm"
+    },
+    "Brain-Stem /4th Ventricle": {
+        "LongName": "Brain-Stem /4th Ventricle",
+        "Description": "Voxels in Brain-Stem /4th Ventricle",
+        "TermURL": "https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FIRST/UserGuide#Labels"
+    },
+    "Left-Accumbens-area": {
+        "LongName": "Left-Accumbens-area",
+        "Description": "Voxels in Left-Accumbens-area",
+        "TermURL": "https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FIRST/UserGuide#Labels"
+    },
+    "Left-Amygdala": {
+        "LongName": "Left-Amygdala",
+        "Description": "Voxels in Left-Amygdala",
+        "TermURL": "https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FIRST/UserGuide#Labels"
+    },
+    "Left-Caudate": {
+        "LongName": "Left-Caudate",
+        "Description": "Voxels in Left-Caudate",
+        "TermURL": "https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FIRST/UserGuide#Labels"
+    },
+    "Left-Hippocampus": {
+        "LongName": "Left-Hippocampus",
+        "Description": "Voxels in Left-Hippocampus",
+        "TermURL": "https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FIRST/UserGuide#Labels"
+    },
+    "Left-Pallidum": {
+        "LongName": "Left-Pallidum",
+        "Description": "Voxels in Left-Pallidum",
+        "TermURL": "https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FIRST/UserGuide#Labels"
+    },
+    "Left-Putamen": {
+        "LongName": "Left-Putamen",
+        "Description": "Voxels in Left-Putamen",
+        "TermURL": "https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FIRST/UserGuide#Labels"
+    },
+    "Left-Thalamus-Proper": {
+        "LongName": "Left-Thalamus-Proper",
+        "Description": "Voxels in Left-Thalamus-Proper",
+        "TermURL": "https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FIRST/UserGuide#Labels"
+    },
+    "Right-Accumbens-area": {
+        "LongName": "Right-Accumbens-area",
+        "Description": "Voxels in Right-Accumbens-area",
+        "TermURL": "https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FIRST/UserGuide#Labels"
+    },
+    "Right-Amygdala": {
+        "LongName": "Right-Amygdala",
+        "Description": "Voxels in Right-Amygdala",
+        "TermURL": "https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FIRST/UserGuide#Labels"
+    },
+    "Right-Caudate": {
+        "LongName": "Right-Caudate",
+        "Description": "Voxels in Right-Caudate",
+        "TermURL": "https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FIRST/UserGuide#Labels"
+    },
+    "Right-Hippocampus": {
+        "LongName": "Right-Hippocampus",
+        "Description": "Voxels in Right-Hippocampus",
+        "TermURL": "https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FIRST/UserGuide#Labels"
+    },
+    "Right-Pallidum": {
+        "LongName": "Right-Pallidum",
+        "Description": "Voxels in Right-Pallidum",
+        "TermURL": "https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FIRST/UserGuide#Labels"
+    },
+    "Right-Putamen": {
+        "LongName": "Right-Putamen",
+        "Description": "Voxels in Right-Putamen",
+        "TermURL": "https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FIRST/UserGuide#Labels"
+    },
+    "Right-Thalamus-Proper": {
+        "LongName": "Right-Thalamus-Proper",
+        "Description": "Voxels in Right-Thalamus-Proper",
+        "TermURL": "https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FIRST/UserGuide#Labels"
+    },
+    "t1_to_mni_scaling": {
+        "LongName": "t1_to_mni_scaling",
+        "Description": "Scaling factor from T1 to MNI (using skull-constrained linear registration)"
+    },
+    "t1_space_orig_volume": {
+        "LongName": "t1_space_orig_volume",
+        "Description": "Brain volume in native/original space",
+        "Units": "mm^3"
+    },
+    "t1_space_mni_volume": {
+        "LongName": "t1_space_mni_volume",
+        "Description": "Brain volume normalised to MNI",
+        "Units": "mm^3"
+    },
+    "component_#_falff": {
+        "LongName": "Component # fALFF",
+        "Description": "Neuromark_fMRI_2.1_modelorder-multi Fractional Amplitude of Low Frequency Fluctuations"
+    },
+    "source_#_target_@": {
+        "LongName": "Connectivity between components # and @",
+        "Description": "Connectivity is a correlation, and the components are from Neuromark_fMRI_2.1_modelorder-multi"
+    }
+}

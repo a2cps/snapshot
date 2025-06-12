@@ -77,21 +77,28 @@ def main(
         subs_to_exclude = set()
         match job:
             case (
-                "bids"
+                "bedpostx"
+                | "bids"
                 | "brainager"
+                | "cat12"
+                | "eddyqc"
                 | "fmriprep"
                 | "freesurfer"
                 | "fslanat"
                 | "mriqc"
                 | "gift"
                 | "qsiprep-V1"
-                | "eddyqc"
+                | "synthstrip"
             ):
                 generator = injobdir.glob("sub-*")
-            case "cat12":
-                generator = injobdir.glob("report/catreport_sub-*pdf")
             case "fcn" | "signatures":
                 generator = injobdir.glob("*cleaned/sub-*")
+            case "postdtifit":
+                generator = injobdir.glob("diffusion_regional/sub-*")
+            case "postgift":
+                generator = injobdir.glob("amplitude/sub=*")
+            case "qsirecon_fsl_dtifit":
+                generator = injobdir.glob("qsirecon-fsl/sub=*")
         for file in generator:
             sub = int(utils._get_sub(file))
             if sub not in records:
@@ -124,33 +131,44 @@ def main(
             )
         )
 
-        # handle top-level stuff
-        match job:
-            case "bids":
-                shutil.copy2(
-                    datasets.get_dataset_description_json(), outroot / "rawdata"
-                )
-                utils.write_participants(records=records, outdir=outroot / "rawdata")
-                utils.write_sessions(outdir=outroot / "rawdata")
-                utils.update_scans(outdir=outroot / "rawdata")
-                utils.write_events(outdir=outroot / "rawdata")
-                utils.write_readme(outdir=outroot / "rawdata")
-                utils.write_changes(outdir=outroot / "rawdata")
-                utils.clean_sidecars(root=outroot / "rawdata")
-                utils.write_release_notes(outroot=outroot)
-            case "freesurfer":
-                utils.write_freesurfer_tables_and_jsons(
-                    outroot=outroot, inroot=inroot, records=records
-                )
-            case "fslanat":
-                utils.write_fslanat_tables_and_jsons(
-                    outroot=outroot, inroot=inroot, records=records
-                )
-            case "cat12":
-                utils.write_cat12_tables_and_jsons(
-                    outroot=outroot, inroot=inroot, records=records
-                )
-            case "fcn":
-                utils.write_fcn_jsons(outroot=outroot)
-            case "signatures":
-                utils.write_signatures_jsons(outroot=outroot)
+    # handle top-level stuff
+    # bids
+    shutil.copy2(datasets.get_dataset_description_json(), outroot / "rawdata")
+    utils.write_participants(records=records, outdir=outroot / "rawdata")
+    utils.write_sessions(outdir=outroot / "rawdata")
+    utils.update_scans(outdir=outroot / "rawdata")
+    utils.write_events(outdir=outroot / "rawdata")
+    utils.write_readme(outdir=outroot / "rawdata")
+    utils.write_changes(outdir=outroot / "rawdata")
+    utils.clean_sidecars(root=outroot / "rawdata")
+
+    # cat12
+    utils.write_cat12_tables_and_jsons(outroot=outroot, inroot=inroot, records=records)
+
+    # fcn
+    utils.write_fcn_jsons(outroot=outroot)
+
+    # freesurfer
+    utils.write_freesurfer_tables_and_jsons(
+        outroot=outroot, inroot=inroot, records=records
+    )
+
+    # fslanat
+    utils.write_fslanat_tables_and_jsons(
+        outroot=outroot, inroot=inroot, records=records
+    )
+
+    # postdtifit
+    utils.write_postdtifit_jsons(outroot=outroot)
+
+    # postgift
+    utils.write_postgift_jsons(outroot=outroot)
+
+    # signatures
+    utils.write_signatures_jsons(outroot=outroot)
+
+    # idps
+    utils.write_idps(inroot=inroot, outroot=outroot)
+
+    # everything
+    utils.write_release_notes(outroot=outroot)

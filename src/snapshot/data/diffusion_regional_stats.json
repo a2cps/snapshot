@@ -1,0 +1,61 @@
+{
+    "index": {
+        "LongName": "Index",
+        "Description": "Integer index of region in atlas"
+    },
+    "atlas": {
+        "LongName": "Atlas",
+        "Description": "Atlas used for segmenting diffusion metrics"
+    },
+    "metric": {
+        "LongName": "Diffusion Metric",
+        "Description": "Scalar values derived from diffusion data",
+        "Levels": {
+            "FA": "Fractional Anisotropy",
+            "L1": "First Eigenvalue",
+            "L2": "Second Eigenvalue",
+            "L3": "Third Eigenvalue",
+            "MD": "Mean Diffusivity",
+            "MO": "Mode of Anisotropy"
+        },
+        "TermURL": "https://fsl.fmrib.ox.ac.uk/fsl/docs/#/diffusion/dtifit?id=outputs-of-dtifit"
+    },
+    "sub": {
+        "LongName": "Subject",
+        "Description": "Study Participant, BIDS Subject ID",
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#sub"
+    },
+    "ses": {
+        "LongName": "Session",
+        "Description": "Visit, Protocol, BIDS Session ID",
+        "Levels": {
+            "V1": "baseline_visit",
+            "V3": "3mo_postop"
+        },
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#ses"
+    },
+    "shells": {
+        "LongName": "B-Value Shells",
+        "Description": "Which b-value shells were included in the tensor model",
+        "Levels": {
+            "b1000": "Only the b=1000 shell (15 directions)",
+            "multishell": "All shells/b-values"
+        }
+    },
+    "roi": {
+        "LongName": "Region of Interest",
+        "Description": "Full name for the region of interest"
+    },
+    "mean": {
+        "LongName": "Mean",
+        "Description": "Average of the metric within given region"
+    },
+    "minimum": {
+        "LongName": "Minimum",
+        "Description": "Minimum of the metric within given region"
+    },
+    "maximum": {
+        "LongName": "Maximum",
+        "Description": "Maximum of the metric within given region"
+    }
+}

@@ -134,3 +134,31 @@ def get_device_serial_number_tbl() -> pl.DataFrame:
 
 def get_gm_morph_json() -> Path:
     return get_data("gm_morph.json")
+
+
+def get_diffusion_regional_stats_json() -> Path:
+    return get_data("diffusion_regional_stats.json")
+
+
+def get_gift_amplitude_json() -> Path:
+    return get_data("gift_amplitude.json")
+
+
+def get_gift_biomarkers_json() -> Path:
+    return get_data("gift_biomarkers.json")
+
+
+def get_gift_connectivity_json() -> Path:
+    return get_data("gift_connectivity.json")
+
+
+def get_mask_volumes_json() -> Path:
+    return get_data("mask_volumes.json")
+
+
+def get_mri_json() -> Path:
+    return get_data("mri.json")
+
+
+def get_disruption_json() -> Path:
+    return get_data("disruption.json")
