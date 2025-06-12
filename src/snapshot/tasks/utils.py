@@ -256,7 +256,9 @@ def write_fcn_jsons(outroot: Path) -> None:
                     for atlas in run.glob("atlas*"):
                         for estimator in atlas.glob("estimator*"):
                             if "leodit_wolf" in estimator.name:
-                                estimator.rename("estimator=ledoit_wolf")
+                                estimator.rename(
+                                    estimator.with_name("estimator=ledoit_wolf")
+                                )
 
 
 def write_signatures_jsons(outroot: Path) -> None:
