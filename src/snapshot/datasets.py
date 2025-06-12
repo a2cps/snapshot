@@ -81,11 +81,11 @@ def get_signatures_by_tr_diff_json() -> Path:
 
 
 def get_ilog() -> Path:
-    return get_data("imaging-log-20250129T010002Z.csv")
+    return get_data("imaging-log-20250612T010003Z.csv")
 
 
 def get_qclog() -> Path:
-    return get_data("qc-log-20250129T010002Z.csv")
+    return get_data("qc-log-20250612T010003Z.csv")
 
 
 def get_demographics() -> Path:

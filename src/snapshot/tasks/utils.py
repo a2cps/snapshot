@@ -39,27 +39,20 @@ def _get_ses(f: Path) -> str:
 
 def write_participants(records: typing.Collection[int], outdir: Path) -> None:
     demographics = (
-        pl.read_csv(datasets.get_demographics(), null_values=NULLS)
-        .select("record_id", "sex", "age", "dom_hand", "guid")
-        .with_columns(
-            sex=pl.col("sex").replace_strict(
-                {1: "male", 2: "female", 3: "n/a", 4: "other"}
-            ),
-            handedness=pl.col("dom_hand").replace_strict(
-                {1: "right", 2: "left", 3: "ambidextrous"}
-            ),
-        )
+        pl.scan_csv(datasets.get_demographics(), null_values=NULLS)
+        .select("record_id", "guid")
         .rename({"record_id": "sub"})
     )
     tbl = (
-        pl.read_csv(datasets.get_ilog(), null_values=NULLS)
+        pl.scan_csv(datasets.get_ilog(), null_values=NULLS)
         .select(sub="subject_id", ses="visit")
         .filter(pl.col("ses").str.contains("V1"))
         .filter(pl.col("sub").is_in(records))
         .join(demographics, on="sub", how="left")
         .with_columns(participant_id=pl.concat_str(pl.lit("sub-"), pl.col("sub")))
         .drop("sub")
-        .select("participant_id", "sex", "age", "handedness", "guid")
+        .select("participant_id", "guid")
+        .collect()
     )
     to_bids_tsv(tbl, dst=outdir / "participants.tsv")
 
@@ -104,8 +97,7 @@ def write_sessions(outdir: Path) -> None:
         .join(
             datasets.get_device_serial_number_tbl(),
             how="left",
-            left_on="session_id",
-            right_on="ses",
+            on=["sub", "session_id"],
         )
         .with_columns(
             session_id=pl.col("session_id").str.replace("V", "ses-V"),
@@ -158,6 +150,7 @@ def update_scans(outdir: Path) -> None:
             .join(qclog, ("sub", "ses", "scan"), how="left")
             .select("filename", "rating")
         )
+        scanstsv.unlink()
         to_bids_tsv(scans, scanstsv)
         if (scansjson := scanstsv.with_suffix(".json")).exists():
             scansjson.unlink()
@@ -254,6 +247,16 @@ def write_fcn_jsons(outroot: Path) -> None:
     shutil.copy2(datasets.get_connectivity_json(), dst / "connectivity.json")
     shutil.copy2(datasets.get_timeseries_json(), dst / "timeseries.json")
     shutil.copy2(datasets.get_disruption_json(), dst / "disruption.json")
+
+    # handle typo in ledoit_wolf estimator
+    for sub in (dst / "connectivity").glob("sub*"):
+        for ses in sub.glob("ses*"):
+            for task in ses.glob("task*"):
+                for run in task.glob("run*"):
+                    for atlas in run.glob("atlas*"):
+                        for estimator in atlas.glob("estimator*"):
+                            if "leodit_wolf" in estimator.name:
+                                estimator.rename("estimator=ledoit_wolf")
 
 
 def write_signatures_jsons(outroot: Path) -> None:

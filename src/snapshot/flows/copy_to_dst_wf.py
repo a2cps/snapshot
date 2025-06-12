@@ -16,6 +16,13 @@ def copy_directory(src: str, dst: str) -> None:
     pass
 
 
+def link(src: Path, dst: Path) -> None:
+    if not src.is_symlink():
+        dst.hardlink_to(src)
+    else:
+        dst.hardlink_to(src.resolve())
+
+
 async def copytree(
     src: Path,
     dst: Path,
@@ -51,7 +58,9 @@ async def copytree(
             for file in filenames:
                 if file in ignored_names:
                     continue
-                executor.submit(os.link, d / file, dirpath_dst / file)
+                executor.submit(
+                    os.link, d / file, dirpath_dst / file, follow_symlinks=False
+                )
 
 
 def main(
