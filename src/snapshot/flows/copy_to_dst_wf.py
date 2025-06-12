@@ -98,9 +98,13 @@ def main(
             case "postgift":
                 generator = injobdir.glob("amplitude/sub=*")
             case "qsirecon_fsl_dtifit":
-                generator = injobdir.glob("qsirecon-fsl/sub=*")
+                generator = injobdir.glob("qsirecon-fsl/sub-*")
         for file in generator:
-            sub = int(utils._get_sub(file))
+            match job:
+                case "postgift":
+                    sub = utils._get_entity(f=file, pattern=r"(?<=sub=)\d{5}")
+                case _:
+                    sub = int(utils._get_sub(file))
             if sub not in records:
                 subs_to_exclude.add(sub)
 
