@@ -1,6 +1,6 @@
 import typing
 
-type STORE_DIR = typing.Literal[
+STORE_DIR = typing.Literal[
     "bedpostx",
     "bids",
     "brainager",
