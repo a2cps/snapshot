@@ -117,7 +117,7 @@
         "LongName": "lhSurfaceHoles",
         "Description": "Number of defect holes in lh surfaces prior to fixing"
     },
-    "rhSurfaceHole": {
+    "rhSurfaceHoles": {
         "LongName": "rhSurfaceHoles",
         "Description": "Number of defect holes in rh surfaces prior to fixing"
     },
