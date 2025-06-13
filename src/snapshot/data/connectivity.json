@@ -44,8 +44,7 @@
         "Description": "Method for estimating connectivity",
         "Levels": {
             "empirical": "https://scikit-learn.org/stable/modules/generated/sklearn.covariance.EmpiricalCovariance.html#sklearn.covariance.EmpiricalCovariance",
-            "leodit_wolf": "https://scikit-learn.org/stable/modules/generated/sklearn.covariance.LedoitWolf.html#sklearn.covariance.LedoitWolf",
-            "minimum_covariance_determinant": "https://scikit-learn.org/stable/modules/generated/sklearn.covariance.MinCovDet.html#sklearn.covariance.MinCovDet"
+            "ledoit_wolf": "https://scikit-learn.org/stable/modules/generated/sklearn.covariance.LedoitWolf.html#sklearn.covariance.LedoitWolf"
         }
     },
     "sub": {

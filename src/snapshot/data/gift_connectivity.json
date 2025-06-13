@@ -1,0 +1,50 @@
+{
+    "source": {
+        "LongName": "Source",
+        "Description": "Node within the connectivity graph corresponding to a NeuroMark component."
+    },
+    "target": {
+        "LongName": "Target",
+        "Description": "Node within the connectivity graph corresponding to a NeuroMark component."
+    },
+    "connectivity": {
+        "LongName": "Connectivity",
+        "Description": "Connectivity between source and target (product-moment correlation)."
+    },
+    "sub": {
+        "LongName": "Subject",
+        "Description": "Study Participant, BIDS Subject ID",
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#sub"
+    },
+    "ses": {
+        "LongName": "Session",
+        "Description": "Visit, Protocol, BIDS Session ID",
+        "Levels": {
+            "V1": "baseline_visit",
+            "V3": "3mo_postop"
+        },
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#ses"
+    },
+    "task": {
+        "LongName": "Task",
+        "Description": "Functional MRI Task, BIDS Task ID",
+        "Levels": {
+            "cuff": "cuff pressure scan",
+            "rest": "resting state scan"
+        },
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#task"
+    },
+    "run": {
+        "LongName": "Run",
+        "Description": "Task Run Number, BIDS Run ID",
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#run"
+    },
+    "model": {
+        "LongName": "Model",
+        "Description": "Version number of the NeuroMark model.",
+        "Levels": {
+            "2.0": "template Neuromark_fMRI_2.0_modelorder-175",
+            "2.1": "template Neuromark_fMRI_2.1_modelorder-multi"
+        }
+    }
+}
