@@ -38,28 +38,23 @@ def _get_ses(f: Path) -> str:
 
 
 def write_participants(records: typing.Collection[int], outdir: Path) -> None:
+    found_participants = [int(_get_sub(d)) for d in outdir.glob("sub*") if d.is_dir()]
     demographics = (
-        pl.read_csv(datasets.get_demographics(), null_values=NULLS)
-        .select("record_id", "sex", "age", "dom_hand", "guid")
-        .with_columns(
-            sex=pl.col("sex").replace_strict(
-                {1: "male", 2: "female", 3: "n/a", 4: "other"}
-            ),
-            handedness=pl.col("dom_hand").replace_strict(
-                {1: "right", 2: "left", 3: "ambidextrous"}
-            ),
-        )
+        pl.scan_csv(datasets.get_demographics(), null_values=NULLS)
+        .select("record_id", "guid")
         .rename({"record_id": "sub"})
     )
     tbl = (
-        pl.read_csv(datasets.get_ilog(), null_values=NULLS)
+        pl.scan_csv(datasets.get_ilog(), null_values=NULLS)
         .select(sub="subject_id", ses="visit")
         .filter(pl.col("ses").str.contains("V1"))
         .filter(pl.col("sub").is_in(records))
+        .filter(pl.col("sub").is_in(found_participants))
         .join(demographics, on="sub", how="left")
         .with_columns(participant_id=pl.concat_str(pl.lit("sub-"), pl.col("sub")))
         .drop("sub")
-        .select("participant_id", "sex", "age", "handedness", "guid")
+        .select("participant_id", "guid")
+        .collect()
     )
     to_bids_tsv(tbl, dst=outdir / "participants.tsv")
 
@@ -104,8 +99,7 @@ def write_sessions(outdir: Path) -> None:
         .join(
             datasets.get_device_serial_number_tbl(),
             how="left",
-            left_on="session_id",
-            right_on="ses",
+            on=["sub", "session_id"],
         )
         .with_columns(
             session_id=pl.col("session_id").str.replace("V", "ses-V"),
@@ -158,6 +152,7 @@ def update_scans(outdir: Path) -> None:
             .join(qclog, ("sub", "ses", "scan"), how="left")
             .select("filename", "rating")
         )
+        scanstsv.unlink()
         to_bids_tsv(scans, scanstsv)
         if (scansjson := scanstsv.with_suffix(".json")).exists():
             scansjson.unlink()
@@ -200,6 +195,7 @@ def write_changes(outdir: Path) -> None:
 def write_cat12_tables_and_jsons(
     inroot: Path, outroot: Path, records: typing.Collection[int]
 ) -> None:
+    dst = outroot / "derivatives" / "cat12"
     df = (
         pl.read_csv(
             inroot / "cat12" / "cluster_volumes.tsv", separator="\t", null_values=NULLS
@@ -207,16 +203,14 @@ def write_cat12_tables_and_jsons(
         .filter(pl.col("ses").str.contains("V1"))
         .filter(pl.col("sub").is_in(records))
     )
-    to_bids_tsv(df, outroot / "derivatives" / "cat12" / "cluster_volumes.tsv")
-    shutil.copy2(
-        datasets.get_cat12_json(),
-        outroot / "derivatives" / "cat12" / "cluster_volumes.json",
-    )
+    to_bids_tsv(df, dst / "cluster_volumes.tsv")
+    shutil.copy2(datasets.get_cat12_json(), dst / "cluster_volumes.json")
 
 
 def write_freesurfer_tables_and_jsons(
     outroot: Path, inroot: Path, records: typing.Collection[int]
 ) -> None:
+    dst = outroot / "derivatives" / "freesurfer"
     for tbl in ["aparc", "aseg", "headers", "gm_morph"]:
         df = (
             pl.read_csv(
@@ -225,29 +219,18 @@ def write_freesurfer_tables_and_jsons(
             .filter(pl.col("ses").str.contains("V1"))
             .filter(pl.col("sub").is_in(records))
         )
-        to_bids_tsv(df, outroot / "derivatives" / "freesurfer" / f"{tbl}.tsv")
+        to_bids_tsv(df, dst / f"{tbl}.tsv")
 
-    shutil.copy2(
-        datasets.get_aparc_json(),
-        outroot / "derivatives" / "freesurfer" / "aparc.json",
-    )
-    shutil.copy2(
-        datasets.get_aseg_json(),
-        outroot / "derivatives" / "freesurfer" / "aseg.json",
-    )
-    shutil.copy2(
-        datasets.get_headers_json(),
-        outroot / "derivatives" / "freesurfer" / "headers.json",
-    )
-    shutil.copy2(
-        datasets.get_gm_morph_json(),
-        outroot / "derivatives" / "freesurfer" / "gm_morph.json",
-    )
+    shutil.copy2(datasets.get_aparc_json(), dst / "aparc.json")
+    shutil.copy2(datasets.get_aseg_json(), dst / "aseg.json")
+    shutil.copy2(datasets.get_headers_json(), dst / "headers.json")
+    shutil.copy2(datasets.get_gm_morph_json(), dst / "gm_morph.json")
 
 
 def write_fslanat_tables_and_jsons(
     inroot: Path, outroot: Path, records: typing.Collection[int]
 ) -> None:
+    dst = outroot / "derivatives" / "fslanat"
     df = (
         pl.read_csv(
             inroot / "fslanat" / "fslanat.tsv", null_values=NULLS, separator="\t"
@@ -255,57 +238,48 @@ def write_fslanat_tables_and_jsons(
         .filter(pl.col("ses").str.contains("V1"))
         .filter(pl.col("sub").is_in(records))
     )
-    to_bids_tsv(df, outroot / "derivatives" / "fslanat" / "fslanat.tsv")
+    to_bids_tsv(df, dst / "fslanat.tsv")
 
-    shutil.copy2(
-        datasets.get_fslanat_json(),
-        outroot / "derivatives" / "fslanat" / "fslanat.json",
-    )
+    shutil.copy2(datasets.get_fslanat_json(), dst / "fslanat.json")
 
 
 def write_fcn_jsons(outroot: Path) -> None:
-    shutil.copy2(
-        datasets.get_confounds_json(),
-        outroot / "derivatives" / "fcn" / "confounds.json",
-    )
-    shutil.copy2(
-        datasets.get_connectivity_json(),
-        outroot / "derivatives" / "fcn" / "connectivity.json",
-    )
-    shutil.copy2(
-        datasets.get_timeseries_json(),
-        outroot / "derivatives" / "fcn" / "timeseries.json",
-    )
+    dst = outroot / "derivatives" / "fcn"
+    shutil.copy2(datasets.get_confounds_json(), dst / "confounds.json")
+    shutil.copy2(datasets.get_connectivity_json(), dst / "connectivity.json")
+    shutil.copy2(datasets.get_timeseries_json(), dst / "timeseries.json")
+    shutil.copy2(datasets.get_disruption_json(), dst / "disruption.json")
+
+    # handle typo in ledoit_wolf estimator
+    for sub in (dst / "connectivity").glob("sub*"):
+        for ses in sub.glob("ses*"):
+            for task in ses.glob("task*"):
+                for run in task.glob("run*"):
+                    for atlas in run.glob("atlas*"):
+                        for estimator in atlas.glob("estimator*"):
+                            if "leodit_wolf" in estimator.name:
+                                estimator.rename(
+                                    estimator.with_name("estimator=ledoit_wolf")
+                                )
 
 
 def write_signatures_jsons(outroot: Path) -> None:
+    dst = outroot / "derivatives" / "signatures"
     shutil.copy2(
-        datasets.get_signatures_by_part_json(),
-        outroot / "derivatives" / "signatures" / "signatures-by-part.json",
+        datasets.get_signatures_by_part_json(), dst / "signatures-by-part.json"
     )
-    shutil.copy2(
-        datasets.get_signatures_by_run_json(),
-        outroot / "derivatives" / "signatures" / "signatures-by-run.json",
-    )
-    shutil.copy2(
-        datasets.get_signatures_by_tr_json(),
-        outroot / "derivatives" / "signatures" / "signatures-by-tr.json",
-    )
-    shutil.copy2(
-        datasets.get_confounds_json(),
-        outroot / "derivatives" / "signatures" / "confounds.json",
-    )
+    shutil.copy2(datasets.get_signatures_by_run_json(), dst / "signatures-by-run.json")
+    shutil.copy2(datasets.get_signatures_by_tr_json(), dst / "signatures-by-tr.json")
+    shutil.copy2(datasets.get_confounds_json(), dst / "confounds.json")
     shutil.copy2(
         datasets.get_signatures_by_part_diff_json(),
-        outroot / "derivatives" / "signatures" / "signatures-by-part-diff.json",
+        dst / "signatures-by-part-diff.json",
     )
     shutil.copy2(
-        datasets.get_signatures_by_run_diff_json(),
-        outroot / "derivatives" / "signatures" / "signatures-by-run-diff.json",
+        datasets.get_signatures_by_run_diff_json(), dst / "signatures-by-run-diff.json"
     )
     shutil.copy2(
-        datasets.get_signatures_by_tr_diff_json(),
-        outroot / "derivatives" / "signatures" / "signatures-by-tr-diff.json",
+        datasets.get_signatures_by_tr_diff_json(), dst / "signatures-by-tr-diff.json"
     )
 
 
@@ -321,3 +295,50 @@ def clean_sidecars(root: Path) -> None:
 def write_release_notes(outroot: Path) -> None:
     release_notes = datasets.get_release_notes()
     shutil.copyfile(release_notes, outroot / release_notes.name)
+
+
+def write_postdtifit_jsons(outroot: Path) -> None:
+    shutil.copy2(
+        datasets.get_diffusion_regional_stats_json(),
+        outroot / "derivatives" / "postdtifit" / "diffusion_regional_stats.json",
+    )
+
+
+def write_postgift_jsons(outroot: Path) -> None:
+    dst = outroot / "derivatives" / "postgift"
+    shutil.copy2(datasets.get_gift_amplitude_json(), dst / "amplitude.json")
+    shutil.copy2(datasets.get_gift_biomarkers_json(), dst / "biomarkers.json")
+    shutil.copy2(datasets.get_gift_connectivity_json(), dst / "connectivity.json")
+
+
+def write_idps(inroot: Path, outroot: Path) -> None:
+    records = datasets.get_recordids()
+    dst = outroot / "idp"
+    mask_volumes_json: dict[str, typing.Any] = json.loads(
+        datasets.get_mask_volumes_json().read_text()
+    )
+    mris_json: dict[str, typing.Any] = json.loads(datasets.get_mri_json().read_text())
+
+    columns = {
+        "mask_volumes.tsv": list(mask_volumes_json.keys()),
+        "mri.tsv": list(mris_json.keys()),
+    }
+
+    for f in ["mri.tsv", "mask_volumes.tsv"]:
+        pl.scan_csv(inroot / "idp" / f, separator="\t").filter(
+            pl.col("ses") == "V1", pl.col("sub").is_in(records)
+        ).select(*columns[f]).sink_csv(dst / f, separator="\t", mkdir=True)
+
+    shutil.copy2(datasets.get_mask_volumes_json(), dst / "mask_volumes.json")
+    shutil.copy2(datasets.get_mri_json(), dst / "mri.json")
+
+
+def write_dwi_biomarker1_jsons(outroot: Path) -> None:
+    shutil.copy2(
+        datasets.get_dwi_networks_json(),
+        outroot
+        / "derivatives"
+        / "dwi_biomarker1"
+        / "networks"
+        / "network_summaries.json",
+    )

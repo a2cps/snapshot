@@ -16,6 +16,13 @@ def copy_directory(src: str, dst: str) -> None:
     pass
 
 
+def link(src: Path, dst: Path) -> None:
+    if not src.is_symlink():
+        dst.hardlink_to(src)
+    else:
+        dst.hardlink_to(src.resolve())
+
+
 async def copytree(
     src: Path,
     dst: Path,
@@ -51,7 +58,9 @@ async def copytree(
             for file in filenames:
                 if file in ignored_names:
                     continue
-                executor.submit(os.link, d / file, dirpath_dst / file)
+                executor.submit(
+                    os.link, d / file, dirpath_dst / file, follow_symlinks=False
+                )
 
 
 def main(
@@ -62,12 +71,12 @@ def main(
 ) -> None:
     records = datasets.get_recordids()
     for job in jobs_to_copy:
+        logging.info(f"Working on {job}")
+        injobdir = inroot / job
         match job:
             case "bids":
-                injobdir = inroot / job
                 outjobdir = outroot / "rawdata"
             case _:
-                injobdir = inroot / job
                 outjobdir = outroot / "derivatives" / job
 
         # get list of subjects that are present in the input
@@ -77,23 +86,36 @@ def main(
         subs_to_exclude = set()
         match job:
             case (
-                "bids"
+                "bedpostx"
+                | "bids"
                 | "brainager"
+                | "cat12"
+                | "eddyqc"
                 | "fmriprep"
                 | "freesurfer"
                 | "fslanat"
                 | "mriqc"
                 | "gift"
                 | "qsiprep-V1"
-                | "eddyqc"
+                | "synthstrip"
             ):
                 generator = injobdir.glob("sub-*")
-            case "cat12":
-                generator = injobdir.glob("report/catreport_sub-*pdf")
+            case "dwi_biomarker1":
+                generator = injobdir.glob("networks/sub-*")
             case "fcn" | "signatures":
                 generator = injobdir.glob("*cleaned/sub-*")
+            case "postdtifit":
+                generator = injobdir.glob("diffusion_regional/sub-*")
+            case "postgift":
+                generator = injobdir.glob("amplitude/sub=*")
+            case "qsirecon_fsl_dtifit":
+                generator = injobdir.glob("qsirecon-fsl/sub-*")
         for file in generator:
-            sub = int(utils._get_sub(file))
+            match job:
+                case "postgift":
+                    sub = utils._get_entity(f=file, pattern=r"(?<=sub=)\d{5}")
+                case _:
+                    sub = int(utils._get_sub(file))
             if sub not in records:
                 subs_to_exclude.add(sub)
 
@@ -124,33 +146,47 @@ def main(
             )
         )
 
-        # handle top-level stuff
-        match job:
-            case "bids":
-                shutil.copy2(
-                    datasets.get_dataset_description_json(), outroot / "rawdata"
-                )
-                utils.write_participants(records=records, outdir=outroot / "rawdata")
-                utils.write_sessions(outdir=outroot / "rawdata")
-                utils.update_scans(outdir=outroot / "rawdata")
-                utils.write_events(outdir=outroot / "rawdata")
-                utils.write_readme(outdir=outroot / "rawdata")
-                utils.write_changes(outdir=outroot / "rawdata")
-                utils.clean_sidecars(root=outroot / "rawdata")
-                utils.write_release_notes(outroot=outroot)
-            case "freesurfer":
-                utils.write_freesurfer_tables_and_jsons(
-                    outroot=outroot, inroot=inroot, records=records
-                )
-            case "fslanat":
-                utils.write_fslanat_tables_and_jsons(
-                    outroot=outroot, inroot=inroot, records=records
-                )
-            case "cat12":
-                utils.write_cat12_tables_and_jsons(
-                    outroot=outroot, inroot=inroot, records=records
-                )
-            case "fcn":
-                utils.write_fcn_jsons(outroot=outroot)
-            case "signatures":
-                utils.write_signatures_jsons(outroot=outroot)
+    # handle top-level stuff
+    # bids
+    shutil.copy2(datasets.get_dataset_description_json(), outroot / "rawdata")
+    utils.write_participants(records=records, outdir=outroot / "rawdata")
+    utils.write_sessions(outdir=outroot / "rawdata")
+    utils.update_scans(outdir=outroot / "rawdata")
+    utils.write_events(outdir=outroot / "rawdata")
+    utils.write_readme(outdir=outroot / "rawdata")
+    utils.write_changes(outdir=outroot / "rawdata")
+    utils.clean_sidecars(root=outroot / "rawdata")
+
+    # cat12
+    utils.write_cat12_tables_and_jsons(outroot=outroot, inroot=inroot, records=records)
+
+    # dwi_biomarker1
+    utils.write_dwi_biomarker1_jsons(outroot=outroot)
+
+    # fcn
+    utils.write_fcn_jsons(outroot=outroot)
+
+    # freesurfer
+    utils.write_freesurfer_tables_and_jsons(
+        outroot=outroot, inroot=inroot, records=records
+    )
+
+    # fslanat
+    utils.write_fslanat_tables_and_jsons(
+        outroot=outroot, inroot=inroot, records=records
+    )
+
+    # postdtifit
+    utils.write_postdtifit_jsons(outroot=outroot)
+
+    # postgift
+    utils.write_postgift_jsons(outroot=outroot)
+
+    # signatures
+    utils.write_signatures_jsons(outroot=outroot)
+
+    # idps
+    utils.write_idps(inroot=inroot, outroot=outroot)
+
+    # everything
+    utils.write_release_notes(outroot=outroot)

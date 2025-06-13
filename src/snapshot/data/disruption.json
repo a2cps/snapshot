@@ -1,0 +1,34 @@
+{
+    "sub": {
+        "LongName": "Subject",
+        "Description": "Study Participant, BIDS Subject ID",
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#sub"
+    },
+    "ses": {
+        "LongName": "Session",
+        "Description": "Visit, Protocol, BIDS Session ID",
+        "Levels": {
+            "V1": "baseline_visit",
+            "V3": "3mo_postop"
+        },
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#ses"
+    },
+    "disruption_degree": {
+        "LongName": "Hub Disruption of Degree",
+        "Description": "Disruption of degree relative to matched UKB participants without chronic pain."
+    },
+    "task": {
+        "LongName": "Task",
+        "Description": "Functional MRI Task, BIDS Task ID",
+        "Levels": {
+            "cuff": "cuff pressure scan",
+            "rest": "resting state scan"
+        },
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#task"
+    },
+    "run": {
+        "LongName": "Run",
+        "Description": "Task Run Number, BIDS Run ID",
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#run"
+    }
+}

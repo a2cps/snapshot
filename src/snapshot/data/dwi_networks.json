@@ -1,0 +1,48 @@
+{
+    "Deg_mean": {
+        "LongName": "Mean Degree",
+        "Description": "Average nodal degree within module (after thresholding network to 10% density)",
+        "TermURL": "https://networkx.org/documentation/stable/reference/classes/generated/networkx.Graph.degree.html"
+    },
+    "Density": {
+        "LongName": "Density",
+        "Description": "Density of the module (after thresholding network to 10% density)",
+        "TermURL": "https://networkx.org/documentation/stable/reference/generated/networkx.classes.function.density.html"
+    },
+    "WM_connections": {
+        "LongName": "White Matter Connections",
+        "Description": "A summary of the total connections in the network: sum(Degs) / (nvox * (nvox - 1) / 2)"
+    },
+    "ModuleNumber": {
+        "LongName": "Module Number",
+        "Description": "Index of the network module"
+    },
+    "ModuleName": {
+        "LongName": "Module Name",
+        "Description": "Name of the module from the reference (https://doi.org/10.1093/brain/aww100)",
+        "Levels": {
+            "mPFCventral-amyg": "ventral medial PFC–amygdala",
+            "OFC-amyg-hipp": "orbitofrontal cortex–amygdala–hippocampus",
+            "mPFCdorsal-amyg-NAc": "dorsal medial PFC–amygdala–nucleus accumbens",
+            "WholeNetwork": "Full network (not a module)"
+        }
+    },
+    "IsBiomarker": {
+        "LongName": "Biomarker Indicator",
+        "Description": "Boolean indicating whether this module is a primary biomarker for A2CSP"
+    },
+    "sub": {
+        "LongName": "Subject",
+        "Description": "Study Participant, BIDS Subject ID",
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#sub"
+    },
+    "ses": {
+        "LongName": "Session",
+        "Description": "Visit, Protocol, BIDS Session ID",
+        "Levels": {
+            "V1": "baseline_visit",
+            "V3": "3mo_postop"
+        },
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#ses"
+    }
+}

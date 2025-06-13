@@ -1,4 +1,4 @@
-sub	ses	deviceserialnumber
+sub	session_id	deviceserialnumber
 10003	V1	000000312996MR3T
 10003	V3	000000312996MR3T
 10005	V1	000000312996MR3T

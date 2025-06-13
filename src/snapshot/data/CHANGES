@@ -1,3 +1,14 @@
+2.1.0 2025-06-16
+
+[Highlights]
+- T1w image files are now provided without skull stripping
+
+[Enhancements]
+- Added REDCap GUID to participant.tsv to facilitate linking imaging data with other A2CPS modalities
+
+[Changes]
+- Removed sex, age, and dom_hand from participants.tsv (available in other A2CPS modalities)
+
 2.0.0 2025-02-01
 
 [Highlights]
@@ -14,8 +25,10 @@
 - Removed "site" information from participants.tsv (available in other A2CPS modalities)
 
 1.1.0 2024-06-21
+
 - Documentation improvements (Release Notes have been added)
 - Improvements in BIDS
 
 1.0.0 2023-11-15
+
 - Initial release including A2CPS participants with surgeries completed by February 2023.

@@ -1,0 +1,25 @@
+{
+    "sub": {
+        "LongName": "Subject",
+        "Description": "Study Participant, BIDS Subject ID",
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#sub"
+    },
+    "ses": {
+        "LongName": "Session",
+        "Description": "Visit, Protocol, BIDS Session ID",
+        "Levels": {
+            "V1": "baseline_visit",
+            "V3": "3mo_postop"
+        },
+        "TermURL": "https://bids-specification.readthedocs.io/en/v1.9.0/appendices/entities.html#ses"
+    },
+    "source": {
+        "LongName": "Source of volume",
+        "Description": "Filename of the volume, relative to the pipeline dataset folder."
+    },
+    "volume": {
+        "LongName": "Mask Volume",
+        "Description": "Volume of the Mask.",
+        "Units": "mm^3"
+    }
+}
