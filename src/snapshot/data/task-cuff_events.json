@@ -9,7 +9,7 @@
         "Units": "seconds",
         "Description": "Duration of the event (measured from onset) in seconds"
     },
-    "pressure": {
+    "applied_pressure": {
         "LongName": "Cuff Pressure",
         "Units": "mmHg",
         "Description": "Pressure of CUFF stimulation."

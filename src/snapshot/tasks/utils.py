@@ -38,6 +38,7 @@ def _get_ses(f: Path) -> str:
 
 
 def write_participants(records: typing.Collection[int], outdir: Path) -> None:
+    found_participants = [int(_get_sub(d)) for d in outdir.glob("sub*") if d.is_dir()]
     demographics = (
         pl.scan_csv(datasets.get_demographics(), null_values=NULLS)
         .select("record_id", "guid")
@@ -48,6 +49,7 @@ def write_participants(records: typing.Collection[int], outdir: Path) -> None:
         .select(sub="subject_id", ses="visit")
         .filter(pl.col("ses").str.contains("V1"))
         .filter(pl.col("sub").is_in(records))
+        .filter(pl.col("sub").is_in(found_participants))
         .join(demographics, on="sub", how="left")
         .with_columns(participant_id=pl.concat_str(pl.lit("sub-"), pl.col("sub")))
         .drop("sub")
@@ -320,3 +322,14 @@ def write_idps(inroot: Path, outroot: Path) -> None:
 
     shutil.copy2(datasets.get_mask_volumes_json(), dst / "mask_volumes.json")
     shutil.copy2(datasets.get_mri_json(), dst / "mri.json")
+
+
+def write_dwi_biomarker1_jsons(outroot: Path) -> None:
+    shutil.copy2(
+        datasets.get_dwi_networks_json(),
+        outroot
+        / "derivatives"
+        / "dwi_biomarker1"
+        / "networks"
+        / "network_summaries.json",
+    )

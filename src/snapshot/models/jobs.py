@@ -5,6 +5,7 @@ STORE_DIR = typing.Literal[
     "bids",
     "brainager",
     "cat12",
+    "dwi_biomarker1",
     "eddyqc",
     "fcn",
     "fmriprep",

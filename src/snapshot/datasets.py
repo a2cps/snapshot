@@ -162,3 +162,7 @@ def get_mri_json() -> Path:
 
 def get_disruption_json() -> Path:
     return get_data("disruption.json")
+
+
+def get_dwi_networks_json() -> Path:
+    return get_data("dwi_networks.json")

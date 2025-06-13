@@ -100,6 +100,8 @@ def main(
                 | "synthstrip"
             ):
                 generator = injobdir.glob("sub-*")
+            case "dwi_biomarker1":
+                generator = injobdir.glob("networks/sub-*")
             case "fcn" | "signatures":
                 generator = injobdir.glob("*cleaned/sub-*")
             case "postdtifit":
@@ -157,6 +159,9 @@ def main(
 
     # cat12
     utils.write_cat12_tables_and_jsons(outroot=outroot, inroot=inroot, records=records)
+
+    # dwi_biomarker1
+    utils.write_dwi_biomarker1_jsons(outroot=outroot)
 
     # fcn
     utils.write_fcn_jsons(outroot=outroot)
