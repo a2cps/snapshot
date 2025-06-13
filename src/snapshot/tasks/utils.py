@@ -314,11 +314,20 @@ def write_postgift_jsons(outroot: Path) -> None:
 def write_idps(inroot: Path, outroot: Path) -> None:
     records = datasets.get_recordids()
     dst = outroot / "idp"
+    mask_volumes_json: dict[str, typing.Any] = json.loads(
+        datasets.get_mask_volumes_json().read_text()
+    )
+    mris_json: dict[str, typing.Any] = json.loads(datasets.get_mri_json().read_text())
+
+    columns = {
+        "mask_volumes.tsv": list(mask_volumes_json.keys()),
+        "mri.tsv": list(mris_json.keys()),
+    }
 
     for f in ["mri.tsv", "mask_volumes.tsv"]:
         pl.scan_csv(inroot / "idp" / f, separator="\t").filter(
             pl.col("ses") == "V1", pl.col("sub").is_in(records)
-        ).sink_csv(dst / f, separator="\t", mkdir=True)
+        ).select(*columns[f]).sink_csv(dst / f, separator="\t", mkdir=True)
 
     shutil.copy2(datasets.get_mask_volumes_json(), dst / "mask_volumes.json")
     shutil.copy2(datasets.get_mri_json(), dst / "mri.json")
