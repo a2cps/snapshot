@@ -89,7 +89,7 @@ def get_qclog() -> Path:
 
 
 def get_demographics() -> Path:
-    return get_data("demographics-2024-11-06.csv")
+    return get_data("demographics-2025-01-10.csv")
 
 
 def get_events_json() -> Path:
@@ -117,7 +117,7 @@ def get_sessions_json() -> Path:
 
 
 def get_release_notes() -> Path:
-    return get_data("A2CPS_Release_2.0_Notes.docx")
+    return get_data("A2CPS_Release_2.1_Notes.docx")
 
 
 def get_guids() -> Path:
