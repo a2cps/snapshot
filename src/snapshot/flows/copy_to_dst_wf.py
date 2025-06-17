@@ -58,9 +58,7 @@ async def copytree(
             for file in filenames:
                 if file in ignored_names:
                     continue
-                executor.submit(
-                    os.link, d / file, dirpath_dst / file, follow_symlinks=False
-                )
+                executor.submit(link, d / file, dirpath_dst / file)
 
 
 def main(
