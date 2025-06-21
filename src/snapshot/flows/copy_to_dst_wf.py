@@ -18,9 +18,9 @@ def copy_directory(src: str, dst: str) -> None:
 
 def link(src: Path, dst: Path) -> None:
     if not src.is_symlink():
-        dst.hardlink_to(src)
+        dst.symlink_to(src)
     else:
-        dst.hardlink_to(src.resolve())
+        dst.symlink_to(src.resolve())
 
 
 async def copytree(
