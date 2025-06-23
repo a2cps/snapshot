@@ -162,7 +162,7 @@ def update_scans(outdir: Path) -> None:
 def write_events(outdir: Path) -> None:
     pressure = pl.read_csv(datasets.get_applied_pressures(), null_values=NULLS)
     for nii in outdir.rglob("*bold.nii.gz"):
-        fname = Path(str(nii.resolve()).replace("bold.nii.gz", "events.tsv"))
+        fname = nii.with_name(nii.name.replace("bold.nii.gz", "events.tsv"))
         if "cuff_run-01" in nii.name:
             scan = "CUFF1"
         elif "cuff_run-02" in nii.name:
