@@ -111,7 +111,7 @@ def main(
         for file in generator:
             match job:
                 case "postgift":
-                    sub = utils._get_entity(f=file, pattern=r"(?<=sub=)\d{5}")
+                    sub = int(utils._get_entity(f=file, pattern=r"(?<=sub=)\d{5}"))
                 case _:
                     sub = int(utils._get_sub(file))
             if sub not in records:
