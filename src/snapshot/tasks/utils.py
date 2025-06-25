@@ -19,6 +19,8 @@ SIDECAR_FIELDS_TO_REMOVE = ["InstitutionAddress"]
 
 
 def to_bids_tsv(d: pl.DataFrame, dst: Path) -> None:
+    if dst.exists():
+        dst.unlink()
     d.write_csv(dst, separator="\t", null_value="n/a", datetime_format=DATETIME_FORMAT)
 
 
@@ -289,6 +291,7 @@ def clean_sidecars(root: Path) -> None:
         for field in SIDECAR_FIELDS_TO_REMOVE:
             if data.get(field):
                 del data[field]
+        sidecar.unlink()
         sidecar.write_text(json.dumps(data, indent=2, sort_keys=True))
 
 
