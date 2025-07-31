@@ -1,4 +1,5 @@
 import json
+import logging
 import re
 import shutil
 import typing
@@ -345,3 +346,15 @@ def write_dwi_biomarker1_jsons(outroot: Path) -> None:
         / "networks"
         / "network_summaries.json",
     )
+
+
+def clean_fmriprep_logs(inroot: Path, outroot: Path) -> None:
+    for toml_link in inroot.glob("sub*/log/*/fmriprep.toml"):
+        # these should be symlinks, so resolve to determine whether they are V1 or V3
+        src = toml_link.resolve()
+        if "V3" in str(src):
+            uuid = toml_link.parent.name
+            sub = _get_sub(src)
+            if (to_delete := (outroot / f"sub-{sub}" / "log" / uuid)).exists():
+                logging.info(f"Removing V3 fmriprep log directory {to_delete}")
+                shutil.rmtree(to_delete)

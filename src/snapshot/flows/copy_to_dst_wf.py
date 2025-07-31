@@ -155,6 +155,11 @@ def main(
     utils.write_changes(outdir=outroot / "rawdata")
     utils.clean_sidecars(root=outroot / "rawdata")
 
+    # fmriprep
+    utils.clean_fmriprep_logs(
+        inroot=inroot / "fmriprep", outroot=outroot / "derivatives" / "fmriprep"
+    )
+
     # cat12
     utils.write_cat12_tables_and_jsons(outroot=outroot, inroot=inroot, records=records)
 
