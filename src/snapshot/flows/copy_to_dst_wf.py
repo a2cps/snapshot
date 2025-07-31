@@ -138,7 +138,7 @@ def main(
                 injobdir,
                 outjobdir,
                 ignore=shutil.ignore_patterns(
-                    "*V3*", *(f"*{sub}*" for sub in subs_to_exclude)
+                    "*ses-V3*", "*ses=V3*", *(f"*{sub}*" for sub in subs_to_exclude)
                 ),
                 max_workers=max_workers,
             )
