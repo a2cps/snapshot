@@ -154,3 +154,6 @@ cython_debug/
 
 tools/reformatted_*_qst.csv
 tools/muliple_qst.py
+# pixi environments
+.pixi/*
+!.pixi/config.toml

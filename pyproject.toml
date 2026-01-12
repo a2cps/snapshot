@@ -87,3 +87,20 @@ ban-relative-imports = "all"
 
 [dependency-groups]
 dev = ["pytest>=8.3.4"]
+
+[tool.pixi.workspace]
+channels = ["conda-forge"]
+platforms = ["osx-arm64", "linux-64"]
+
+[tool.pixi.pypi-dependencies]
+snapshot = { path = ".", editable = true }
+
+[tool.pixi.environments]
+default = { solve-group = "default" }
+dev = { features = ["dev"], solve-group = "default" }
+
+[tool.pixi.tasks]
+
+[tool.pixi.dependencies]
+nibabel = ">=5.3.2,<6"
+polars = ">=1.37.0,<2"
