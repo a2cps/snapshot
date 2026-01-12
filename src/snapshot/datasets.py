@@ -19,7 +19,7 @@ def get_description(file: str) -> Path:
 
 
 def get_recordids() -> list[int]:
-    f = get_data("DataFreeze_2_022924.csv")
+    f = get_data("DataFreeze_3_022825.csv")
     record_ids = pl.read_csv(f).select(pl.col("record_id")).to_series().to_list()
     return record_ids
 
