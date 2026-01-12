@@ -10,6 +10,14 @@ def get_data(file: str) -> Path:
     return out
 
 
+def get_description(file: str) -> Path:
+    with resources.as_file(
+        resources.files("snapshot.data.dataset_description").joinpath(file)
+    ) as f:
+        out = f
+    return out
+
+
 def get_recordids() -> list[int]:
     f = get_data("DataFreeze_2_022924.csv")
     record_ids = pl.read_csv(f).select(pl.col("record_id")).to_series().to_list()
@@ -101,7 +109,7 @@ def get_participants_json() -> Path:
 
 
 def get_dataset_description_json() -> Path:
-    return get_data("dataset_description.json")
+    return get_description("raw.json")
 
 
 def get_scans_json() -> Path:

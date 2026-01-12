@@ -246,6 +246,19 @@ def write_fslanat_tables_and_jsons(
     shutil.copy2(datasets.get_fslanat_json(), dst / "fslanat.json")
 
 
+def overwrite_tables(
+    outjob: Path, records: typing.Collection[int], srcs: typing.Collection[str]
+) -> None:
+    for src in srcs:
+        file = outjob / src
+        df = (
+            pl.read_csv(file, null_values=NULLS, separator="\t")
+            .filter(pl.col("ses").str.contains("V1"))
+            .filter(pl.col("sub").is_in(records))
+        )
+        to_bids_tsv(df, file)
+
+
 def write_fcn_jsons(outroot: Path) -> None:
     dst = outroot / "derivatives" / "fcn"
     shutil.copy2(datasets.get_confounds_json(), dst / "confounds.json")
@@ -358,3 +371,15 @@ def clean_fmriprep_logs(inroot: Path, outroot: Path) -> None:
             if (to_delete := (outroot / f"sub-{sub}" / "log" / uuid)).exists():
                 logging.info(f"Removing V3 fmriprep log directory {to_delete}")
                 shutil.rmtree(to_delete)
+
+
+def remove_qsirecon_fsl_dtifit_v3_only(root: Path) -> None:
+    derivatives = root / "qsirecon-fsl" / "derivatives" / "qsirecon-FSL"
+    todelete = []
+    for subdir in derivatives.glob("sub*"):
+        if subdir.is_dir() and (len([subdir.iterdir()]) == 0):
+            todelete.append(subdir.name)
+            subdir.rmdir()
+
+    for d in todelete:
+        shutil.rmtree(root / "qsirecon-fsl" / d)
