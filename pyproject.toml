@@ -11,17 +11,11 @@ requires-python = ">=3.10"
 license = "MIT"
 keywords = []
 authors = [{ name = "Patrick Sadil", email = "psadil1@jh.edu" }]
-dependencies = [
-  "nilearn",
-  "nibabel",
-  "numpy",
-  "polars>=1.17.1",
-  "pydantic>=2.10.3",
-]
+dependencies = ["nibabel", "polars>=1.17.1"]
 
 [tool.hatch.version]
 source = "vcs"
-fallback-version = "23.0.1"
+fallback-version = "3.0.0"
 
 [[tool.hatch.envs.all.matrix]]
 python = ["3.12"]
