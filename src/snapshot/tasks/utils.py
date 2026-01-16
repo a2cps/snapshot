@@ -11,7 +11,7 @@ import polars as pl
 from snapshot import datasets
 
 # values to parse from src files as null (n/a will be used for output)
-NULLS = ["", "na", "n/a"]
+NULLS = ["", "na", "n/a", "NA"]
 
 # https://bids-specification.readthedocs.io/en/v1.9.0/common-principles.html#units
 DATETIME_FORMAT = "%Y-%m-%d%H:%M:%S"

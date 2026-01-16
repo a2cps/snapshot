@@ -97,7 +97,9 @@ def get_qclog() -> Path:
 
 
 def get_demographics() -> Path:
-    return get_data("demographics-2025-01-10.csv")
+    return Path(
+        "/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-3-0-0/demographics/reformatted/reformatted_demo.csv"
+    )
 
 
 def get_events_json() -> Path:
