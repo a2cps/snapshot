@@ -11,3 +11,7 @@
 - [ ] Do GitHub Release with tag, adding Release Notes.
 - [ ] Update relevant parts of the snapshot_app in the main pipeline (<https://github.com/a2cps/mri_imaging_pipeline>).
 - [ ] Submit snapshot_app job and check results.
+
+## Additional Steps
+
+- [ ] After releasing, the manual qc ratings should be copied into the final folder. Parquet versions of the ratings can be produced with [dump_dirt](tools/dump_dirt) and [gather_dirt.py](tools/gather_dirt.py).
