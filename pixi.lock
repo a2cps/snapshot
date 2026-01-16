@@ -1029,12 +1029,12 @@ packages:
   timestamp: 1765813902568
 - pypi: ./
   name: snapshot
-  version: 3.0.1.dev79+g2e1c93b53.d20260113
-  sha256: 5847b6d638cb93fcb01fd5bca431360a14df34df6a7fdfb60d312e70274fb999
+  version: 3.0.1.dev84+gfab3fcef6.d20260116
+  sha256: f6df6809c5adb81674f9849fcc6e1b7fc412e671c909c2e35680ca0ede44179d
   requires_dist:
   - nibabel
   - polars>=1.17.1
-  requires_python: '>=3.10'
+  requires_python: '>=3.14'
 - conda: https://conda.anaconda.org/conda-forge/linux-64/tk-8.6.13-noxft_ha0e22de_103.conda
   sha256: 1544760538a40bcd8ace2b1d8ebe3eb5807ac268641f8acdc18c69c5ebfeaf64
   md5: 86bc20552bf46075e3d92b67f089172d

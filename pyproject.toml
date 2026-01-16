@@ -7,7 +7,7 @@ name = "snapshot"
 dynamic = ["version"]
 description = 'Manage A2CPS Data Freezes'
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.14"
 license = "MIT"
 keywords = []
 authors = [{ name = "Patrick Sadil", email = "psadil1@jh.edu" }]
@@ -18,12 +18,11 @@ source = "vcs"
 fallback-version = "3.0.0"
 
 [[tool.hatch.envs.all.matrix]]
-python = ["3.12"]
-
+python = ["3.14"]
 
 [tool.ruff]
-target-version = "py312"
-select = [
+target-version = "py314"
+lint.select = [
   "A",
   "ARG",
   "B",
@@ -50,7 +49,7 @@ select = [
   "W",
   "YTT",
 ]
-ignore = [
+lint.ignore = [
   # Allow non-abstract empty methods in abstract base classes
   "B027",
   # Allow boolean positional values in function calls, like `dict.get(... True)`
@@ -66,7 +65,7 @@ ignore = [
   "PLR0913",
   "PLR0915",
 ]
-unfixable = [
+lint.unfixable = [
   # Don't touch unused imports
   "F401",
 ]
