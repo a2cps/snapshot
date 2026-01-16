@@ -127,7 +127,7 @@ def get_sessions_json() -> Path:
 
 
 def get_release_notes() -> Path:
-    return get_data("A2CPS_Release_2.1_Notes.docx")
+    return get_data("A2CPS_Release_3.0_Notes.docx")
 
 
 def get_guids() -> Path:
