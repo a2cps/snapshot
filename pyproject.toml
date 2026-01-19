@@ -97,3 +97,6 @@ dev = { features = ["dev"], solve-group = "default" }
 [tool.pixi.dependencies]
 nibabel = ">=5.3.2,<6"
 polars = ">=1.37.0,<2"
+
+[tool.pixi.feature.dev.dependencies]
+pytest = ">=9.0.2,<10"

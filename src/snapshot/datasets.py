@@ -12,7 +12,7 @@ def get_data(file: str) -> Path:
 
 def get_description(file: str) -> Path:
     with resources.as_file(
-        resources.files("snapshot.data.dataset_description").joinpath(file)
+        resources.files("snapshot.data.dataset_descriptions").joinpath(file)
     ) as f:
         out = f
     return out
