@@ -251,11 +251,16 @@ def overwrite_tables(
 ) -> None:
     for src in srcs:
         file = outjob / src
-        df = (
-            pl.read_csv(file, null_values=NULLS, separator="\t")
-            .filter(pl.col("ses").str.contains("V1"))
-            .filter(pl.col("sub").is_in(records))
-        )
+        d = pl.read_csv(file, null_values=NULLS, separator="\t")
+        if "ses" in d.columns:
+            df = d.filter(pl.col("ses").str.contains("V1")).filter(
+                pl.col("sub").is_in(records)
+            )
+        else:
+            df = d.filter(pl.col("bids_name").str.contains("ses-V1")).filter(
+                pl.col("bids_name").str.contains_any([str(s) for s in records])
+            )
+
         to_bids_tsv(df, file)
 
 

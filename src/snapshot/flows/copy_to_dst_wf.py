@@ -159,17 +159,12 @@ def main(
     utils.overwrite_tables(
         outjob=outroot / "derivatives" / "mriqc",
         records=records,
-        srcs=["group_bold.tsv", "group_diw.tsv", "group_T1w.tsv"],
+        srcs=["group_bold.tsv", "group_dwi.tsv", "group_T1w.tsv"],
     )
 
     # fmriprep
     utils.clean_fmriprep_logs(
         inroot=inroot / "fmriprep", outroot=outroot / "derivatives" / "fmriprep"
-    )
-    utils.overwrite_tables(
-        outjob=outroot / "derivatives" / "fmriprep",
-        records=records,
-        srcs=["desc-aparcaseg_dseg.tsv", "desc-aseg_dseg.tsv"],
     )
 
     # cat12
