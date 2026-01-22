@@ -10,8 +10,16 @@ def get_data(file: str) -> Path:
     return out
 
 
+def get_description(file: str) -> Path:
+    with resources.as_file(
+        resources.files("snapshot.data.dataset_descriptions").joinpath(file)
+    ) as f:
+        out = f
+    return out
+
+
 def get_recordids() -> list[int]:
-    f = get_data("DataFreeze_2_022924.csv")
+    f = get_data("DataFreeze_3_022825.csv")
     record_ids = pl.read_csv(f).select(pl.col("record_id")).to_series().to_list()
     return record_ids
 
@@ -89,7 +97,9 @@ def get_qclog() -> Path:
 
 
 def get_demographics() -> Path:
-    return get_data("demographics-2025-01-10.csv")
+    return Path(
+        "/corral-secure/projects/A2CPS/products/consortium-data/pre-surgery-release-3-0-0/demographics/reformatted/reformatted_demo.csv"
+    )
 
 
 def get_events_json() -> Path:
@@ -101,7 +111,7 @@ def get_participants_json() -> Path:
 
 
 def get_dataset_description_json() -> Path:
-    return get_data("dataset_description.json")
+    return get_description("raw.json")
 
 
 def get_scans_json() -> Path:
@@ -117,7 +127,7 @@ def get_sessions_json() -> Path:
 
 
 def get_release_notes() -> Path:
-    return get_data("A2CPS_Release_2.1_Notes.docx")
+    return get_data("A2CPS_Release_3.0_Notes.docx")
 
 
 def get_guids() -> Path:

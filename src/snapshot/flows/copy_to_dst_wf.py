@@ -155,6 +155,13 @@ def main(
     utils.write_changes(outdir=outroot / "rawdata")
     utils.clean_sidecars(root=outroot / "rawdata")
 
+    # mriqc
+    utils.overwrite_tables(
+        outjob=outroot / "derivatives" / "mriqc",
+        records=records,
+        srcs=["group_bold.tsv", "group_dwi.tsv", "group_T1w.tsv"],
+    )
+
     # fmriprep
     utils.clean_fmriprep_logs(
         inroot=inroot / "fmriprep", outroot=outroot / "derivatives" / "fmriprep"
@@ -182,11 +189,23 @@ def main(
     # postdtifit
     utils.write_postdtifit_jsons(outroot=outroot)
 
+    # postfcn
+    utils.overwrite_tables(
+        outjob=outroot / "derivatives" / "fcn",
+        records=records,
+        srcs=["hub_disruption.tsv"],
+    )
+
     # postgift
     utils.write_postgift_jsons(outroot=outroot)
 
     # signatures
     utils.write_signatures_jsons(outroot=outroot)
+
+    # qsirecon_fsl_dtifit
+    utils.remove_qsirecon_fsl_dtifit_v3_only(
+        root=outroot / "derivatives" / "qsirecon_fsl_dtifit"
+    )
 
     # idps
     utils.write_idps(inroot=inroot, outroot=outroot)

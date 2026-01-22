@@ -11,7 +11,7 @@ import polars as pl
 from snapshot import datasets
 
 # values to parse from src files as null (n/a will be used for output)
-NULLS = ["", "na", "n/a"]
+NULLS = ["", "na", "n/a", "NA"]
 
 # https://bids-specification.readthedocs.io/en/v1.9.0/common-principles.html#units
 DATETIME_FORMAT = "%Y-%m-%d%H:%M:%S"
@@ -246,6 +246,24 @@ def write_fslanat_tables_and_jsons(
     shutil.copy2(datasets.get_fslanat_json(), dst / "fslanat.json")
 
 
+def overwrite_tables(
+    outjob: Path, records: typing.Collection[int], srcs: typing.Collection[str]
+) -> None:
+    for src in srcs:
+        file = outjob / src
+        d = pl.read_csv(file, null_values=NULLS, separator="\t")
+        if "ses" in d.columns:
+            df = d.filter(pl.col("ses").str.contains("V1")).filter(
+                pl.col("sub").is_in(records)
+            )
+        else:
+            df = d.filter(pl.col("bids_name").str.contains("ses-V1")).filter(
+                pl.col("bids_name").str.contains_any([str(s) for s in records])
+            )
+
+        to_bids_tsv(df, file)
+
+
 def write_fcn_jsons(outroot: Path) -> None:
     dst = outroot / "derivatives" / "fcn"
     shutil.copy2(datasets.get_confounds_json(), dst / "confounds.json")
@@ -358,3 +376,15 @@ def clean_fmriprep_logs(inroot: Path, outroot: Path) -> None:
             if (to_delete := (outroot / f"sub-{sub}" / "log" / uuid)).exists():
                 logging.info(f"Removing V3 fmriprep log directory {to_delete}")
                 shutil.rmtree(to_delete)
+
+
+def remove_qsirecon_fsl_dtifit_v3_only(root: Path) -> None:
+    derivatives = root / "qsirecon-fsl" / "derivatives" / "qsirecon-FSL"
+    todelete = []
+    for subdir in derivatives.glob("sub*"):
+        if subdir.is_dir() and (len([subdir.iterdir()]) == 0):
+            todelete.append(subdir.name)
+            subdir.rmdir()
+
+    for d in todelete:
+        shutil.rmtree(root / "qsirecon-fsl" / d)

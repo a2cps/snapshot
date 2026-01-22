@@ -1,0 +1,21 @@
+#!/bin/bash
+
+pg_dump \
+	--no-large-objects \
+	--exclude-table="django_*" \
+	-Fd \
+	-f dumpdir \
+	-h postgres.pods.a2cps.tapis.io \
+	-p 443 \
+	-d postgres \
+	-U postgres
+
+pg_dump \
+	--no-large-objects \
+	--table-and-children="ratings_*" \
+	-Fd \
+	-f dumpdir \
+	-h postgres.pods.a2cps.tapis.io \
+	-p 443 \
+	-d postgres \
+	-U postgres
